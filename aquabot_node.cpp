@@ -1,6 +1,5 @@
 #include "AquabotNode.hpp"
 
-//test
 AquabotNode::AquabotNode() : Node("aquabot_node_cpp"), m_target_pos(1.0), m_current_pos(0.0), m_target_thrust(1000.0)
 {
 RCLCPP_INFO(this->get_logger(), "Hello world from aquabot_node_cpp!");
