@@ -1,4 +1,5 @@
 # How to add this package to the project
+ros2 pkg create --build-type ament_cmake --node-name simple_node simple_package
 
 # Go to vrx_ws directory
 cd ~/vrx_ws
