@@ -1,6 +1,0 @@
-[31mCMake Error at cmake_install.cmake:106 (file):
-  file INSTALL cannot find
-  "/home/newman/vrx_ws/src/mission_windwatch/src/sensors/config": No such
-  file or directory.
-
-[0m

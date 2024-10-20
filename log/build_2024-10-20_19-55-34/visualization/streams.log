@@ -1,4 +1,0 @@
-[0.010s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/visualization -- -j9 -l9
-[0.104s] [ 50%] [32mBuilding CXX object CMakeFiles/visualization_node.dir/src/visualization_node.cpp.o[0m
-[2.552s] [100%] [32m[1mLinking CXX executable visualization_node[0m
-[2.636s] [100%] Built target visualization_node

@@ -1,1 +1,0 @@
-Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/package_example -- -j9 -l9

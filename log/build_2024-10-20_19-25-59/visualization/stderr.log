@@ -1,6 +1,0 @@
-[31mCMake Error at cmake_install.cmake:66 (file):
-  file INSTALL cannot find
-  "/home/newman/vrx_ws/src/mission_windwatch/src/visualization/config": No
-  such file or directory.
-
-[0m

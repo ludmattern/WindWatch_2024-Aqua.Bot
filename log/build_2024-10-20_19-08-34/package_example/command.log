@@ -1,2 +1,0 @@
-Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/package_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
-Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example' returned '1': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/package_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install

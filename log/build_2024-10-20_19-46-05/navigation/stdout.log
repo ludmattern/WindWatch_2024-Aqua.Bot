@@ -1,4 +1,0 @@
-[ 25%] [32mBuilding CXX object CMakeFiles/obstacle_avoidance_node.dir/src/obstacle_avoidance_node.cpp.o[0m
-[ 50%] [32mBuilding CXX object CMakeFiles/navigation_node.dir/src/navigation_node.cpp.o[0m
-[ 75%] [32m[1mLinking CXX executable navigation_node[0m
-[ 75%] Built target navigation_node

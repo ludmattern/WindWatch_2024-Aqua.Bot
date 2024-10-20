@@ -1,1 +1,0 @@
-Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/package_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install

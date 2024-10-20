@@ -1,4 +1,0 @@
-[35m[1mConsolidate compiler generated dependencies of target navigation_node[0m
-[35m[1mConsolidate compiler generated dependencies of target obstacle_avoidance_node[0m
-[ 25%] [32mBuilding CXX object CMakeFiles/navigation_node.dir/src/navigation_node.cpp.o[0m
-[ 50%] [32mBuilding CXX object CMakeFiles/obstacle_avoidance_node.dir/src/obstacle_avoidance_node.cpp.o[0m

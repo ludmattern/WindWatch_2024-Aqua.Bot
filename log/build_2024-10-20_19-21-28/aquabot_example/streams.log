@@ -1,4 +1,0 @@
-[0.027s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example -- -j9 -l9
-[0.076s] [ 50%] [32mBuilding CXX object CMakeFiles/aquabot_node.dir/src/aquabot_node.cpp.o[0m
-[4.926s] [100%] [32m[1mLinking CXX executable aquabot_node[0m
-[5.426s] [100%] Built target aquabot_node

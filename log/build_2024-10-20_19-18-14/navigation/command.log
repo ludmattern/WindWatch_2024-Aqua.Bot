@@ -1,2 +1,0 @@
-Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/navigation -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
-Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation' returned '1': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/navigation -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install

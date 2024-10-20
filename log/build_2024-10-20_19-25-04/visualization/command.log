@@ -1,2 +1,0 @@
-Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/visualization -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
-Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization' returned '1': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/visualization -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install

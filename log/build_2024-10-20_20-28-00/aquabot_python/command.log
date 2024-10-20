@@ -1,4 +1,0 @@
-Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python -- -j9 -l9
-Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python -- -j9 -l9
-Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python
-Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python
