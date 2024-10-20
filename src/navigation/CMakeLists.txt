@@ -5,17 +5,16 @@ project(navigation)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
-# Include header files
-include_directories(include)
-
-# Create executable targets
+# Add executables
 add_executable(navigation_node src/navigation_node.cpp)
 add_executable(obstacle_avoidance_node src/obstacle_avoidance_node.cpp)
 
-# Link dependencies
-ament_target_dependencies(navigation_node rclcpp std_msgs)
-ament_target_dependencies(obstacle_avoidance_node rclcpp std_msgs)
+# Specify dependencies for executables
+ament_target_dependencies(navigation_node rclcpp std_msgs geometry_msgs sensor_msgs)
+ament_target_dependencies(obstacle_avoidance_node rclcpp sensor_msgs)
 
 # Install targets
 install(TARGETS
@@ -24,9 +23,10 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# Install launch files
-install(DIRECTORY launch/
-  DESTINATION share/${PROJECT_NAME}/
+# Install other necessary folders
+install(DIRECTORY launch config
+  DESTINATION share/${PROJECT_NAME}
 )
 
+# ament package macro
 ament_package()

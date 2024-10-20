@@ -4,16 +4,14 @@ project(visualization)
 # Find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
 
-# Include header files
-include_directories(include)
-
-# Create executable targets
+# Add executables
 add_executable(visualization_node src/visualization_node.cpp)
 
-# Link dependencies
-ament_target_dependencies(visualization_node rclcpp std_msgs)
+# Specify dependencies for executables
+ament_target_dependencies(visualization_node rclcpp sensor_msgs visualization_msgs)
 
 # Install targets
 install(TARGETS
@@ -21,9 +19,10 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# Install launch files
-install(DIRECTORY launch/
-  DESTINATION share/${PROJECT_NAME}/
+# Install other necessary folders
+install(DIRECTORY launch config
+  DESTINATION share/${PROJECT_NAME}
 )
 
+# ament package macro
 ament_package()
