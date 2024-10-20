@@ -1,147 +1,189 @@
 # Mission WindWatch 2024 - Aqua.Bot
 
-Bienvenue dans le projet **Mission WindWatch 2024**. Ce projet vise à développer un drone maritime autonome pour une mission de **surveillance**, **d'inspection**, et de **navigation autonome** dans un environnement maritime complexe. Le drone doit être capable de naviguer parmi des obstacles, d'inspecter des cibles (éoliennes), et d'accomplir des objectifs de mission tels que l'identification de défaillances et l'évitement des obstacles. Ce projet se concentre sur l'intégration de plusieurs capteurs, le contrôle de la propulsion, et la coordination de la mission dans un cadre dynamique.
+Welcome to the **Mission WindWatch 2024** project. This project aims to develop an autonomous maritime drone for a mission involving **surveillance**, **inspection**, and **autonomous navigation** in a complex maritime environment. The drone must be capable of navigating around obstacles, inspecting targets (wind turbines), and achieving mission objectives such as fault identification and obstacle avoidance. This project focuses on integrating multiple sensors, controlling propulsion, and coordinating the mission in a dynamic environment.
 
-Ce **README** présente une vue d'ensemble de la structure du projet, les différents **packages ROS2**, leurs nœuds associés, ainsi que les **topics** personnalisés utilisés pour la communication entre les nœuds.
+This **README** provides an overview of the project structure, the different **ROS2 packages**, their associated nodes, as well as the **custom topics** used for communication between the nodes.
 
-## Comment Ajouter ce Package au Projet
+## How to Add This Package to the Project
 
-Pour commencer, vous pouvez ajouter le package de base à votre projet en utilisant les commandes suivantes :
+To get started, you can add the base package to your project using the following commands:
 
 ```bash
-# Créez un nouveau package avec ROS2
+# Create a new package with ROS2
 ros2 pkg create --build-type ament_cmake --node-name simple_node simple_package
 
-# Allez dans le répertoire vrx_ws
+# Navigate to the vrx_ws directory
 cd ~/vrx_ws
 
 # Installation
 colcon build --merge-install
 . install/setup.bash
 
-# Lancer le nœud
+# Launch the node
 ros2 launch simple_package simple_node_launch.py
 ```
 
-Ces étapes permettent de créer et lancer un package de base. Le package `simple_package` est un point de départ, mais il devra être modifié et étendu pour inclure les fonctionnalités spécifiques de la mission WindWatch 2024.
+These steps allow you to create and launch a base package. The `simple_package` package is a starting point, but it will need to be modified and extended to include the specific functionalities of Mission WindWatch 2024.
 
-## Structure du Projet
+## Project Structure
 
-Le projet est organisé en plusieurs **packages ROS2** pour garantir une approche modulaire, claire, et extensible. Chaque package contient un ensemble de nœuds responsables de certaines tâches spécifiques liées à la mission.
+The project is organized into several **ROS2 packages** to ensure a modular, clear, and extensible approach. Each package contains a set of nodes responsible for specific tasks related to the mission.
 
-### Packages et Nœuds
+### Packages and Nodes
 
 #### 1. Package `navigation`
 
-Ce package contient les nœuds responsables de la **navigation** et du **contrôle des moteurs**.
+This package contains nodes responsible for **navigation** and **motor control**.
 
-- **Nœud `navigation_node`**
-  - **Rôle** : Responsable de la **navigation autonome**. Planifie les trajets pour atteindre les objectifs de mission tout en évitant les obstacles.
-  - **Topics Souscrits** :
-    - `/mission/odometry` : Odométrie fusionnée (position et orientation).
-    - `/mission/objective_positions` : Positions des cibles à atteindre.
-    - `/mission/avoidance_course` : Trajectoire d’évitement à suivre pour éviter les obstacles.
-    - `/mission/target_orientations` : Orientations des éoliennes pour ajuster la trajectoire.
-    - `/aqua_bot/ais_sensor/vessel_positions` : Positions des navires environnants pour éviter les collisions.
-  - **Topics Publiés** :
-    - `/propulsion/command` : Commandes de poussée et d’orientation des moteurs.
+- **Node `navigation_node`**
+  - **Role**: Responsible for **autonomous navigation**. Plans paths to reach mission objectives while avoiding obstacles.
+  - **Subscribed Topics**:
+    - `/mission/odometry`: Fused odometry (position and orientation).
+    - `/mission/objective_positions`: Positions of targets to be reached.
+    - `/mission/avoidance_course`: Avoidance trajectory to follow to avoid obstacles.
+    - `/mission/target_orientations`: Wind turbine orientations for trajectory adjustments.
+    - `/aqua_bot/ais_sensor/vessel_positions`: Positions of nearby vessels to avoid collisions.
+  - **Published Topics**:
+    - `/propulsion/command`: Thrust and orientation commands for the motors.
 
-- **Nœud `propulsion_control_node`**
-  - **Rôle** : Gérer les **commandes des propulseurs** (poussée et orientation).
-  - **Topics Souscrits** :
-    - `/propulsion/command` : Commandes provenant du `navigation_node`.
-  - **Topics Publiés** :
-    - `/aqua_bot/thrusters/left/pos`, `/aqua_bot/thrusters/right/pos` : Commandes d'orientation des moteurs.
-    - `/aqua_bot/thrusters/left/thrust`, `/aqua_bot/thrusters/right/thrust` : Commandes de poussée des moteurs.
+- **Node `propulsion_control_node`**
+  - **Role**: Manages **propulsor commands** (thrust and orientation).
+  - **Subscribed Topics**:
+    - `/propulsion/command`: Commands from the `navigation_node`.
+  - **Published Topics**:
+    - `/aqua_bot/thrusters/left/pos`, `/aqua_bot/thrusters/right/pos`: Orientation commands for the motors.
+    - `/aqua_bot/thrusters/left/thrust`, `/aqua_bot/thrusters/right/thrust`: Thrust commands for the motors.
 
 #### 2. Package `sensors`
 
-Ce package contient les nœuds responsables de la collecte des **données des capteurs** et de leur **fusion** pour fournir une vue globale fiable.
+This package contains nodes responsible for **collecting sensor data** and **fusing** it to provide a reliable global view.
 
-- **Nœud `sensor_fusion_node`**
-  - **Rôle** : Fusionner les données du GPS et de l'IMU via un **EKF** pour obtenir une estimation fiable de la position et de l’orientation du bateau.
-  - **Topics Souscrits** :
-    - `/aqua_bot/sensors/gps/fix` : Données GPS.
-    - `/aqua_bot/sensors/imu/data` : Données IMU.
-  - **Topics Publiés** :
-    - `/mission/odometry` : Odométrie fusionnée pour les autres nœuds.
+- **Node `sensor_fusion_node`**
+  - **Role**: Fuses GPS and IMU data using an **EKF** to obtain a reliable estimate of the boat's position and orientation.
+  - **Subscribed Topics**:
+    - `/aqua_bot/sensors/gps/fix`: GPS data.
+    - `/aqua_bot/sensors/imu/data`: IMU data.
+  - **Published Topics**:
+    - `/mission/odometry`: Fused odometry for other nodes.
 
-- **Nœud `camera_processing_node`**
-  - **Rôle** : Traiter les images de la **caméra** pour identifier les cibles, lire les QR codes, et déterminer l’orientation des éoliennes.
-  - **Topics Souscrits** :
-    - `/aqua_bot/sensors/cameras/main_camera/image_raw` : Images de la caméra 360°.
-  - **Topics Publiés** :
-    - `/mission/target_status` : Statut des éoliennes détectées (fonctionnelle ou défectueuse).
-    - `/mission/target_orientations` : Orientation des cibles (éoliennes).
+- **Node `camera_processing_node`**
+  - **Role**: Processes **camera** images to identify targets, read QR codes, and determine wind turbine orientations.
+  - **Subscribed Topics**:
+    - `/aqua_bot/sensors/cameras/main_camera/image_raw`: Images from the 360° camera.
+  - **Published Topics**:
+    - `/mission/target_status`: Status of detected wind turbines (functional or defective).
+    - `/mission/target_orientations`: Orientation of the targets (wind turbines).
 
-- **Nœud `tgt_pos_update_node`**
-  - **Rôle** : Traiter les positions des cibles reçues par **GPS** et les transmettre.
-  - **Topics Souscrits** :
-    - `/aqua_bot/ais_sensor/windturbines_positions` : Liste des positions GPS des éoliennes.
-  - **Topics Publiés** :
-    - `/aqua_bot/ais_sensor/target_positions` : Positions des éoliennes.
+- **Node `tgt_pos_update_node`**
+  - **Role**: Processes target positions received by **GPS** and transmits them.
+  - **Subscribed Topics**:
+    - `/aqua_bot/ais_sensor/windturbines_positions`: List of GPS positions of the wind turbines.
+  - **Published Topics**:
+    - `/aqua_bot/ais_sensor/target_positions`: Positions of the wind turbines.
 
 #### 3. Package `mission_manager`
 
-Ce package gère la **planification des missions**, les **objectifs à atteindre**, et la **coordination de la mission**.
+This package manages **mission planning**, **mission objectives**, and mission **coordination**.
 
-- **Nœud `target_manager_node`**
-  - **Rôle** : Centraliser et mettre à jour les informations sur les éoliennes (position, orientation, statut).
-  - **Topics Souscrits** :
-    - `/aqua_bot/ais_sensor/target_positions` : Positions des éoliennes.
-    - `/mission/target_orientations` : Orientations mises à jour des éoliennes.
-  - **Topics Publiés** :
-    - `/mission/objective_positions` : Positions des éoliennes à atteindre.
+- **Node `target_manager_node`**
+  - **Role**: Centralizes and updates information on wind turbines (position, orientation, status).
+  - **Subscribed Topics**:
+    - `/aqua_bot/ais_sensor/target_positions`: Positions of the wind turbines.
+    - `/mission/target_orientations`: Updated orientations of the wind turbines.
+  - **Published Topics**:
+    - `/mission/objective_positions`: Positions of the wind turbines to reach.
 
-- **Nœud `obstacle_avoidance_node`**
-  - **Rôle** : Identifier les **obstacles** et proposer des modifications de trajectoire pour les éviter.
-  - **Sources de données** :
-    - **Obstacles fixes** : Les coordonnées des obstacles fixes (rochers, îles, phare) sont disponibles dès le départ à partir d'un fichier de configuration.
-  - **Topics Souscrits** :
-    - `/mission/odometry` : Odométrie fusionnée.
-    - `/aqua_bot/ais_sensor/vessel_positions` : Positions des autres navires pour éviter les collisions.
-  - **Topics Publiés** :
-    - `/mission/avoidance_course` : Trajectoire d’évitement proposée.
+- **Node `obstacle_avoidance_node`**
+  - **Role**: Identifies **obstacles** and suggests trajectory modifications to avoid them.
+  - **Data Sources**:
+    - **Fixed Obstacles**: Coordinates of fixed obstacles (rocks, islands, lighthouse) are available from the start via a configuration file.
+  - **Subscribed Topics**:
+    - `/mission/odometry`: Fused odometry.
+    - `/aqua_bot/ais_sensor/vessel_positions`: Positions of other vessels to avoid collisions.
+  - **Published Topics**:
+    - `/mission/avoidance_course`: Proposed avoidance trajectory.
 
-- **Nœud `mission_coordinator_node`**
-  - **Rôle** : Coordonner les **phases de la mission**, émettre les ordres de mission.
-  - **Topics Souscrits** :
-    - `/mission/target_status` : Statut des cibles (éoliennes).
-  - **Topics Publiés** :
-    - `/mission/mission_goal` : Objectifs de mission pour le `navigation_node`.
+- **Node `mission_coordinator_node`**
+  - **Role**: Coordinates **mission phases**, issues mission commands.
+  - **Subscribed Topics**:
+    - `/mission/target_status`: Status of the targets (wind turbines).
+  - **Published Topics**:
+    - `/mission/mission_goal`: Mission objectives for the `navigation_node`.
 
 #### 4. Package `visualization`
 
-Ce package est responsable de la **supervision** et de la **visualisation** en temps réel de la mission.
+This package is responsible for **real-time supervision** and **visualization** of the mission.
 
-- **Nœud `visualization_node`**
-  - **Rôle** : Fournir une visualisation tactique via **RViz2**.
-  - **Topics Souscrits** :
-    - `/mission/odometry` : Position et orientation du drone.
-    - `/aqua_bot/ais_sensor/target_positions` : Positions des cibles et des obstacles.
-    - `/mission/target_status` : Statut des éoliennes.
-    - `/mission/target_orientations` : Orientation des cibles.
-    - `/aqua_bot/ais_sensor/vessel_positions` : Positions des autres navires.
+- **Node `visualization_node`**
+  - **Role**: Provides tactical visualization through **RViz2**.
+  - **Subscribed Topics**:
+    - `/mission/odometry`: Position and orientation of the drone.
+    - `/aqua_bot/ais_sensor/target_positions`: Positions of targets and obstacles.
+    - `/mission/target_status`: Status of the wind turbines.
+    - `/mission/target_orientations`: Orientation of the targets.
+    - `/aqua_bot/ais_sensor/vessel_positions`: Positions of other vessels.
 
-### Topics Personnalisés
+### Custom Topics
 
-Pour une communication efficace entre les nœuds, plusieurs **topics personnalisés** sont utilisés :
+To ensure effective communication between nodes, several **custom topics** are used:
 
 1. **Topic `/mission/target_orientations`**
-   - **Description** : Contient les orientations des cibles (éoliennes).
-   - **Publié Par** : `camera_processing_node`.
-   - **Souscrit Par** : `target_manager_node`, `navigation_node`.
+   - **Description**: Contains the orientations of the targets (wind turbines).
+   - **Published By**: `camera_processing_node`.
+   - **Subscribed By**: `target_manager_node`, `navigation_node`.
 
 2. **Topic `/mission/objective_positions`**
-   - **Description** : Positions des cibles à atteindre.
-   - **Publié Par** : `target_manager_node`.
-   - **Souscrit Par** : `navigation_node`.
+   - **Description**: Positions of the targets to be reached.
+   - **Published By**: `target_manager_node`.
+   - **Subscribed By**: `navigation_node`.
 
 3. **Topic `/propulsion/command`**
-   - **Description** : Commandes pour la position et la poussée des moteurs.
-   - **Publié Par** : `navigation_node`.
-   - **Souscrit Par** : `propulsion_control_node`.
+   - **Description**: Commands for motor position and thrust.
+   - **Published By**: `navigation_node`.
+   - **Subscribed By**: `propulsion_control_node`.
 
 4. **Topic `/mission/target_status`**
-   - **Description** : Statut des éoliennes (état fonctionnel ou défectueux).
-   - **Publié Par** : `camera_processing_node
+   - **Description**: Status of the wind turbines (functional or defective).
+   - **Published By**: `camera_processing_node`.
+   - **Subscribed By**: `mission_coordinator_node`.
+
+5. **Topic `/mission/avoidance_course`**
+   - **Description**: Trajectory modifications to avoid obstacles.
+   - **Published By**: `obstacle_avoidance_node`.
+   - **Subscribed By**: `navigation_node`.
+
+6. **Topic `/mission/mission_goal`**
+   - **Description**: Tactical objectives to achieve.
+   - **Published By**: `mission_coordinator_node`.
+   - **Subscribed By**: `navigation_node`.
+
+7. **Topic `/aqua_bot/ais_sensor/vessel_positions`**
+   - **Description**: Contains positions of nearby vessels to avoid collisions.
+   - **Published By**: AIS (Automated Identification System).
+   - **Subscribed By**: `navigation_node`, `obstacle_avoidance_node`, `visualization_node`.
+
+8. **Topic `/aqua_bot/ais_sensor/target_positions`**
+   - **Description**: Positions of detected wind turbines.
+   - **Published By**: `tgt_pos_update_node`.
+   - **Subscribed By**: `target_manager_node`, `visualization_node`.
+
+## Installation and Launching
+
+1. **Installation**
+   - Clone the required repositories into your ROS2 workspace.
+   - Compile with `colcon build`.
+
+2. **Launch the Simulation**
+   - Use the following command to launch the simulation:
+     ```bash
+     ros2 launch aquabot_gz competition.launch.py world:=aquabot_regatta
+     ```
+   - To launch the training mode without the graphical interface:
+     ```bash
+     ros2 launch aquabot_gz competition.launch.py world:=aquabot_regatta headless:=true
+     ```
+
+## Conclusion
+
+This modular and clear structure ensures a **better understanding** and **scalability** of the system. Each node has a specific role in the mission, and the custom topics allow optimal communication between the nodes.
+
