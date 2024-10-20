@@ -13,14 +13,11 @@ To get started, you can add the base package to your project using the following
 cd ~/mission_windwatch
 
 # Installation
-colcon build --merge-install
-. install/setup.bash
+make build
 
-# Launch the node
-ros2 launch ros2 launch mission_manager mission_launch.py
+# Launch the nodes
+make run
 ```
-
-These steps allow you to create and launch a base package. The `simple_package` package is a starting point, but it will need to be modified and extended to include the specific functionalities of Mission WindWatch 2024.
 
 ## Project Structure
 
