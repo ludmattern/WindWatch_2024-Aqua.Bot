@@ -1,0 +1,6 @@
+# Coordonnées des obstacles fixes
+obstacles:
+  - name: "rocher1"
+    position: [100, 150]
+  - name: "ile1"
+    position: [300, 400]

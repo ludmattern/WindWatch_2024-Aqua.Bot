@@ -1,0 +1,4 @@
+# Paramètres de la navigation
+navigation_params:
+  max_speed: 10.0
+  min_turn_radius: 5.0

@@ -1,0 +1,4 @@
+# Paramètres de configuration des capteurs
+sensor_params:
+  gps_accuracy: 0.85
+  imu_bias: 0.01
