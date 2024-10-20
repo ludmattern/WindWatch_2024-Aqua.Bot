@@ -47,7 +47,7 @@ void SensorFusionNode::gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr 
     update();
     publishOdometry();
 }
- 
+
 
 void SensorFusionNode::imuCallback(const sensor_msgs::msg::Imu::SharedPtr msg)
 {
