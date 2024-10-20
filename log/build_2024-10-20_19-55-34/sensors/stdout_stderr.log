@@ -1,0 +1,31 @@
+[35m[1mConsolidate compiler generated dependencies of target camera_processing_node[0m
+[35m[1mConsolidate compiler generated dependencies of target sensor_fusion_node[0m
+[35m[1mConsolidate compiler generated dependencies of target tgt_pos_update_node[0m
+[ 33%] Built target camera_processing_node
+[ 66%] Built target sensor_fusion_node
+[100%] Built target tgt_pos_update_node
+-- Install configuration: ""
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/sensor_fusion_node
+-- Set runtime path of "/home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/sensor_fusion_node" to ""
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/camera_processing_node
+-- Set runtime path of "/home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/camera_processing_node" to ""
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/tgt_pos_update_node
+-- Set runtime path of "/home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/tgt_pos_update_node" to ""
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/launch
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/launch/sensors_launch.py
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/config
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/sensors
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/sensors
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/environment/ament_prefix_path.sh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/environment/path.sh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/environment/path.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/local_setup.bash
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/local_setup.sh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/local_setup.zsh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/local_setup.dsv
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/sensors
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/cmake/sensorsConfig.cmake
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/cmake/sensorsConfig-version.cmake
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.xml

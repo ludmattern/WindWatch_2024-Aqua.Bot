@@ -1,0 +1,17 @@
+/home/newman/vrx_ws/src/mission_windwatch/install/lib/visualization/visualization_node
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/launch/visualization_launch.py
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/visualization
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/visualization
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/environment/ament_prefix_path.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/environment/ament_prefix_path.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/environment/path.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/environment/path.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/local_setup.bash
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/local_setup.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/local_setup.zsh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/local_setup.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/visualization
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/cmake/visualizationConfig.cmake
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/cmake/visualizationConfig-version.cmake
+/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.xml

@@ -1,0 +1,11 @@
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/navigation_uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/navigation_node.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/obstacle_avoidance_node.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/test.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/edit_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/rebuild_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/list_install_components.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/install.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/install/local.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/navigation/CMakeFiles/install/strip.dir

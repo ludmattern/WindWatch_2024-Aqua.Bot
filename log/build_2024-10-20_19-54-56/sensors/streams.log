@@ -1,0 +1,13 @@
+[0.068s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/sensors -- -j9 -l9
+[0.119s] [35m[1mConsolidate compiler generated dependencies of target camera_processing_node[0m
+[0.126s] [35m[1mConsolidate compiler generated dependencies of target sensor_fusion_node[0m
+[0.134s] [35m[1mConsolidate compiler generated dependencies of target tgt_pos_update_node[0m
+[0.143s] [ 16%] [32mBuilding CXX object CMakeFiles/camera_processing_node.dir/src/camera_processing_node.cpp.o[0m
+[0.154s] [ 33%] [32mBuilding CXX object CMakeFiles/sensor_fusion_node.dir/src/sensor_fusion_node.cpp.o[0m
+[0.178s] [ 50%] [32mBuilding CXX object CMakeFiles/tgt_pos_update_node.dir/src/tgt_pos_update_node.cpp.o[0m
+[2.561s] [ 66%] [32m[1mLinking CXX executable sensor_fusion_node[0m
+[2.562s] [ 83%] [32m[1mLinking CXX executable camera_processing_node[0m
+[2.649s] [ 83%] Built target sensor_fusion_node
+[2.668s] [ 83%] Built target camera_processing_node
+[2.908s] [100%] [32m[1mLinking CXX executable tgt_pos_update_node[0m
+[3.002s] [100%] Built target tgt_pos_update_node

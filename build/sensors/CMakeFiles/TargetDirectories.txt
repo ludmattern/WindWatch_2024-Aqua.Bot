@@ -1,0 +1,12 @@
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/sensors_uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/sensor_fusion_node.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/camera_processing_node.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/tgt_pos_update_node.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/test.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/edit_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/rebuild_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/list_install_components.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/install.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/install/local.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/sensors/CMakeFiles/install/strip.dir

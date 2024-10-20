@@ -1,6 +1,12 @@
 #ifndef NAVIGATION_NODE_HPP
 #define NAVIGATION_NODE_HPP
 
-// Navigation node declarations
+#include <rclcpp/rclcpp.hpp>
+
+class NavigationNode : public rclcpp::Node
+{
+public:
+    NavigationNode();
+};
 
 #endif // NAVIGATION_NODE_HPP

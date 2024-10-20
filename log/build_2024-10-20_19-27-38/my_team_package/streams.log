@@ -1,0 +1,22 @@
+[0.032s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package -- -j9 -l9
+[0.076s] [100%] Built target my_team_node
+[0.093s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package -- -j9 -l9
+[0.140s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package
+[0.150s] -- Install configuration: ""
+[0.150s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/my_team_package/my_team_node
+[0.150s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/my_team_package
+[0.150s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/my_team_package
+[0.151s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/ament_prefix_path.sh
+[0.163s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/ament_prefix_path.dsv
+[0.163s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/path.sh
+[0.164s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/path.dsv
+[0.164s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.bash
+[0.164s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.sh
+[0.164s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.zsh
+[0.165s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.dsv
+[0.165s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.dsv
+[0.165s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/my_team_package
+[0.165s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/cmake/my_team_packageConfig.cmake
+[0.165s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/cmake/my_team_packageConfig-version.cmake
+[0.166s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.xml
+[0.166s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package

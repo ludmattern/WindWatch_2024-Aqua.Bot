@@ -1,0 +1,16 @@
+[35m[1mConsolidate compiler generated dependencies of target target_manager_node[0m
+[35m[1mConsolidate compiler generated dependencies of target mission_coordinator_node[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/target_manager_node.dir/src/target_manager_node.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/mission_coordinator_node.dir/src/mission_coordinator_node.cpp.o[0m
+[ 75%] [32m[1mLinking CXX executable target_manager_node[0m
+[100%] [32m[1mLinking CXX executable mission_coordinator_node[0m
+[100%] Built target mission_coordinator_node
+[100%] Built target target_manager_node
+-- Install configuration: ""
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/target_manager_node
+-- Set runtime path of "/home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/target_manager_node" to ""
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/mission_coordinator_node
+-- Set runtime path of "/home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/mission_coordinator_node" to ""
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch/mission.launch.py
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch/mission_manager_launch.py

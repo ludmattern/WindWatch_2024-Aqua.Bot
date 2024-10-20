@@ -1,0 +1,32 @@
+[0.034s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/sensors -- -j9 -l9
+[0.083s] [35m[1mConsolidate compiler generated dependencies of target tgt_pos_update_node[0m
+[0.087s] [35m[1mConsolidate compiler generated dependencies of target sensor_fusion_node[0m
+[0.091s] [35m[1mConsolidate compiler generated dependencies of target camera_processing_node[0m
+[0.101s] [ 33%] Built target sensor_fusion_node
+[0.107s] [ 66%] Built target tgt_pos_update_node
+[0.113s] [100%] Built target camera_processing_node
+[0.143s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/sensors -- -j9 -l9
+[0.196s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/sensors
+[0.214s] -- Install configuration: ""
+[0.215s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/sensor_fusion_node
+[0.218s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/camera_processing_node
+[0.223s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/sensors/tgt_pos_update_node
+[0.223s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/launch
+[0.223s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/launch/sensors_launch.py
+[0.223s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/config
+[0.223s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/sensors
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/sensors
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/environment/ament_prefix_path.sh
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/environment/ament_prefix_path.dsv
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/environment/path.sh
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/environment/path.dsv
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/local_setup.bash
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/local_setup.sh
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/local_setup.zsh
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/local_setup.dsv
+[0.225s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.dsv
+[0.227s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/sensors
+[0.227s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/cmake/sensorsConfig.cmake
+[0.227s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/cmake/sensorsConfig-version.cmake
+[0.227s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.xml
+[0.269s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/sensors

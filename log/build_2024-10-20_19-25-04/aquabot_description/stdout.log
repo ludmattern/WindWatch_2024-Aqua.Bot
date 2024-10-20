@@ -1,0 +1,26 @@
+-- Install configuration: ""
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/environment/resource_paths.dsv
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/environment/resource_paths.sh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/models
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/models/aquabot_blue_boat
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/models/aquabot_blue_boat/model.config
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/models/aquabot_blue_boat/model.sdf
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/models/aquabot_blue_boat/mesh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/models/aquabot_blue_boat/mesh/blue_boat.dae
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/urdf
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/urdf/aquabot.urdf
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/aquabot_description
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/aquabot_description
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/environment/ament_prefix_path.sh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/environment/ament_prefix_path.dsv
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/environment/path.sh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/environment/path.dsv
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/local_setup.bash
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/local_setup.sh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/local_setup.zsh
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/local_setup.dsv
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.dsv
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/aquabot_description
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/cmake/aquabot_descriptionConfig.cmake
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/cmake/aquabot_descriptionConfig-version.cmake
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.xml

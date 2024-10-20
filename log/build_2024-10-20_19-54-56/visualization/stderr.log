@@ -1,0 +1,7 @@
+[01m[K/home/newman/vrx_ws/src/mission_windwatch/src/visualization/src/visualization_node.cpp:2:10:[m[K [01;31m[Kfatal error: [m[Kvisualization/visualization_node.hpp: No such file or directory
+    2 | #include [01;31m[K"visualization/visualization_node.hpp"[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+gmake[2]: *** [CMakeFiles/visualization_node.dir/build.make:76: CMakeFiles/visualization_node.dir/src/visualization_node.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/visualization_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

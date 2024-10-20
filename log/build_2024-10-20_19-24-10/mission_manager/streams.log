@@ -1,0 +1,20 @@
+[0.025s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager -- -j9 -l9
+[0.063s] [35m[1mConsolidate compiler generated dependencies of target target_manager_node[0m
+[0.064s] [35m[1mConsolidate compiler generated dependencies of target mission_coordinator_node[0m
+[0.075s] [ 50%] Built target mission_coordinator_node
+[0.083s] [100%] Built target target_manager_node
+[0.099s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager -- -j9 -l9
+[0.142s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager
+[0.144s] -- Install configuration: ""
+[0.144s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/target_manager_node
+[0.145s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/mission_coordinator_node
+[0.145s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch
+[0.145s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch/mission.launch.py
+[0.145s] -- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch/mission_manager_launch.py
+[0.145s] [31mCMake Error at cmake_install.cmake:86 (file):
+[0.146s]   file INSTALL cannot find
+[0.146s]   "/home/newman/vrx_ws/src/mission_windwatch/src/mission_manager/config": No
+[0.146s]   such file or directory.
+[0.146s] 
+[0.146s] [0m
+[0.161s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager' returned '1': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager

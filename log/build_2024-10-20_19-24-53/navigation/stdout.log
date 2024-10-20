@@ -1,0 +1,23 @@
+[ 50%] Built target obstacle_avoidance_node
+[100%] Built target navigation_node
+-- Install configuration: ""
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/navigation/navigation_node
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/navigation/obstacle_avoidance_node
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/launch
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/launch/navigation_launch.py
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/config
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/navigation
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/navigation
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/environment/ament_prefix_path.sh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/environment/path.sh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/environment/path.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/local_setup.bash
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/local_setup.sh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/local_setup.zsh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/local_setup.dsv
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/navigation
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/cmake/navigationConfig.cmake
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/cmake/navigationConfig-version.cmake
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.xml

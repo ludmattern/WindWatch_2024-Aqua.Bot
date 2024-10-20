@@ -1,0 +1,9 @@
+[0.034s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo -- -j9 -l9
+[0.092s] Built target ament_cmake_python_copy_vrx_gazebo
+[0.343s] running egg_info
+[0.343s] writing vrx_gazebo.egg-info/PKG-INFO
+[0.343s] writing dependency_links to vrx_gazebo.egg-info/dependency_links.txt
+[0.343s] writing top-level names to vrx_gazebo.egg-info/top_level.txt
+[0.346s] reading manifest file 'vrx_gazebo.egg-info/SOURCES.txt'
+[0.346s] writing manifest file 'vrx_gazebo.egg-info/SOURCES.txt'
+[0.377s] Built target ament_cmake_python_build_vrx_gazebo_egg

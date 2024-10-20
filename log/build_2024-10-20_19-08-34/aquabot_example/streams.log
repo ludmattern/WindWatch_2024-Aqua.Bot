@@ -1,0 +1,33 @@
+[0.019s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.371s] -- The C compiler identification is GNU 11.4.0
+[0.647s] -- The CXX compiler identification is GNU 11.4.0
+[0.677s] -- Detecting C compiler ABI info
+[0.881s] -- Detecting C compiler ABI info - done
+[0.889s] -- Check for working C compiler: /usr/bin/cc - skipped
+[3.537s] -- Detecting C compile features
+[3.564s] -- Detecting C compile features - done
+[3.580s] -- Detecting CXX compiler ABI info
+[3.685s] -- Detecting CXX compiler ABI info - done
+[3.690s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.690s] -- Detecting CXX compile features
+[3.694s] -- Detecting CXX compile features - done
+[3.717s] -- Configuring incomplete, errors occurred!
+[3.717s] See also "/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example/CMakeFiles/CMakeOutput.log".
+[3.717s] [31mCMake Error at CMakeLists.txt:12 (find_package):
+[3.718s]   By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project
+[3.718s]   has asked CMake to find a package configuration file provided by
+[3.718s]   "ament_cmake", but CMake did not find one.
+[3.718s] 
+[3.718s]   Could not find a package configuration file provided by "ament_cmake" with
+[3.718s]   any of the following names:
+[3.718s] 
+[3.718s]     ament_cmakeConfig.cmake
+[3.718s]     ament_cmake-config.cmake
+[3.718s] 
+[3.718s]   Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set
+[3.718s]   "ament_cmake_DIR" to a directory containing one of the above files.  If
+[3.718s]   "ament_cmake" provides a separate development package or SDK, be sure it
+[3.718s]   has been installed.
+[3.718s] 
+[3.718s] [0m
+[3.735s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example' returned '1': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install

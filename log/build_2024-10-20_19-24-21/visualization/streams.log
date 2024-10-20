@@ -1,0 +1,28 @@
+[0.037s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/visualization -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.054s] -- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.208s] -- Found rclcpp: 16.0.10 (/opt/ros/humble/share/rclcpp/cmake)
+[0.237s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.237s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.242s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.250s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.264s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.290s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.291s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.368s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.407s] -- Found sensor_msgs: 4.2.4 (/opt/ros/humble/share/sensor_msgs/cmake)
+[0.430s] -- Found visualization_msgs: 4.2.4 (/opt/ros/humble/share/visualization_msgs/cmake)
+[0.498s] -- Configuring done
+[0.499s] [31mCMake Error at CMakeLists.txt:11 (add_executable):
+[0.499s]   Cannot find source file:
+[0.499s] 
+[0.499s]     src/visualization_node.cpp
+[0.499s] 
+[0.499s]   Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm .h
+[0.499s]   .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .hip .ispc
+[0.499s] 
+[0.499s] [0m
+[0.500s] [31mCMake Error at CMakeLists.txt:11 (add_executable):
+[0.500s]   No SOURCES given to target: visualization_node
+[0.500s] 
+[0.500s] [0m
+[0.500s] [0mCMake Generate step failed.  Build files cannot be regenerated correctly.[0m

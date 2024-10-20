@@ -1,0 +1,33 @@
+[0.018s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_ros -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.369s] -- The C compiler identification is GNU 11.4.0
+[0.648s] -- The CXX compiler identification is GNU 11.4.0
+[0.678s] -- Detecting C compiler ABI info
+[0.885s] -- Detecting C compiler ABI info - done
+[0.890s] -- Check for working C compiler: /usr/bin/cc - skipped
+[3.539s] -- Detecting C compile features
+[3.565s] -- Detecting C compile features - done
+[3.581s] -- Detecting CXX compiler ABI info
+[3.690s] -- Detecting CXX compiler ABI info - done
+[3.698s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.698s] -- Detecting CXX compile features
+[3.698s] -- Detecting CXX compile features - done
+[3.733s] -- Configuring incomplete, errors occurred!
+[3.733s] See also "/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros/CMakeFiles/CMakeOutput.log".
+[3.733s] [31mCMake Error at CMakeLists.txt:5 (find_package):
+[3.733s]   By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project
+[3.733s]   has asked CMake to find a package configuration file provided by
+[3.733s]   "ament_cmake", but CMake did not find one.
+[3.733s] 
+[3.733s]   Could not find a package configuration file provided by "ament_cmake" with
+[3.733s]   any of the following names:
+[3.733s] 
+[3.733s]     ament_cmakeConfig.cmake
+[3.733s]     ament_cmake-config.cmake
+[3.733s] 
+[3.734s]   Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set
+[3.734s]   "ament_cmake_DIR" to a directory containing one of the above files.  If
+[3.734s]   "ament_cmake" provides a separate development package or SDK, be sure it
+[3.734s]   has been installed.
+[3.734s] 
+[3.734s] [0m
+[3.739s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros' returned '1': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_ros -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install

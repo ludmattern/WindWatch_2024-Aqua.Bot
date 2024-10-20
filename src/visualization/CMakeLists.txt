@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 project(visualization)
 
+# Inclure le répertoire des en-têtes
+include_directories(include)
+
 # Find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)

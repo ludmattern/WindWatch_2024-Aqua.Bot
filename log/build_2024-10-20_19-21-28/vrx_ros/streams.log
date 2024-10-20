@@ -1,0 +1,7 @@
+[0.027s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros -- -j9 -l9
+[0.078s] [ 25%] [32mBuilding CXX object CMakeFiles/optical_frame_publisher.dir/src/optical_frame_publisher.cc.o[0m
+[0.085s] [ 50%] [32mBuilding CXX object CMakeFiles/pose_tf_broadcaster.dir/src/pose_tf_broadcaster.cc.o[0m
+[8.031s] [ 75%] [32m[1mLinking CXX executable pose_tf_broadcaster[0m
+[8.354s] [ 75%] Built target pose_tf_broadcaster
+[10.621s] [100%] [32m[1mLinking CXX executable optical_frame_publisher[0m
+[11.062s] [100%] Built target optical_frame_publisher

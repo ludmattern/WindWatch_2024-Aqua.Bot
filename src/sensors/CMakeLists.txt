@@ -8,6 +8,9 @@ find_package(sensor_msgs REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(OpenCV REQUIRED)
 
+# Inclure le répertoire des en-têtes
+include_directories(include)
+
 # Add executables
 add_executable(sensor_fusion_node src/sensor_fusion_node.cpp)
 add_executable(camera_processing_node src/camera_processing_node.cpp)

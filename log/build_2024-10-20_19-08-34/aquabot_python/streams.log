@@ -1,0 +1,33 @@
+[0.020s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_python -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.371s] -- The C compiler identification is GNU 11.4.0
+[0.646s] -- The CXX compiler identification is GNU 11.4.0
+[0.676s] -- Detecting C compiler ABI info
+[0.888s] -- Detecting C compiler ABI info - done
+[0.891s] -- Check for working C compiler: /usr/bin/cc - skipped
+[3.537s] -- Detecting C compile features
+[3.563s] -- Detecting C compile features - done
+[3.581s] -- Detecting CXX compiler ABI info
+[3.681s] -- Detecting CXX compiler ABI info - done
+[3.692s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.692s] -- Detecting CXX compile features
+[3.692s] -- Detecting CXX compile features - done
+[3.710s] -- Configuring incomplete, errors occurred!
+[3.710s] See also "/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python/CMakeFiles/CMakeOutput.log".
+[3.719s] [31mCMake Error at CMakeLists.txt:3 (find_package):
+[3.719s]   By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project
+[3.720s]   has asked CMake to find a package configuration file provided by
+[3.720s]   "ament_cmake", but CMake did not find one.
+[3.720s] 
+[3.720s]   Could not find a package configuration file provided by "ament_cmake" with
+[3.720s]   any of the following names:
+[3.720s] 
+[3.720s]     ament_cmakeConfig.cmake
+[3.720s]     ament_cmake-config.cmake
+[3.720s] 
+[3.720s]   Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set
+[3.720s]   "ament_cmake_DIR" to a directory containing one of the above files.  If
+[3.721s]   "ament_cmake" provides a separate development package or SDK, be sure it
+[3.721s]   has been installed.
+[3.721s] 
+[3.721s] [0m
+[3.732s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python' returned '1': /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_python -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install

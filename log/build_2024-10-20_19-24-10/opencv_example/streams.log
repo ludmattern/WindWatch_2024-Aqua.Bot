@@ -1,0 +1,10 @@
+[0.030s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/opencv_example -- -j9 -l9
+[0.099s] [  0%] Built target ament_cmake_python_copy_opencv_example
+[0.103s] [100%] Built target minimal_opencv_ros2_node
+[0.329s] running egg_info
+[0.329s] writing opencv_example.egg-info/PKG-INFO
+[0.329s] writing dependency_links to opencv_example.egg-info/dependency_links.txt
+[0.329s] writing top-level names to opencv_example.egg-info/top_level.txt
+[0.330s] reading manifest file 'opencv_example.egg-info/SOURCES.txt'
+[0.331s] writing manifest file 'opencv_example.egg-info/SOURCES.txt'
+[0.356s] [100%] Built target ament_cmake_python_build_opencv_example_egg

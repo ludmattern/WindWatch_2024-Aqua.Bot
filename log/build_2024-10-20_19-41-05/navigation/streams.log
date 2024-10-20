@@ -1,0 +1,20 @@
+[0.033s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/navigation -- -j9 -l9
+[0.075s] [35m[1mConsolidate compiler generated dependencies of target navigation_node[0m
+[0.077s] [35m[1mConsolidate compiler generated dependencies of target obstacle_avoidance_node[0m
+[0.087s] [ 25%] [32mBuilding CXX object CMakeFiles/navigation_node.dir/src/navigation_node.cpp.o[0m
+[0.107s] [ 50%] [32mBuilding CXX object CMakeFiles/obstacle_avoidance_node.dir/src/obstacle_avoidance_node.cpp.o[0m
+[0.109s] [01m[K/home/newman/vrx_ws/src/mission_windwatch/src/navigation/src/navigation_node.cpp:2:10:[m[K [01;31m[Kfatal error: [m[Knavigation/navigation_node.hpp: No such file or directory
+[0.109s]     2 | #include [01;31m[K"navigation/navigation_node.hpp"[m[K
+[0.109s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.109s] compilation terminated.
+[0.110s] gmake[2]: *** [CMakeFiles/navigation_node.dir/build.make:76: CMakeFiles/navigation_node.dir/src/navigation_node.cpp.o] Error 1
+[0.110s] gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/navigation_node.dir/all] Error 2
+[0.110s] gmake[1]: *** Waiting for unfinished jobs....
+[0.113s] [01m[K/home/newman/vrx_ws/src/mission_windwatch/src/navigation/src/obstacle_avoidance_node.cpp:2:10:[m[K [01;31m[Kfatal error: [m[Knavigation/obstacle_avoidance_node.hpp: No such file or directory
+[0.113s]     2 | #include [01;31m[K"navigation/obstacle_avoidance_node.hpp"[m[K
+[0.114s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.114s] compilation terminated.
+[0.115s] gmake[2]: *** [CMakeFiles/obstacle_avoidance_node.dir/build.make:76: CMakeFiles/obstacle_avoidance_node.dir/src/obstacle_avoidance_node.cpp.o] Error 1
+[0.115s] gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/obstacle_avoidance_node.dir/all] Error 2
+[0.115s] gmake: *** [Makefile:146: all] Error 2
+[0.129s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/navigation -- -j9 -l9

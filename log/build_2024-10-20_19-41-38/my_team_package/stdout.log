@@ -1,0 +1,18 @@
+[100%] Built target my_team_node
+-- Install configuration: ""
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/my_team_package/my_team_node
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/my_team_package
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/my_team_package
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/ament_prefix_path.sh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/path.sh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/path.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.bash
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.sh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.zsh
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.dsv
+-- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.dsv
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/my_team_package
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/cmake/my_team_packageConfig.cmake
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/cmake/my_team_packageConfig-version.cmake
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.xml

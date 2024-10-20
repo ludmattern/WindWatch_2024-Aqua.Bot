@@ -1,0 +1,6 @@
+[31mCMake Error at cmake_install.cmake:86 (file):
+  file INSTALL cannot find
+  "/home/newman/vrx_ws/src/mission_windwatch/src/mission_manager/config": No
+  such file or directory.
+
+[0m

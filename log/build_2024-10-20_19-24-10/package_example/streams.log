@@ -1,0 +1,10 @@
+[0.045s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/package_example -- -j9 -l9
+[0.120s] [100%] Built target example_node_cpp
+[0.133s] [100%] Built target ament_cmake_python_copy_package_example
+[0.313s] running egg_info
+[0.314s] writing package_example.egg-info/PKG-INFO
+[0.314s] writing dependency_links to package_example.egg-info/dependency_links.txt
+[0.315s] writing top-level names to package_example.egg-info/top_level.txt
+[0.317s] reading manifest file 'package_example.egg-info/SOURCES.txt'
+[0.317s] writing manifest file 'package_example.egg-info/SOURCES.txt'
+[0.345s] [100%] Built target ament_cmake_python_build_package_example_egg

@@ -8,6 +8,9 @@ find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
+# Inclure le répertoire des en-têtes
+include_directories(include)
+
 # Add executables
 add_executable(navigation_node src/navigation_node.cpp)
 add_executable(obstacle_avoidance_node src/obstacle_avoidance_node.cpp)

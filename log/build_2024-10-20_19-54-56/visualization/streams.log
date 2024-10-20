@@ -1,0 +1,11 @@
+[0.039s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/visualization -- -j9 -l9
+[0.101s] [35m[1mConsolidate compiler generated dependencies of target visualization_node[0m
+[0.126s] [ 50%] [32mBuilding CXX object CMakeFiles/visualization_node.dir/src/visualization_node.cpp.o[0m
+[0.161s] [01m[K/home/newman/vrx_ws/src/mission_windwatch/src/visualization/src/visualization_node.cpp:2:10:[m[K [01;31m[Kfatal error: [m[Kvisualization/visualization_node.hpp: No such file or directory
+[0.162s]     2 | #include [01;31m[K"visualization/visualization_node.hpp"[m[K
+[0.162s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.162s] compilation terminated.
+[0.162s] gmake[2]: *** [CMakeFiles/visualization_node.dir/build.make:76: CMakeFiles/visualization_node.dir/src/visualization_node.cpp.o] Error 1
+[0.162s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/visualization_node.dir/all] Error 2
+[0.162s] gmake: *** [Makefile:146: all] Error 2
+[0.183s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/visualization -- -j9 -l9

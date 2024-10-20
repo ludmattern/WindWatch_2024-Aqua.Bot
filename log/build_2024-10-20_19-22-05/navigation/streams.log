@@ -1,0 +1,18 @@
+[0.035s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/navigation -- -j9 -l9
+[0.086s] [ 25%] [32mBuilding CXX object CMakeFiles/navigation_node.dir/src/navigation_node.cpp.o[0m
+[0.116s] [ 50%] [32mBuilding CXX object CMakeFiles/obstacle_avoidance_node.dir/src/obstacle_avoidance_node.cpp.o[0m
+[0.119s] [ 75%] [32m[1mLinking CXX executable navigation_node[0m
+[0.132s] [100%] [32m[1mLinking CXX executable obstacle_avoidance_node[0m
+[0.187s] /usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o: in function `_start':
+[0.188s] (.text+0x1b): undefined reference to `main'
+[0.194s] collect2: error: ld returned 1 exit status
+[0.195s] gmake[2]: *** [CMakeFiles/navigation_node.dir/build.make:175: navigation_node] Error 1
+[0.195s] gmake[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/navigation_node.dir/all] Error 2
+[0.195s] gmake[1]: *** Waiting for unfinished jobs....
+[0.195s] /usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o: in function `_start':
+[0.195s] (.text+0x1b): undefined reference to `main'
+[0.196s] collect2: error: ld returned 1 exit status
+[0.197s] gmake[2]: *** [CMakeFiles/obstacle_avoidance_node.dir/build.make:175: obstacle_avoidance_node] Error 1
+[0.197s] gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/obstacle_avoidance_node.dir/all] Error 2
+[0.197s] gmake: *** [Makefile:146: all] Error 2
+[0.226s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation' returned '2': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/navigation -- -j9 -l9

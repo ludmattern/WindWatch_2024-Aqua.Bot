@@ -1,0 +1,80 @@
+[0.049s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz': AMENT_PREFIX_PATH=/home/newman/vrx_ws/src/mission_windwatch/install:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/newman/vrx_ws/src/mission_windwatch/install:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz -- -j9 -l9
+[0.118s] [  2%] [32mBuilding CXX object CMakeFiles/Waves.dir/src/Wavefield.cc.o[0m
+[0.122s] [  4%] [32mBuilding CXX object CMakeFiles/ScoringPlugin.dir/src/ScoringPlugin.cc.o[0m
+[0.136s] [  4%] Built target ament_cmake_python_copy_vrx_gz
+[0.336s] running egg_info
+[0.336s] creating vrx_gz.egg-info
+[0.336s] writing vrx_gz.egg-info/PKG-INFO
+[0.337s] writing dependency_links to vrx_gz.egg-info/dependency_links.txt
+[0.337s] writing top-level names to vrx_gz.egg-info/top_level.txt
+[0.337s] writing manifest file 'vrx_gz.egg-info/SOURCES.txt'
+[0.339s] reading manifest file 'vrx_gz.egg-info/SOURCES.txt'
+[0.339s] writing manifest file 'vrx_gz.egg-info/SOURCES.txt'
+[0.368s] [  4%] Built target ament_cmake_python_build_vrx_gz_egg
+[3.498s] [  6%] [32m[1mLinking CXX shared library libWaves.so[0m
+[3.756s] [  6%] Built target Waves
+[3.771s] [  8%] [32mBuilding CXX object CMakeFiles/PolyhedraBuoyancyDrag.dir/src/PolyhedronVolume.cc.o[0m
+[3.771s] [ 10%] [32mBuilding CXX object CMakeFiles/PolyhedraBuoyancyDrag.dir/src/PolyhedraBuoyancyDrag.cc.o[0m
+[3.772s] [ 12%] [32mBuilding CXX object CMakeFiles/PolyhedraBuoyancyDrag.dir/src/ShapeVolume.cc.o[0m
+[3.821s] [ 14%] [32m[1mLinking CXX shared library libScoringPlugin.so[0m
+[4.053s] [ 14%] Built target ScoringPlugin
+[4.070s] [ 18%] [32mBuilding CXX object CMakeFiles/StationkeepingScoringPlugin.dir/src/StationkeepingScoringPlugin.cc.o[0m
+[4.070s] [ 18%] [32mBuilding CXX object CMakeFiles/WayfindingScoringPlugin.dir/src/WayfindingScoringPlugin.cc.o[0m
+[4.070s] [ 20%] [32mBuilding CXX object CMakeFiles/AcousticPerceptionScoringPlugin.dir/src/AcousticPerceptionScoringPlugin.cc.o[0m
+[4.076s] [ 22%] [32mBuilding CXX object CMakeFiles/AcousticTrackingScoringPlugin.dir/src/AcousticTrackingScoringPlugin.cc.o[0m
+[4.076s] [ 25%] [32mBuilding CXX object CMakeFiles/BallShooterPlugin.dir/src/BallShooterPlugin.cc.o[0m
+[4.078s] [ 27%] [32mBuilding CXX object CMakeFiles/AcousticPingerPlugin.dir/src/AcousticPingerPlugin.cc.o[0m
+[4.412s] [ 29%] [32mBuilding CXX object CMakeFiles/LightBuoyPlugin.dir/src/LightBuoyPlugin.cc.o[0m
+[5.541s] [ 31%] [32mBuilding CXX object CMakeFiles/AcousticTrackingScoringPlugin.dir/src/WaypointMarkers.cc.o[0m
+[8.987s] [ 33%] [32m[1mLinking CXX shared library libLightBuoyPlugin.so[0m
+[9.398s] [ 33%] Built target LightBuoyPlugin
+[9.433s] [ 35%] [32mBuilding CXX object CMakeFiles/NavigationScoringPlugin.dir/src/NavigationScoringPlugin.cc.o[0m
+[10.194s] [ 37%] [32m[1mLinking CXX shared library libAcousticPingerPlugin.so[0m
+[10.786s] [ 37%] Built target AcousticPingerPlugin
+[10.795s] [ 39%] [32mBuilding CXX object CMakeFiles/StationkeepingScoringPlugin.dir/src/WaypointMarkers.cc.o[0m
+[10.928s] [ 41%] [32mBuilding CXX object CMakeFiles/AcousticPerceptionScoringPlugin.dir/src/WaypointMarkers.cc.o[0m
+[11.221s] [ 43%] [32mBuilding CXX object CMakeFiles/WayfindingScoringPlugin.dir/src/WaypointMarkers.cc.o[0m
+[11.326s] [ 45%] [32mBuilding CXX object CMakeFiles/GymkhanaScoringPlugin.dir/src/GymkhanaScoringPlugin.cc.o[0m
+[11.391s] [ 47%] [32m[1mLinking CXX shared library libAcousticTrackingScoringPlugin.so[0m
+[11.478s] [ 50%] [32m[1mLinking CXX shared library libPolyhedraBuoyancyDrag.so[0m
+[11.825s] [ 50%] Built target AcousticTrackingScoringPlugin
+[11.851s] [ 52%] [32mBuilding CXX object CMakeFiles/PerceptionScoringPlugin.dir/src/PerceptionScoringPlugin.cc.o[0m
+[11.865s] [ 54%] [32mBuilding CXX object CMakeFiles/PlacardPlugin.dir/src/PlacardPlugin.cc.o[0m
+[11.957s] [ 54%] Built target PolyhedraBuoyancyDrag
+[11.984s] [ 56%] [32mBuilding CXX object CMakeFiles/PublisherPlugin.dir/src/PublisherPlugin.cc.o[0m
+[12.022s] [ 58%] [32m[1mLinking CXX shared library libBallShooterPlugin.so[0m
+[12.355s] [ 58%] Built target BallShooterPlugin
+[12.368s] [ 60%] [32mBuilding CXX object CMakeFiles/ScanDockScoringPlugin.dir/src/ScanDockScoringPlugin.cc.o[0m
+[15.538s] [ 62%] [32m[1mLinking CXX shared library libPublisherPlugin.so[0m
+[15.791s] [ 62%] Built target PublisherPlugin
+[15.828s] [ 64%] [32mBuilding CXX object CMakeFiles/SimpleHydrodynamics.dir/src/SimpleHydrodynamics.cc.o[0m
+[15.962s] [ 66%] [32m[1mLinking CXX shared library libStationkeepingScoringPlugin.so[0m
+[16.128s] [ 68%] [32m[1mLinking CXX shared library libAcousticPerceptionScoringPlugin.so[0m
+[16.400s] [ 70%] [32m[1mLinking CXX shared library libGymkhanaScoringPlugin.so[0m
+[16.541s] [ 70%] Built target StationkeepingScoringPlugin
+[16.571s] [ 72%] [32mBuilding CXX object CMakeFiles/Surface.dir/src/Surface.cc.o[0m
+[16.596s] [ 75%] [32m[1mLinking CXX shared library libWayfindingScoringPlugin.so[0m
+[16.711s] [ 75%] Built target AcousticPerceptionScoringPlugin
+[16.739s] [ 77%] [32mBuilding CXX object CMakeFiles/USVWind.dir/src/USVWind.cc.o[0m
+[16.799s] [ 77%] Built target GymkhanaScoringPlugin
+[16.813s] [ 79%] [32m[1mLinking CXX shared library libNavigationScoringPlugin.so[0m
+[16.813s] [ 81%] [32mBuilding CXX object CMakeFiles/WaveVisual.dir/src/WaveVisual.cc.o[0m
+[17.067s] [ 81%] Built target WayfindingScoringPlugin
+[17.087s] [ 83%] [32mBuilding CXX object CMakeFiles/WildlifeScoringPlugin.dir/src/WildlifeScoringPlugin.cc.o[0m
+[17.158s] [ 83%] Built target NavigationScoringPlugin
+[17.333s] [ 85%] [32m[1mLinking CXX shared library libPlacardPlugin.so[0m
+[17.614s] [ 85%] Built target PlacardPlugin
+[18.389s] [ 87%] [32m[1mLinking CXX shared library libPerceptionScoringPlugin.so[0m
+[18.751s] [ 87%] Built target PerceptionScoringPlugin
+[20.079s] [ 89%] [32m[1mLinking CXX shared library libScanDockScoringPlugin.so[0m
+[20.431s] [ 89%] Built target ScanDockScoringPlugin
+[20.672s] [ 91%] [32m[1mLinking CXX shared library libSimpleHydrodynamics.so[0m
+[20.833s] [ 93%] [32m[1mLinking CXX shared library libSurface.so[0m
+[20.912s] [ 93%] Built target SimpleHydrodynamics
+[21.127s] [ 93%] Built target Surface
+[22.188s] [ 95%] [32m[1mLinking CXX shared library libWildlifeScoringPlugin.so[0m
+[22.475s] [ 95%] Built target WildlifeScoringPlugin
+[22.641s] [ 97%] [32m[1mLinking CXX shared library libWaveVisual.so[0m
+[22.794s] [100%] [32m[1mLinking CXX shared library libUSVWind.so[0m
+[22.892s] [100%] Built target WaveVisual
+[23.022s] [100%] Built target USVWind

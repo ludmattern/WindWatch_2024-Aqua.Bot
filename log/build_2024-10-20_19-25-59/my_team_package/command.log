@@ -1,0 +1,4 @@
+Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package -- -j9 -l9
+Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package -- -j9 -l9
+Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package
+Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package

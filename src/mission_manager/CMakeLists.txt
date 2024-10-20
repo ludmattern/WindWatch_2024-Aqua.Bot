@@ -7,6 +7,9 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
+# Inclure le répertoire des en-têtes
+include_directories(include)
+
 # Add executables
 add_executable(target_manager_node src/target_manager_node.cpp)
 add_executable(mission_coordinator_node src/mission_coordinator_node.cpp)

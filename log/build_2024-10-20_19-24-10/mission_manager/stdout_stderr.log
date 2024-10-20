@@ -1,0 +1,16 @@
+[35m[1mConsolidate compiler generated dependencies of target target_manager_node[0m
+[35m[1mConsolidate compiler generated dependencies of target mission_coordinator_node[0m
+[ 50%] Built target mission_coordinator_node
+[100%] Built target target_manager_node
+-- Install configuration: ""
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/target_manager_node
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/mission_coordinator_node
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch/mission.launch.py
+-- Up-to-date: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch/mission_manager_launch.py
+[31mCMake Error at cmake_install.cmake:86 (file):
+  file INSTALL cannot find
+  "/home/newman/vrx_ws/src/mission_windwatch/src/mission_manager/config": No
+  such file or directory.
+
+[0m

@@ -1,6 +1,12 @@
 #ifndef OBSTACLE_AVOIDANCE_NODE_HPP
 #define OBSTACLE_AVOIDANCE_NODE_HPP
 
-// Obstacle avoidance node declarations
+#include <rclcpp/rclcpp.hpp>
+
+class ObstacleAvoidanceNode : public rclcpp::Node
+{
+public:
+    ObstacleAvoidanceNode();
+};
 
 #endif // OBSTACLE_AVOIDANCE_NODE_HPP

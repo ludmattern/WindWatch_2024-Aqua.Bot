@@ -1,0 +1,26 @@
+[0.030s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager -- -j9 -l9
+[0.088s] [35m[1mConsolidate compiler generated dependencies of target target_manager_node[0m
+[0.088s] [35m[1mConsolidate compiler generated dependencies of target mission_coordinator_node[0m
+[0.091s] [ 25%] [32mBuilding CXX object CMakeFiles/target_manager_node.dir/src/target_manager_node.cpp.o[0m
+[0.107s] [ 50%] [32mBuilding CXX object CMakeFiles/mission_coordinator_node.dir/src/mission_coordinator_node.cpp.o[0m
+[0.126s] [ 75%] [32m[1mLinking CXX executable target_manager_node[0m
+[0.129s] [100%] [32m[1mLinking CXX executable mission_coordinator_node[0m
+[0.205s] [100%] Built target mission_coordinator_node
+[0.215s] [100%] Built target target_manager_node
+[0.243s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager -- -j9 -l9
+[0.289s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager
+[0.346s] -- Install configuration: ""
+[0.346s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/target_manager_node
+[0.346s] -- Set runtime path of "/home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/target_manager_node" to ""
+[0.346s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/mission_coordinator_node
+[0.346s] -- Set runtime path of "/home/newman/vrx_ws/src/mission_windwatch/install/lib/mission_manager/mission_coordinator_node" to ""
+[0.346s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch
+[0.346s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch/mission.launch.py
+[0.346s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/launch/mission_manager_launch.py
+[0.350s] [31mCMake Error at cmake_install.cmake:86 (file):
+[0.350s]   file INSTALL cannot find
+[0.350s]   "/home/newman/vrx_ws/src/mission_windwatch/src/mission_manager/config": No
+[0.350s]   such file or directory.
+[0.350s] 
+[0.351s] [0m
+[0.351s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager' returned '1': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager

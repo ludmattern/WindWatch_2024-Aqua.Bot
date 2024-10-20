@@ -1,0 +1,16 @@
+/home/newman/vrx_ws/src/mission_windwatch/install/lib/my_team_package/my_team_node
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/my_team_package
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/my_team_package
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/ament_prefix_path.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/ament_prefix_path.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/path.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/environment/path.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.bash
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.zsh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/local_setup.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/my_team_package
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/cmake/my_team_packageConfig.cmake
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/cmake/my_team_packageConfig-version.cmake
+/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.xml

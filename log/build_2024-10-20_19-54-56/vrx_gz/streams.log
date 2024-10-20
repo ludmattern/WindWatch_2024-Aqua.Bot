@@ -1,0 +1,30 @@
+[0.046s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz -- -j9 -l9
+[0.119s] [  4%] Built target ScoringPlugin
+[0.132s] [  8%] Built target Waves
+[0.132s] [  8%] Built target ament_cmake_python_copy_vrx_gz
+[0.190s] [ 16%] Built target PolyhedraBuoyancyDrag
+[0.190s] [ 22%] Built target AcousticPerceptionScoringPlugin
+[0.199s] [ 27%] Built target AcousticPingerPlugin
+[0.199s] [ 31%] Built target BallShooterPlugin
+[0.199s] [ 35%] Built target LightBuoyPlugin
+[0.199s] [ 41%] Built target WayfindingScoringPlugin
+[0.199s] [ 50%] Built target AcousticTrackingScoringPlugin
+[0.199s] [ 54%] Built target StationkeepingScoringPlugin
+[0.208s] [ 58%] Built target NavigationScoringPlugin
+[0.251s] [ 64%] Built target PublisherPlugin
+[0.261s] [ 66%] Built target PerceptionScoringPlugin
+[0.262s] [ 70%] Built target ScanDockScoringPlugin
+[0.262s] [ 75%] Built target GymkhanaScoringPlugin
+[0.262s] [ 79%] Built target Surface
+[0.262s] [ 83%] Built target PlacardPlugin
+[0.262s] [ 87%] Built target WaveVisual
+[0.267s] [ 91%] Built target SimpleHydrodynamics
+[0.267s] [ 95%] Built target USVWind
+[0.281s] [100%] Built target WildlifeScoringPlugin
+[0.470s] running egg_info
+[0.471s] writing vrx_gz.egg-info/PKG-INFO
+[0.472s] writing dependency_links to vrx_gz.egg-info/dependency_links.txt
+[0.473s] writing top-level names to vrx_gz.egg-info/top_level.txt
+[0.476s] reading manifest file 'vrx_gz.egg-info/SOURCES.txt'
+[0.477s] writing manifest file 'vrx_gz.egg-info/SOURCES.txt'
+[0.514s] [100%] Built target ament_cmake_python_build_vrx_gz_egg
