@@ -8,7 +8,7 @@ This **README** provides an overview of the project structure, the different **R
 
 To get started, you can add the base package to your project using the following commands:
 
-```bash
+```zsh
 # Navigate to the vrx_ws directory
 cd ~/mission_windwatch
 
