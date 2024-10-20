@@ -4,6 +4,7 @@
 CMakeFiles/target_manager_node.dir/src/target_manager_node.cpp.o
  /home/newman/vrx_ws/src/mission_windwatch/src/mission_manager/src/target_manager_node.cpp
  /usr/include/stdc-predef.h
+ /home/newman/vrx_ws/src/mission_windwatch/src/mission_manager/include/mission_manager/target_manager_node.hpp
  /opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp
  /usr/include/c++/11/csignal
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h
