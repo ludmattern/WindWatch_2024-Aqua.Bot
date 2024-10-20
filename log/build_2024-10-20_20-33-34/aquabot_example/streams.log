@@ -1,0 +1,74 @@
+[0.027s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.083s] -- The C compiler identification is GNU 11.4.0
+[0.136s] -- The CXX compiler identification is GNU 11.4.0
+[0.139s] -- Detecting C compiler ABI info
+[0.200s] -- Detecting C compiler ABI info - done
+[0.206s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.206s] -- Detecting C compile features
+[0.208s] -- Detecting C compile features - done
+[0.210s] -- Detecting CXX compiler ABI info
+[0.288s] -- Detecting CXX compiler ABI info - done
+[0.293s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.293s] -- Detecting CXX compile features
+[0.298s] -- Detecting CXX compile features - done
+[0.298s] -- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.437s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.517s] -- Found rclcpp: 16.0.10 (/opt/ros/humble/share/rclcpp/cmake)
+[0.552s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.555s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.563s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.570s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.596s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.644s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[0.646s] -- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[0.717s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[0.741s] -- Found FastRTPS: /opt/ros/humble/include  
+[0.772s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.777s] -- Looking for pthread.h
+[0.842s] -- Looking for pthread.h - found
+[0.843s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.908s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[0.908s] -- Found Threads: TRUE  
+[0.951s] -- Found tf2: 0.25.8 (/opt/ros/humble/share/tf2/cmake)
+[0.971s] -- Found tf2_ros: 0.25.8 (/opt/ros/humble/share/tf2_ros/cmake)
+[1.058s] -- Found ament_lint_auto: 0.12.11 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.130s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.132s] -- Configured cppcheck include dirs: $<BUILD_INTERFACE:/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example/include>
+[1.132s] -- Configured cppcheck exclude dirs and/or files: 
+[1.132s] -- Added test 'flake8' to check Python code syntax and style conventions
+[1.132s] -- Added test 'lint_cmake' to check CMake code style
+[1.132s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[1.137s] -- Added test 'uncrustify' to check C / C++ code style
+[1.137s] -- Configured uncrustify additional arguments: 
+[1.137s] -- Added test 'xmllint' to check XML markup files
+[1.137s] -- Configuring done
+[1.151s] -- Generating done
+[1.204s] -- Build files have been written to: /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example
+[1.557s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.560s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example -- -j9 -l9
+[1.627s] [ 50%] [32mBuilding CXX object CMakeFiles/aquabot_node.dir/src/aquabot_node.cpp.o[0m
+[7.079s] [100%] [32m[1mLinking CXX executable aquabot_node[0m
+[7.262s] [100%] Built target aquabot_node
+[7.272s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example -- -j9 -l9
+[7.290s] Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example
+[7.296s] -- Install configuration: ""
+[7.296s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/lib/aquabot_example/aquabot_node
+[7.296s] -- Set runtime path of "/home/newman/vrx_ws/src/mission_windwatch/install/lib/aquabot_example/aquabot_node" to ""
+[7.297s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/launch
+[7.297s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/launch/aquabot.launch.py
+[7.297s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/aquabot_example
+[7.297s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/aquabot_example
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/environment/ament_prefix_path.sh
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/environment/ament_prefix_path.dsv
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/environment/path.sh
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/environment/path.dsv
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/local_setup.bash
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/local_setup.sh
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/local_setup.zsh
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/local_setup.dsv
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.dsv
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/aquabot_example
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/cmake/aquabot_exampleConfig.cmake
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/cmake/aquabot_exampleConfig-version.cmake
+[7.299s] -- Installing: /home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.xml
+[7.301s] Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example

@@ -1,0 +1,1262 @@
+[0.081s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--merge-install']
+[0.081s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=True, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=9, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x76df9c2381f0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x76df9c3ffd60>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x76df9c3ffd60>>)
+[0.207s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.207s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.207s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.207s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.207s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.207s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.207s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/newman/vrx_ws/src/mission_windwatch'
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.207s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.215s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.215s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.215s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.215s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['ignore', 'ignore_ament_install']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'ignore'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'ignore_ament_install'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['colcon_pkg']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'colcon_pkg'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['colcon_meta']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'colcon_meta'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['ros']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'ros'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['cmake', 'python']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'cmake'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'python'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['python_setup_py']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'python_setup_py'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.216s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extensions ['ignore', 'ignore_ament_install']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extension 'ignore'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extension 'ignore_ament_install'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extensions ['colcon_pkg']
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extension 'colcon_pkg'
+[0.217s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extensions ['colcon_meta']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extension 'colcon_meta'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extensions ['ros']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extension 'ros'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extensions ['cmake', 'python']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extension 'cmake'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extension 'python'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extensions ['python_setup_py']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot) by extension 'python_setup_py'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extensions ['ignore', 'ignore_ament_install']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extension 'ignore'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extension 'ignore_ament_install'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extensions ['colcon_pkg']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extension 'colcon_pkg'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extensions ['colcon_meta']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extension 'colcon_meta'
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extensions ['ros']
+[0.218s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_gz) by extension 'ros'
+[0.220s] DEBUG:colcon.colcon_core.package_identification:Package 'src/aquabot/aquabot_gz' with type 'ros.ament_cmake' and name 'aquabot_gz'
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extensions ['ignore', 'ignore_ament_install']
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extension 'ignore'
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extension 'ignore_ament_install'
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extensions ['colcon_pkg']
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extension 'colcon_pkg'
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extensions ['colcon_meta']
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extension 'colcon_meta'
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extensions ['ros']
+[0.220s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_python) by extension 'ros'
+[0.221s] DEBUG:colcon.colcon_core.package_identification:Package 'src/aquabot/aquabot_python' with type 'ros.ament_cmake' and name 'aquabot_python'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extensions ['ignore', 'ignore_ament_install']
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extension 'ignore'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extension 'ignore_ament_install'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extensions ['colcon_pkg']
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extension 'colcon_pkg'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extensions ['colcon_meta']
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extension 'colcon_meta'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extensions ['ros']
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extension 'ros'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extensions ['cmake', 'python']
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extension 'cmake'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extension 'python'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extensions ['python_setup_py']
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf) by extension 'python_setup_py'
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extensions ['ignore', 'ignore_ament_install']
+[0.221s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extension 'ignore'
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extension 'ignore_ament_install'
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extensions ['colcon_pkg']
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extension 'colcon_pkg'
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extensions ['colcon_meta']
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extension 'colcon_meta'
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extensions ['ros']
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot/aquabot_urdf/aquabot_description) by extension 'ros'
+[0.222s] DEBUG:colcon.colcon_core.package_identification:Package 'src/aquabot/aquabot_urdf/aquabot_description' with type 'ros.ament_cmake' and name 'aquabot_description'
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extensions ['ignore', 'ignore_ament_install']
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extension 'ignore'
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extension 'ignore_ament_install'
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extensions ['colcon_pkg']
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extension 'colcon_pkg'
+[0.222s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extensions ['colcon_meta']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extension 'colcon_meta'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extensions ['ros']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extension 'ros'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extensions ['cmake', 'python']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extension 'cmake'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extension 'python'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extensions ['python_setup_py']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor) by extension 'python_setup_py'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extensions ['ignore', 'ignore_ament_install']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extension 'ignore'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extension 'ignore_ament_install'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extensions ['colcon_pkg']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extension 'colcon_pkg'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extensions ['colcon_meta']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extension 'colcon_meta'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extensions ['ros']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extension 'ros'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extensions ['cmake', 'python']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extension 'cmake'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extension 'python'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extensions ['python_setup_py']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples) by extension 'python_setup_py'
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extensions ['ignore', 'ignore_ament_install']
+[0.223s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extension 'ignore'
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extension 'ignore_ament_install'
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extensions ['colcon_pkg']
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extension 'colcon_pkg'
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extensions ['colcon_meta']
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extension 'colcon_meta'
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extensions ['ros']
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/aquabot_example) by extension 'ros'
+[0.224s] DEBUG:colcon.colcon_core.package_identification:Package 'src/aquabot_competitor/aquabot_examples/aquabot_example' with type 'ros.ament_cmake' and name 'aquabot_example'
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extensions ['ignore', 'ignore_ament_install']
+[0.224s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extension 'ignore'
+[0.225s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extension 'ignore_ament_install'
+[0.225s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extensions ['colcon_pkg']
+[0.225s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extension 'colcon_pkg'
+[0.225s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extensions ['colcon_meta']
+[0.225s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extension 'colcon_meta'
+[0.225s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extensions ['ros']
+[0.225s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/opencv_example) by extension 'ros'
+[0.225s] DEBUG:colcon.colcon_core.package_identification:Package 'src/aquabot_competitor/aquabot_examples/opencv_example' with type 'ros.ament_cmake' and name 'opencv_example'
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extensions ['ignore', 'ignore_ament_install']
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extension 'ignore'
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extension 'ignore_ament_install'
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extensions ['colcon_pkg']
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extension 'colcon_pkg'
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extensions ['colcon_meta']
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extension 'colcon_meta'
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extensions ['ros']
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/aquabot_examples/package_example) by extension 'ros'
+[0.226s] DEBUG:colcon.colcon_core.package_identification:Package 'src/aquabot_competitor/aquabot_examples/package_example' with type 'ros.ament_cmake' and name 'package_example'
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extensions ['ignore', 'ignore_ament_install']
+[0.226s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extension 'ignore'
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extension 'ignore_ament_install'
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extensions ['colcon_pkg']
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extension 'colcon_pkg'
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extensions ['colcon_meta']
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extension 'colcon_meta'
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extensions ['ros']
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/aquabot_competitor/my_team_package) by extension 'ros'
+[0.227s] DEBUG:colcon.colcon_core.package_identification:Package 'src/aquabot_competitor/my_team_package' with type 'ros.ament_cmake' and name 'my_team_package'
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extensions ['ignore', 'ignore_ament_install']
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extension 'ignore'
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extension 'ignore_ament_install'
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extensions ['colcon_pkg']
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extension 'colcon_pkg'
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extensions ['colcon_meta']
+[0.227s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extension 'colcon_meta'
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extensions ['ros']
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/mission_manager) by extension 'ros'
+[0.228s] DEBUG:colcon.colcon_core.package_identification:Package 'src/mission_manager' with type 'ros.ament_cmake' and name 'mission_manager'
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extensions ['ignore', 'ignore_ament_install']
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extension 'ignore'
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extension 'ignore_ament_install'
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extensions ['colcon_pkg']
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extension 'colcon_pkg'
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extensions ['colcon_meta']
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extension 'colcon_meta'
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extensions ['ros']
+[0.228s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigation) by extension 'ros'
+[0.229s] DEBUG:colcon.colcon_core.package_identification:Package 'src/navigation' with type 'ros.ament_cmake' and name 'navigation'
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extensions ['ignore', 'ignore_ament_install']
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extension 'ignore'
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extension 'ignore_ament_install'
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extensions ['colcon_pkg']
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extension 'colcon_pkg'
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extensions ['colcon_meta']
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extension 'colcon_meta'
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extensions ['ros']
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(src/sensors) by extension 'ros'
+[0.230s] DEBUG:colcon.colcon_core.package_identification:Package 'src/sensors' with type 'ros.ament_cmake' and name 'sensors'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extensions ['ignore', 'ignore_ament_install']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extension 'ignore'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extension 'ignore_ament_install'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extensions ['colcon_pkg']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extension 'colcon_pkg'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extensions ['colcon_meta']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extension 'colcon_meta'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extensions ['ros']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(src/visualization) by extension 'ros'
+[0.231s] DEBUG:colcon.colcon_core.package_identification:Package 'src/visualization' with type 'ros.ament_cmake' and name 'visualization'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extensions ['ignore', 'ignore_ament_install']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extension 'ignore'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extension 'ignore_ament_install'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extensions ['colcon_pkg']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extension 'colcon_pkg'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extensions ['colcon_meta']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extension 'colcon_meta'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extensions ['ros']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extension 'ros'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extensions ['cmake', 'python']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extension 'cmake'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extension 'python'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extensions ['python_setup_py']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx) by extension 'python_setup_py'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extensions ['ignore', 'ignore_ament_install']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extension 'ignore'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extension 'ignore_ament_install'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extensions ['colcon_pkg']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extension 'colcon_pkg'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extensions ['colcon_meta']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extension 'colcon_meta'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extensions ['ros']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extension 'ros'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extensions ['cmake', 'python']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extension 'cmake'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extension 'python'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extensions ['python_setup_py']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/images) by extension 'python_setup_py'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extensions ['ignore', 'ignore_ament_install']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extension 'ignore'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extension 'ignore_ament_install'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extensions ['colcon_pkg']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extension 'colcon_pkg'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extensions ['colcon_meta']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extension 'colcon_meta'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extensions ['ros']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_gz) by extension 'ros'
+[0.233s] DEBUG:colcon.colcon_core.package_identification:Package 'src/vrx/vrx_gz' with type 'ros.ament_cmake' and name 'vrx_gz'
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extensions ['ignore', 'ignore_ament_install']
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extension 'ignore'
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extension 'ignore_ament_install'
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extensions ['colcon_pkg']
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extension 'colcon_pkg'
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extensions ['colcon_meta']
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extension 'colcon_meta'
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extensions ['ros']
+[0.233s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_ros) by extension 'ros'
+[0.234s] DEBUG:colcon.colcon_core.package_identification:Package 'src/vrx/vrx_ros' with type 'ros.ament_cmake' and name 'vrx_ros'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extensions ['ignore', 'ignore_ament_install']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extension 'ignore'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extension 'ignore_ament_install'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extensions ['colcon_pkg']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extension 'colcon_pkg'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extensions ['colcon_meta']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extension 'colcon_meta'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extensions ['ros']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extension 'ros'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extensions ['cmake', 'python']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extension 'cmake'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extension 'python'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extensions ['python_setup_py']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf) by extension 'python_setup_py'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extensions ['ignore', 'ignore_ament_install']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extension 'ignore'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extension 'ignore_ament_install'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extensions ['colcon_pkg']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extension 'colcon_pkg'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extensions ['colcon_meta']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extension 'colcon_meta'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extensions ['ros']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/vrx_gazebo) by extension 'ros'
+[0.235s] DEBUG:colcon.colcon_core.package_identification:Package 'src/vrx/vrx_urdf/vrx_gazebo' with type 'ros.ament_cmake' and name 'vrx_gazebo'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extension 'ignore_ament_install'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extensions ['colcon_pkg']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extension 'colcon_pkg'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extensions ['colcon_meta']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extension 'colcon_meta'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extensions ['ros']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_description) by extension 'ros'
+[0.237s] DEBUG:colcon.colcon_core.package_identification:Package 'src/vrx/vrx_urdf/wamv_description' with type 'ros.ament_cmake' and name 'wamv_description'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extensions ['ignore', 'ignore_ament_install']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extension 'ignore'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extension 'ignore_ament_install'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extensions ['colcon_pkg']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extension 'colcon_pkg'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extensions ['colcon_meta']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extension 'colcon_meta'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extensions ['ros']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(src/vrx/vrx_urdf/wamv_gazebo) by extension 'ros'
+[0.237s] DEBUG:colcon.colcon_core.package_identification:Package 'src/vrx/vrx_urdf/wamv_gazebo' with type 'ros.ament_cmake' and name 'wamv_gazebo'
+[0.237s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.237s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.237s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.238s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.238s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.260s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.260s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.260s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/newman/vrx_ws/src/mission_windwatch/install' in the environment variable AMENT_PREFIX_PATH doesn't contain any 'local_setup.*' files.
+[0.261s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 0 installed packages in /home/newman/vrx_ws/src/mission_windwatch/install
+[0.262s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 283 installed packages in /opt/ros/humble
+[0.263s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'cmake_args' from command line to 'None'
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'cmake_target' from command line to 'None'
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'cmake_clean_cache' from command line to 'False'
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'cmake_clean_first' from command line to 'False'
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'cmake_force_configure' from command line to 'False'
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'ament_cmake_args' from command line to 'None'
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'catkin_cmake_args' from command line to 'None'
+[0.292s] Level 5:colcon.colcon_core.verb:set package 'aquabot_example' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.292s] DEBUG:colcon.colcon_core.verb:Building package 'aquabot_example' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example', 'symlink_install': False, 'test_result_base': None}
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'cmake_args' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'cmake_target' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'cmake_clean_cache' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'cmake_clean_first' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'cmake_force_configure' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'ament_cmake_args' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'catkin_cmake_args' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'aquabot_python' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.293s] DEBUG:colcon.colcon_core.verb:Building package 'aquabot_python' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_python', 'symlink_install': False, 'test_result_base': None}
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'cmake_args' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'cmake_target' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'cmake_clean_cache' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'cmake_clean_first' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'cmake_force_configure' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'ament_cmake_args' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'catkin_cmake_args' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'mission_manager' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.293s] DEBUG:colcon.colcon_core.verb:Building package 'mission_manager' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/mission_manager', 'symlink_install': False, 'test_result_base': None}
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'cmake_args' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'cmake_target' from command line to 'None'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.293s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'cmake_clean_cache' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'cmake_clean_first' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'cmake_force_configure' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'ament_cmake_args' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'catkin_cmake_args' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'my_team_package' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.294s] DEBUG:colcon.colcon_core.verb:Building package 'my_team_package' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/my_team_package', 'symlink_install': False, 'test_result_base': None}
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'cmake_args' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'cmake_target' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'cmake_clean_cache' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'cmake_clean_first' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'cmake_force_configure' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'ament_cmake_args' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'catkin_cmake_args' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'navigation' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.294s] DEBUG:colcon.colcon_core.verb:Building package 'navigation' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/navigation', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/navigation', 'symlink_install': False, 'test_result_base': None}
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'cmake_args' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'cmake_target' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'cmake_clean_cache' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'cmake_clean_first' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'cmake_force_configure' from command line to 'False'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'ament_cmake_args' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'catkin_cmake_args' from command line to 'None'
+[0.294s] Level 5:colcon.colcon_core.verb:set package 'opencv_example' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.294s] DEBUG:colcon.colcon_core.verb:Building package 'opencv_example' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/opencv_example', 'symlink_install': False, 'test_result_base': None}
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'cmake_args' from command line to 'None'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'cmake_target' from command line to 'None'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'cmake_clean_cache' from command line to 'False'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'cmake_clean_first' from command line to 'False'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'cmake_force_configure' from command line to 'False'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'ament_cmake_args' from command line to 'None'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'catkin_cmake_args' from command line to 'None'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'package_example' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.295s] DEBUG:colcon.colcon_core.verb:Building package 'package_example' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/package_example', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/package_example', 'symlink_install': False, 'test_result_base': None}
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'cmake_args' from command line to 'None'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'cmake_target' from command line to 'None'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'cmake_clean_cache' from command line to 'False'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'cmake_clean_first' from command line to 'False'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'cmake_force_configure' from command line to 'False'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'ament_cmake_args' from command line to 'None'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'catkin_cmake_args' from command line to 'None'
+[0.295s] Level 5:colcon.colcon_core.verb:set package 'sensors' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.295s] DEBUG:colcon.colcon_core.verb:Building package 'sensors' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/sensors', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/sensors', 'symlink_install': False, 'test_result_base': None}
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'cmake_target' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'cmake_clean_cache' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'cmake_clean_first' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'cmake_force_configure' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'ament_cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'catkin_cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'visualization' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.296s] DEBUG:colcon.colcon_core.verb:Building package 'visualization' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/visualization', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/visualization', 'symlink_install': False, 'test_result_base': None}
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'cmake_target' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'cmake_clean_cache' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'cmake_clean_first' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'cmake_force_configure' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'ament_cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'catkin_cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'vrx_gazebo' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.296s] DEBUG:colcon.colcon_core.verb:Building package 'vrx_gazebo' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/vrx_gazebo', 'symlink_install': False, 'test_result_base': None}
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'cmake_target' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'cmake_clean_cache' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'cmake_clean_first' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'cmake_force_configure' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'ament_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'catkin_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_ros' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.297s] DEBUG:colcon.colcon_core.verb:Building package 'vrx_ros' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_ros', 'symlink_install': False, 'test_result_base': None}
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'cmake_target' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'cmake_clean_cache' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'cmake_clean_first' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'cmake_force_configure' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'ament_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'catkin_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aquabot_description' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.297s] DEBUG:colcon.colcon_core.verb:Building package 'aquabot_description' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_urdf/aquabot_description', 'symlink_install': False, 'test_result_base': None}
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'cmake_target' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'cmake_clean_cache' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'cmake_clean_first' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'cmake_force_configure' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'ament_cmake_args' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'catkin_cmake_args' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'vrx_gz' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.298s] DEBUG:colcon.colcon_core.verb:Building package 'vrx_gz' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_gz', 'symlink_install': False, 'test_result_base': None}
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'cmake_args' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'cmake_target' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'cmake_clean_cache' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'cmake_clean_first' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'cmake_force_configure' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'ament_cmake_args' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'catkin_cmake_args' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'wamv_description' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.298s] DEBUG:colcon.colcon_core.verb:Building package 'wamv_description' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_description', 'symlink_install': False, 'test_result_base': None}
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'cmake_args' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'cmake_target' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'cmake_clean_cache' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'cmake_clean_first' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'cmake_force_configure' from command line to 'False'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'ament_cmake_args' from command line to 'None'
+[0.298s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'catkin_cmake_args' from command line to 'None'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'aquabot_gz' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.299s] DEBUG:colcon.colcon_core.verb:Building package 'aquabot_gz' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_gz', 'symlink_install': False, 'test_result_base': None}
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'cmake_args' from command line to 'None'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'cmake_target' from command line to 'None'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'cmake_clean_cache' from command line to 'False'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'cmake_clean_first' from command line to 'False'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'cmake_force_configure' from command line to 'False'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'ament_cmake_args' from command line to 'None'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'catkin_cmake_args' from command line to 'None'
+[0.299s] Level 5:colcon.colcon_core.verb:set package 'wamv_gazebo' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.299s] DEBUG:colcon.colcon_core.verb:Building package 'wamv_gazebo' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/newman/vrx_ws/src/mission_windwatch/install', 'merge_install': True, 'path': '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_gazebo', 'symlink_install': False, 'test_result_base': None}
+[0.299s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.300s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.300s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/vrx_gazebo' with build type 'ament_cmake'
+[0.300s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/vrx_gazebo'
+[0.302s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.302s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.302s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.305s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_ros' with build type 'ament_cmake'
+[0.305s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_ros'
+[0.306s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.306s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.308s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example' with build type 'ament_cmake'
+[0.308s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example'
+[0.308s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.308s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.311s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_python' with build type 'ament_cmake'
+[0.311s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_python'
+[0.311s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.311s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.313s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/mission_manager' with build type 'ament_cmake'
+[0.313s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/mission_manager'
+[0.313s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.313s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.315s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/my_team_package' with build type 'ament_cmake'
+[0.315s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/my_team_package'
+[0.316s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.316s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.318s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/navigation' with build type 'ament_cmake'
+[0.318s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/navigation'
+[0.319s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.319s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.321s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/opencv_example' with build type 'ament_cmake'
+[0.321s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/opencv_example'
+[0.321s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.321s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.324s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/package_example' with build type 'ament_cmake'
+[0.324s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/package_example'
+[0.324s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.324s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.332s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/vrx_gazebo -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.334s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_ros -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.335s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.341s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_python -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.351s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/mission_manager -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.353s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/my_team_package -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.353s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/navigation -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.354s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/opencv_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.369s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/package_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.928s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/my_team_package -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[0.935s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package -- -j9 -l9
+[1.010s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/vrx_gazebo -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.014s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo -- -j9 -l9
+[1.041s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_python -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.046s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python -- -j9 -l9
+[1.089s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package -- -j9 -l9
+[1.119s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package
+[1.321s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo -- -j9 -l9
+[1.349s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo
+[1.355s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python -- -j9 -l9
+[1.362s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(my_team_package)
+[1.362s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/my_team_package' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/my_team_package
+[1.364s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[1.365s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[1.365s] Level 1:colcon.colcon_core.shell:create_environment_hook('my_team_package', 'cmake_prefix_path')
+[1.366s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/hook/cmake_prefix_path.ps1'
+[1.366s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/hook/cmake_prefix_path.dsv'
+[1.367s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/hook/cmake_prefix_path.sh'
+[1.367s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[1.367s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.368s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/my_team_package.pc'
+[1.368s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[1.368s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.368s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.ps1'
+[1.369s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.dsv'
+[1.369s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.sh'
+[1.370s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.bash'
+[1.371s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.zsh'
+[1.371s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/my_team_package)
+[1.390s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python
+[1.401s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/mission_manager -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.403s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager -- -j9 -l9
+[1.405s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(my_team_package)
+[1.406s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[1.407s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[1.407s] Level 1:colcon.colcon_core.shell:create_environment_hook('my_team_package', 'cmake_prefix_path')
+[1.408s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/hook/cmake_prefix_path.ps1'
+[1.408s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/hook/cmake_prefix_path.dsv'
+[1.408s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/hook/cmake_prefix_path.sh'
+[1.409s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[1.409s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.409s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/my_team_package.pc'
+[1.409s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[1.409s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.409s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.ps1'
+[1.410s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.dsv'
+[1.410s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.sh'
+[1.411s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.bash'
+[1.415s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/my_team_package/package.zsh'
+[1.415s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/my_team_package)
+[1.415s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/sensors' with build type 'ament_cmake'
+[1.415s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/sensors'
+[1.416s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.416s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.431s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/sensors -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.458s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aquabot_python)
+[1.458s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[1.460s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_python
+[1.461s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[1.461s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_python', 'cmake_prefix_path')
+[1.461s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/hook/cmake_prefix_path.ps1'
+[1.462s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/hook/cmake_prefix_path.dsv'
+[1.462s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/hook/cmake_prefix_path.sh'
+[1.462s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[1.462s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.462s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/aquabot_python.pc'
+[1.463s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[1.463s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.463s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.ps1'
+[1.463s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.dsv'
+[1.511s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.sh'
+[1.512s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.bash'
+[1.512s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.zsh'
+[1.513s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/aquabot_python)
+[1.514s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/navigation -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.519s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/navigation -- -j9 -l9
+[1.520s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vrx_gazebo)
+[1.520s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[1.521s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gazebo
+[1.521s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[1.521s] Level 1:colcon.colcon_core.shell:create_environment_hook('vrx_gazebo', 'cmake_prefix_path')
+[1.521s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/hook/cmake_prefix_path.ps1'
+[1.522s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/hook/cmake_prefix_path.dsv'
+[1.522s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/hook/cmake_prefix_path.sh'
+[1.522s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[1.522s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.522s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/vrx_gazebo.pc'
+[1.523s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[1.523s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.523s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.ps1'
+[1.523s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.dsv'
+[1.829s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.sh'
+[1.831s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.bash'
+[1.832s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.zsh'
+[1.832s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/vrx_gazebo)
+[1.837s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aquabot_python)
+[1.841s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[1.842s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[1.842s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_python', 'cmake_prefix_path')
+[1.842s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/hook/cmake_prefix_path.ps1'
+[1.842s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/hook/cmake_prefix_path.dsv'
+[1.843s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/hook/cmake_prefix_path.sh'
+[1.843s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[1.844s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.844s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/aquabot_python.pc'
+[1.844s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[1.844s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.844s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.ps1'
+[1.845s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.dsv'
+[1.846s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.sh'
+[1.846s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.bash'
+[1.846s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_python/package.zsh'
+[1.849s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/aquabot_python)
+[1.851s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/visualization' with build type 'ament_cmake'
+[1.851s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/visualization'
+[1.852s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.852s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.860s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/opencv_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.865s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/opencv_example -- -j9 -l9
+[1.866s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/aquabot_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.869s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example -- -j9 -l9
+[1.869s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_ros -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.875s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros -- -j9 -l9
+[1.876s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot_competitor/aquabot_examples/package_example -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.876s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/package_example -- -j9 -l9
+[1.877s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vrx_gazebo)
+[1.877s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[1.878s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[1.878s] Level 1:colcon.colcon_core.shell:create_environment_hook('vrx_gazebo', 'cmake_prefix_path')
+[1.878s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/hook/cmake_prefix_path.ps1'
+[1.878s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/hook/cmake_prefix_path.dsv'
+[1.879s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/hook/cmake_prefix_path.sh'
+[1.879s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[1.879s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.879s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/vrx_gazebo.pc'
+[1.880s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[1.880s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[1.880s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.ps1'
+[1.880s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.dsv'
+[1.881s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.sh'
+[1.882s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.bash'
+[1.882s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gazebo/package.zsh'
+[1.883s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/vrx_gazebo)
+[1.884s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/visualization -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[1.887s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_description' with build type 'ament_cmake'
+[1.887s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_description'
+[1.887s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.887s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.901s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_description -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[3.587s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/sensors -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[3.587s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/sensors -- -j9 -l9
+[3.680s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/visualization -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[3.681s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/visualization -- -j9 -l9
+[3.683s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_description -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[3.692s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/wamv_description -- -j9 -l9
+[5.139s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/navigation -- -j9 -l9
+[5.217s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/navigation
+[5.407s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager -- -j9 -l9
+[5.408s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/wamv_description -- -j9 -l9
+[5.408s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(navigation)
+[5.408s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[5.409s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[5.409s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/navigation' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/navigation
+[5.409s] Level 1:colcon.colcon_core.shell:create_environment_hook('navigation', 'cmake_prefix_path')
+[5.409s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/hook/cmake_prefix_path.ps1'
+[5.410s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/hook/cmake_prefix_path.dsv'
+[5.410s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/hook/cmake_prefix_path.sh'
+[5.410s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[5.410s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.411s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/navigation.pc'
+[5.411s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[5.411s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.411s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.ps1'
+[5.414s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.dsv'
+[5.414s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.sh'
+[5.417s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.bash'
+[5.417s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.zsh'
+[5.418s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/navigation)
+[5.458s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/wamv_description
+[5.463s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager
+[5.487s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(navigation)
+[5.487s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[5.488s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[5.488s] Level 1:colcon.colcon_core.shell:create_environment_hook('navigation', 'cmake_prefix_path')
+[5.488s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/hook/cmake_prefix_path.ps1'
+[5.489s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/hook/cmake_prefix_path.dsv'
+[5.489s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/hook/cmake_prefix_path.sh'
+[5.493s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[5.493s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.493s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/navigation.pc'
+[5.493s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[5.493s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.494s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.ps1'
+[5.494s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.dsv'
+[5.495s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.sh'
+[5.495s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.bash'
+[5.506s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/navigation/package.zsh'
+[5.507s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/navigation)
+[5.507s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_urdf/aquabot_description' with build type 'ament_cmake'
+[5.507s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_urdf/aquabot_description'
+[5.508s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.508s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.517s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(wamv_description)
+[5.518s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[5.524s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/wamv_description
+[5.524s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[5.525s] Level 1:colcon.colcon_core.shell:create_environment_hook('wamv_description', 'cmake_prefix_path')
+[5.525s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/hook/cmake_prefix_path.ps1'
+[5.525s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/hook/cmake_prefix_path.dsv'
+[5.525s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/hook/cmake_prefix_path.sh'
+[5.526s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[5.526s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.526s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/wamv_description.pc'
+[5.526s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[5.527s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.527s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.ps1'
+[5.528s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.dsv'
+[5.529s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.sh'
+[5.529s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.bash'
+[5.530s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.zsh'
+[5.530s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/wamv_description)
+[5.536s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mission_manager)
+[5.536s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[5.536s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[5.537s] Level 1:colcon.colcon_core.shell:create_environment_hook('mission_manager', 'cmake_prefix_path')
+[5.537s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/hook/cmake_prefix_path.ps1'
+[5.537s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/hook/cmake_prefix_path.dsv'
+[5.537s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/hook/cmake_prefix_path.sh'
+[5.538s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[5.538s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.538s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/mission_manager.pc'
+[5.539s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[5.539s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.539s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.ps1'
+[5.544s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.dsv'
+[5.545s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.sh'
+[5.545s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/mission_manager' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/mission_manager
+[5.546s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.bash'
+[5.546s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.zsh'
+[5.546s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/mission_manager)
+[5.561s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_urdf/aquabot_description -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[5.575s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(wamv_description)
+[5.575s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[5.576s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[5.576s] Level 1:colcon.colcon_core.shell:create_environment_hook('wamv_description', 'cmake_prefix_path')
+[5.576s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/hook/cmake_prefix_path.ps1'
+[5.576s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/hook/cmake_prefix_path.dsv'
+[5.577s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/hook/cmake_prefix_path.sh'
+[5.577s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[5.577s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.579s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/wamv_description.pc'
+[5.579s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[5.579s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.579s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.ps1'
+[5.583s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.dsv'
+[5.584s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.sh'
+[5.584s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.bash'
+[5.584s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_description/package.zsh'
+[5.585s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/wamv_description)
+[5.585s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_gazebo' with build type 'ament_cmake'
+[5.586s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_gazebo'
+[5.586s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.586s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.615s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mission_manager)
+[5.615s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[5.616s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[5.616s] Level 1:colcon.colcon_core.shell:create_environment_hook('mission_manager', 'cmake_prefix_path')
+[5.616s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/hook/cmake_prefix_path.ps1'
+[5.617s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_gazebo -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[5.622s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/hook/cmake_prefix_path.dsv'
+[5.622s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/hook/cmake_prefix_path.sh'
+[5.623s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[5.624s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.624s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/mission_manager.pc'
+[5.624s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[5.624s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[5.624s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.ps1'
+[5.625s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.dsv'
+[5.625s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.sh'
+[5.626s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.bash'
+[5.626s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/mission_manager/package.zsh'
+[5.626s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/mission_manager)
+[6.451s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_urdf/aquabot_description -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[6.452s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description -- -j9 -l9
+[6.656s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_urdf/wamv_gazebo -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[6.660s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo -- -j9 -l9
+[6.670s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description -- -j9 -l9
+[6.730s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description
+[6.733s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo -- -j9 -l9
+[6.756s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aquabot_description)
+[6.756s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[6.756s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[6.757s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_description', 'cmake_prefix_path')
+[6.757s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/hook/cmake_prefix_path.ps1'
+[6.757s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/hook/cmake_prefix_path.dsv'
+[6.758s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/hook/cmake_prefix_path.sh'
+[6.758s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[6.758s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[6.758s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/aquabot_description.pc'
+[6.758s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[6.759s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[6.759s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.ps1'
+[6.759s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.dsv'
+[6.763s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.sh'
+[6.764s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.bash'
+[6.764s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.zsh'
+[6.765s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/aquabot_description)
+[6.772s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_description
+[6.775s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo
+[6.802s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(wamv_gazebo)
+[6.802s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[6.803s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[6.803s] Level 1:colcon.colcon_core.shell:create_environment_hook('wamv_gazebo', 'cmake_prefix_path')
+[6.803s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/hook/cmake_prefix_path.ps1'
+[6.804s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/hook/cmake_prefix_path.dsv'
+[6.804s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/hook/cmake_prefix_path.sh'
+[6.804s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[6.805s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[6.805s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/wamv_gazebo.pc'
+[6.805s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[6.805s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[6.812s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.ps1'
+[6.813s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.dsv'
+[6.814s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble GZ_SIM_RESOURCE_PATH=/home/newman/vrx_ws/src/mission_windwatch/install/share:${GZ_SIM_RESOURCE_PATH} /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo
+[6.814s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.sh'
+[6.815s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.bash'
+[6.815s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.zsh'
+[6.815s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/wamv_gazebo)
+[6.822s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aquabot_description)
+[6.822s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[6.823s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[6.823s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_description', 'cmake_prefix_path')
+[6.823s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/hook/cmake_prefix_path.ps1'
+[6.824s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/hook/cmake_prefix_path.dsv'
+[6.824s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/hook/cmake_prefix_path.sh'
+[6.828s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[6.828s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[6.828s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/aquabot_description.pc'
+[6.833s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[6.833s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[6.833s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.ps1'
+[6.834s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.dsv'
+[6.835s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.sh'
+[6.835s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.bash'
+[6.836s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_description/package.zsh'
+[6.836s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/aquabot_description)
+[6.860s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(wamv_gazebo)
+[6.860s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[6.861s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[6.861s] Level 1:colcon.colcon_core.shell:create_environment_hook('wamv_gazebo', 'cmake_prefix_path')
+[6.861s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/hook/cmake_prefix_path.ps1'
+[6.861s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/hook/cmake_prefix_path.dsv'
+[6.862s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/hook/cmake_prefix_path.sh'
+[6.862s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[6.862s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[6.863s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/wamv_gazebo.pc'
+[6.863s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[6.863s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[6.863s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.ps1'
+[6.866s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.dsv'
+[6.867s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.sh'
+[6.867s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.bash'
+[6.867s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/wamv_gazebo/package.zsh'
+[6.868s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/wamv_gazebo)
+[6.928s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/package_example -- -j9 -l9
+[6.960s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/package_example
+[7.017s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(package_example)
+[7.017s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[7.017s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[7.018s] Level 1:colcon.colcon_core.shell:create_environment_hook('package_example', 'cmake_prefix_path')
+[7.018s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/hook/cmake_prefix_path.ps1'
+[7.018s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/hook/cmake_prefix_path.dsv'
+[7.020s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/package_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/package_example
+[7.020s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/hook/cmake_prefix_path.sh'
+[7.021s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[7.022s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.022s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/package_example.pc'
+[7.022s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[7.022s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.022s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.ps1'
+[7.024s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.dsv'
+[7.025s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.sh'
+[7.025s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.bash'
+[7.025s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.zsh'
+[7.026s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/package_example)
+[7.059s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(package_example)
+[7.059s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[7.060s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[7.060s] Level 1:colcon.colcon_core.shell:create_environment_hook('package_example', 'cmake_prefix_path')
+[7.060s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/hook/cmake_prefix_path.ps1'
+[7.060s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/hook/cmake_prefix_path.dsv'
+[7.061s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/hook/cmake_prefix_path.sh'
+[7.061s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[7.061s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.061s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/package_example.pc'
+[7.062s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[7.062s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.062s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.ps1'
+[7.063s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.dsv'
+[7.063s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.sh'
+[7.064s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.bash'
+[7.064s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/package_example/package.zsh'
+[7.064s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/package_example)
+[7.254s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/visualization -- -j9 -l9
+[7.276s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/visualization
+[7.284s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(visualization)
+[7.284s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[7.285s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[7.285s] Level 1:colcon.colcon_core.shell:create_environment_hook('visualization', 'cmake_prefix_path')
+[7.285s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/hook/cmake_prefix_path.ps1'
+[7.285s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/hook/cmake_prefix_path.dsv'
+[7.286s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/hook/cmake_prefix_path.sh'
+[7.286s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[7.286s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.286s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/visualization.pc'
+[7.286s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[7.286s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.287s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.ps1'
+[7.287s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.dsv'
+[7.287s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.sh'
+[7.289s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/visualization' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/visualization
+[7.291s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.bash'
+[7.291s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.zsh'
+[7.291s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/visualization)
+[7.346s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(visualization)
+[7.347s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[7.347s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[7.347s] Level 1:colcon.colcon_core.shell:create_environment_hook('visualization', 'cmake_prefix_path')
+[7.348s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/hook/cmake_prefix_path.ps1'
+[7.349s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/hook/cmake_prefix_path.dsv'
+[7.349s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/hook/cmake_prefix_path.sh'
+[7.350s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[7.350s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.350s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/visualization.pc'
+[7.351s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[7.351s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.351s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.ps1'
+[7.352s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.dsv'
+[7.353s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.sh'
+[7.353s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.bash'
+[7.354s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/visualization/package.zsh'
+[7.355s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/visualization)
+[7.426s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/sensors -- -j9 -l9
+[7.455s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/sensors
+[7.469s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sensors)
+[7.469s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[7.470s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/sensors' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/sensors
+[7.470s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[7.470s] Level 1:colcon.colcon_core.shell:create_environment_hook('sensors', 'cmake_prefix_path')
+[7.470s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/hook/cmake_prefix_path.ps1'
+[7.471s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/hook/cmake_prefix_path.dsv'
+[7.471s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/hook/cmake_prefix_path.sh'
+[7.472s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[7.472s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.472s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/sensors.pc'
+[7.472s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[7.472s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.472s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.ps1'
+[7.473s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.dsv'
+[7.473s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.sh'
+[7.473s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.bash'
+[7.474s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.zsh'
+[7.474s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/sensors)
+[7.497s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sensors)
+[7.497s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[7.497s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[7.500s] Level 1:colcon.colcon_core.shell:create_environment_hook('sensors', 'cmake_prefix_path')
+[7.500s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/hook/cmake_prefix_path.ps1'
+[7.500s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/hook/cmake_prefix_path.dsv'
+[7.501s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/hook/cmake_prefix_path.sh'
+[7.501s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[7.502s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.502s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/sensors.pc'
+[7.503s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[7.503s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.504s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.ps1'
+[7.504s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.dsv'
+[7.505s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.sh'
+[7.506s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.bash'
+[7.506s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/sensors/package.zsh'
+[7.507s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/sensors)
+[7.580s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example -- -j9 -l9
+[7.599s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example
+[7.609s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aquabot_example)
+[7.610s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_example
+[7.610s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[7.611s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[7.611s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_example', 'cmake_prefix_path')
+[7.611s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/hook/cmake_prefix_path.ps1'
+[7.612s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/hook/cmake_prefix_path.dsv'
+[7.612s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/hook/cmake_prefix_path.sh'
+[7.613s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[7.613s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.613s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/aquabot_example.pc'
+[7.613s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[7.613s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.614s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.ps1'
+[7.614s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.dsv'
+[7.615s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.sh'
+[7.615s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.bash'
+[7.616s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.zsh'
+[7.616s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/aquabot_example)
+[7.634s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aquabot_example)
+[7.634s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[7.635s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[7.635s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_example', 'cmake_prefix_path')
+[7.635s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/hook/cmake_prefix_path.ps1'
+[7.635s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/hook/cmake_prefix_path.dsv'
+[7.636s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/hook/cmake_prefix_path.sh'
+[7.637s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[7.637s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.637s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/aquabot_example.pc'
+[7.637s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[7.637s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[7.637s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.ps1'
+[7.638s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.dsv'
+[7.638s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.sh'
+[7.639s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.bash'
+[7.639s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.zsh'
+[7.640s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/aquabot_example)
+[9.370s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/opencv_example -- -j9 -l9
+[9.391s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/opencv_example
+[9.442s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(opencv_example)
+[9.443s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/opencv_example
+[9.443s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[9.443s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[9.443s] Level 1:colcon.colcon_core.shell:create_environment_hook('opencv_example', 'cmake_prefix_path')
+[9.444s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/hook/cmake_prefix_path.ps1'
+[9.444s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/hook/cmake_prefix_path.dsv'
+[9.444s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/hook/cmake_prefix_path.sh'
+[9.445s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[9.446s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[9.446s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/opencv_example.pc'
+[9.447s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[9.447s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[9.447s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.ps1'
+[9.447s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.dsv'
+[9.448s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.sh'
+[9.448s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.bash'
+[9.449s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.zsh'
+[9.449s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/opencv_example)
+[9.477s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(opencv_example)
+[9.478s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[9.478s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[9.478s] Level 1:colcon.colcon_core.shell:create_environment_hook('opencv_example', 'cmake_prefix_path')
+[9.478s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/hook/cmake_prefix_path.ps1'
+[9.479s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/hook/cmake_prefix_path.dsv'
+[9.479s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/hook/cmake_prefix_path.sh'
+[9.480s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[9.480s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[9.480s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/opencv_example.pc'
+[9.480s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[9.480s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[9.480s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.ps1'
+[9.481s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.dsv'
+[9.481s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.sh'
+[9.482s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.bash'
+[9.482s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/opencv_example/package.zsh'
+[9.482s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/opencv_example)
+[14.061s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros -- -j9 -l9
+[14.082s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros
+[14.095s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vrx_ros)
+[14.095s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[14.096s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/vrx_ros
+[14.096s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[14.096s] Level 1:colcon.colcon_core.shell:create_environment_hook('vrx_ros', 'cmake_prefix_path')
+[14.096s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/hook/cmake_prefix_path.ps1'
+[14.097s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/hook/cmake_prefix_path.dsv'
+[14.097s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/hook/cmake_prefix_path.sh'
+[14.097s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[14.098s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[14.098s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/vrx_ros.pc'
+[14.098s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[14.098s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[14.098s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.ps1'
+[14.098s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.dsv'
+[14.099s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.sh'
+[14.099s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.bash'
+[14.099s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.zsh'
+[14.099s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/vrx_ros)
+[14.120s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vrx_ros)
+[14.120s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[14.120s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[14.121s] Level 1:colcon.colcon_core.shell:create_environment_hook('vrx_ros', 'cmake_prefix_path')
+[14.121s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/hook/cmake_prefix_path.ps1'
+[14.121s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/hook/cmake_prefix_path.dsv'
+[14.122s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/hook/cmake_prefix_path.sh'
+[14.122s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[14.122s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[14.122s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/vrx_ros.pc'
+[14.123s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[14.123s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[14.123s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.ps1'
+[14.123s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.dsv'
+[14.124s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.sh'
+[14.124s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.bash'
+[14.124s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_ros/package.zsh'
+[14.125s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/vrx_ros)
+[14.125s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_gz' with build type 'ament_cmake'
+[14.125s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_gz'
+[14.125s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[14.125s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[14.133s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_gz -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[15.503s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/vrx/vrx_gz -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[15.505s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz -- -j9 -l9
+[36.325s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz -- -j9 -l9
+[36.388s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz
+[36.519s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vrx_gz)
+[36.520s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[36.520s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/vrx_gz
+[36.521s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[36.521s] Level 1:colcon.colcon_core.shell:create_environment_hook('vrx_gz', 'cmake_prefix_path')
+[36.521s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/cmake_prefix_path.ps1'
+[36.522s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/cmake_prefix_path.dsv'
+[36.522s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/cmake_prefix_path.sh'
+[36.523s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[36.523s] Level 1:colcon.colcon_core.shell:create_environment_hook('vrx_gz', 'ld_library_path_lib')
+[36.523s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/ld_library_path_lib.ps1'
+[36.523s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/ld_library_path_lib.dsv'
+[36.524s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/ld_library_path_lib.sh'
+[36.524s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[36.524s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/vrx_gz.pc'
+[36.524s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[36.524s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[36.524s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.ps1'
+[36.525s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.dsv'
+[36.525s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.sh'
+[36.526s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.bash'
+[36.526s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.zsh'
+[36.526s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/vrx_gz)
+[36.594s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vrx_gz)
+[36.594s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[36.595s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[36.595s] Level 1:colcon.colcon_core.shell:create_environment_hook('vrx_gz', 'cmake_prefix_path')
+[36.595s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/cmake_prefix_path.ps1'
+[36.595s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/cmake_prefix_path.dsv'
+[36.596s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/cmake_prefix_path.sh'
+[36.596s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[36.596s] Level 1:colcon.colcon_core.shell:create_environment_hook('vrx_gz', 'ld_library_path_lib')
+[36.596s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/ld_library_path_lib.ps1'
+[36.597s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/ld_library_path_lib.dsv'
+[36.597s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/hook/ld_library_path_lib.sh'
+[36.597s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[36.598s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/vrx_gz.pc'
+[36.598s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[36.598s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[36.598s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.ps1'
+[36.598s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.dsv'
+[36.599s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.sh'
+[36.599s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.bash'
+[36.600s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/vrx_gz/package.zsh'
+[36.600s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/vrx_gz)
+[36.600s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_gz' with build type 'ament_cmake'
+[36.600s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_gz'
+[36.601s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[36.601s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[36.611s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_gz -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[38.112s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/newman/vrx_ws/src/mission_windwatch/src/aquabot/aquabot_gz -DCMAKE_INSTALL_PREFIX=/home/newman/vrx_ws/src/mission_windwatch/install
+[38.114s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz -- -j9 -l9
+[45.936s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz -- -j9 -l9
+[45.958s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz
+[46.022s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aquabot_gz)
+[46.023s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[46.023s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/newman/vrx_ws/src/mission_windwatch/build/aquabot_gz
+[46.023s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[46.023s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_gz', 'cmake_prefix_path')
+[46.024s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/cmake_prefix_path.ps1'
+[46.024s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/cmake_prefix_path.dsv'
+[46.024s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/cmake_prefix_path.sh'
+[46.025s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[46.025s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_gz', 'ld_library_path_lib')
+[46.025s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/ld_library_path_lib.ps1'
+[46.025s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/ld_library_path_lib.dsv'
+[46.026s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/ld_library_path_lib.sh'
+[46.026s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[46.026s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/aquabot_gz.pc'
+[46.026s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[46.027s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[46.027s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.ps1'
+[46.027s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.dsv'
+[46.028s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.sh'
+[46.029s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.bash'
+[46.029s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.zsh'
+[46.029s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/aquabot_gz)
+[46.051s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aquabot_gz)
+[46.051s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake module files
+[46.051s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install' for CMake config files
+[46.052s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_gz', 'cmake_prefix_path')
+[46.052s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/cmake_prefix_path.ps1'
+[46.053s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/cmake_prefix_path.dsv'
+[46.053s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/cmake_prefix_path.sh'
+[46.054s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib'
+[46.054s] Level 1:colcon.colcon_core.shell:create_environment_hook('aquabot_gz', 'ld_library_path_lib')
+[46.054s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/ld_library_path_lib.ps1'
+[46.055s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/ld_library_path_lib.dsv'
+[46.055s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/hook/ld_library_path_lib.sh'
+[46.056s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[46.056s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/pkgconfig/aquabot_gz.pc'
+[46.056s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/lib/python3.10/site-packages'
+[46.056s] Level 1:colcon.colcon_core.environment:checking '/home/newman/vrx_ws/src/mission_windwatch/install/bin'
+[46.057s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.ps1'
+[46.058s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.dsv'
+[46.058s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.sh'
+[46.059s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.bash'
+[46.060s] INFO:colcon.colcon_core.shell:Creating package script '/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_gz/package.zsh'
+[46.060s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/newman/vrx_ws/src/mission_windwatch/install/share/colcon-core/packages/aquabot_gz)
+[46.061s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[46.061s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[46.061s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[46.061s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[46.065s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[46.066s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[46.066s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[46.075s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[46.075s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/newman/vrx_ws/src/mission_windwatch/install/local_setup.ps1'
+[46.076s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/newman/vrx_ws/src/mission_windwatch/install/_local_setup_util_ps1.py'
+[46.078s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/newman/vrx_ws/src/mission_windwatch/install/setup.ps1'
+[46.079s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/newman/vrx_ws/src/mission_windwatch/install/local_setup.sh'
+[46.079s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/newman/vrx_ws/src/mission_windwatch/install/_local_setup_util_sh.py'
+[46.080s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/newman/vrx_ws/src/mission_windwatch/install/setup.sh'
+[46.081s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/newman/vrx_ws/src/mission_windwatch/install/local_setup.bash'
+[46.081s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/newman/vrx_ws/src/mission_windwatch/install/setup.bash'
+[46.082s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/newman/vrx_ws/src/mission_windwatch/install/local_setup.zsh'
+[46.083s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/newman/vrx_ws/src/mission_windwatch/install/setup.zsh'

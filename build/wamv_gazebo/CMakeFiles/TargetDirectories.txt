@@ -1,0 +1,9 @@
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/wamv_gazebo_uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/test.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/edit_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/rebuild_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/list_install_components.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/install.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/install/local.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_gazebo/CMakeFiles/install/strip.dir

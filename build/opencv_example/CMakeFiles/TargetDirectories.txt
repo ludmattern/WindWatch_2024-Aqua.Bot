@@ -1,0 +1,12 @@
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/opencv_example_uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/minimal_opencv_ros2_node.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/ament_cmake_python_copy_opencv_example.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/ament_cmake_python_build_opencv_example_egg.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/test.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/edit_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/rebuild_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/list_install_components.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/install.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/install/local.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/opencv_example/CMakeFiles/install/strip.dir

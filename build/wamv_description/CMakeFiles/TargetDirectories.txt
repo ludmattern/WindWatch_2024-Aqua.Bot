@@ -1,0 +1,10 @@
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/wamv_description_uninstall.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/wamv_description__xacro_auto_generate.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/test.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/edit_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/rebuild_cache.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/list_install_components.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/install.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/install/local.dir
+/home/newman/vrx_ws/src/mission_windwatch/build/wamv_description/CMakeFiles/install/strip.dir

@@ -1,0 +1,17 @@
+/home/newman/vrx_ws/src/mission_windwatch/install/lib/aquabot_example/aquabot_node
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/launch/aquabot.launch.py
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/package_run_dependencies/aquabot_example
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/parent_prefix_path/aquabot_example
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/environment/ament_prefix_path.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/environment/ament_prefix_path.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/environment/path.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/environment/path.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/local_setup.bash
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/local_setup.sh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/local_setup.zsh
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/local_setup.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.dsv
+/home/newman/vrx_ws/src/mission_windwatch/install/share/ament_index/resource_index/packages/aquabot_example
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/cmake/aquabot_exampleConfig.cmake
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/cmake/aquabot_exampleConfig-version.cmake
+/home/newman/vrx_ws/src/mission_windwatch/install/share/aquabot_example/package.xml
