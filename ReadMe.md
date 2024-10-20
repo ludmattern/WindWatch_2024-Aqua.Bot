@@ -9,18 +9,15 @@ This **README** provides an overview of the project structure, the different **R
 To get started, you can add the base package to your project using the following commands:
 
 ```bash
-# Create a new package with ROS2
-ros2 pkg create --build-type ament_cmake --node-name simple_node simple_package
-
 # Navigate to the vrx_ws directory
-cd ~/vrx_ws
+cd ~/mission_windwatch
 
 # Installation
 colcon build --merge-install
 . install/setup.bash
 
 # Launch the node
-ros2 launch simple_package simple_node_launch.py
+ros2 launch ros2 launch mission_manager mission_launch.py
 ```
 
 These steps allow you to create and launch a base package. The `simple_package` package is a starting point, but it will need to be modified and extended to include the specific functionalities of Mission WindWatch 2024.
