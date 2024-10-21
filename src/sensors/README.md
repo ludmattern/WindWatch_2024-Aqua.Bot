@@ -47,48 +47,91 @@ Navigating in environments with obstacles such as rocks requires precise localiz
 - **Reference Altitude**: 0.0 m
 
 ## Algorithm Explanation
+
 ### State Vector
+
 The state vector is defined as:
-\[ x = [x, y, z, v_x, v_y, v_z, φ, θ, ψ]^T \]
+
+\[
+\mathbf{x} = \begin{bmatrix}
+x & y & z & v_x & v_y & v_z & \phi & \theta & \psi
+\end{bmatrix}^T
+\]
+
 Where:
-- **x, y, z**: Position in ENU coordinates.
-- **v_x, v_y, v_z**: Linear velocities in ENU coordinates.
-- **φ, θ, ψ**: Roll, pitch, and yaw angles.
+- \( x, y, z \): Position in ENU coordinates.
+- \( v_x, v_y, v_z \): Linear velocities in ENU coordinates.
+- \( \phi, \theta, \psi \): Roll, pitch, and yaw angles.
 
 ### Process Model
+
 The process model predicts the next state based on the current state and control inputs (from the IMU):
-\[ x_{k+1} = F x_k + G u_k + w_k \]
-- **State Transition Matrix (F)**: Incorporates the effect of velocities on positions over time **dt**.
-- **Control Input (u_k)**: Includes accelerations and angular velocities from the IMU.
-- **Process Noise (w_k)**: Models the uncertainty in the process (defined in `process_noise_`).
+
+\[
+\mathbf{x}_{k+1} = \mathbf{F} \mathbf{x}_k + \mathbf{G} \mathbf{u}_k + \mathbf{w}_k
+\]
+
+- **State Transition Matrix (\( \mathbf{F} \))**:
+  - Incorporates the effect of velocities on positions over time \( dt \).
+- **Control Input (\( \mathbf{u}_k \))**:
+  - Includes accelerations and angular velocities from the IMU.
+- **Process Noise (\( \mathbf{w}_k \))**:
+  - Models the uncertainty in the process (defined in `process_noise_`).
 
 ### Measurement Model
+
 The measurement model relates the state to the measurements from the GPS and IMU:
-\[ z_k = H x_k + v_k \]
-- **Measurement Matrix (H)**: Maps the state vector to the measurement space.
-- **Measurement Noise (v_k)**: Models the sensor noise (defined in `measurement_noise_`).
+
+\[
+\mathbf{z}_k = \mathbf{H} \mathbf{x}_k + \mathbf{v}_k
+\]
+
+- **Measurement Matrix (\( \mathbf{H} \))**:
+  - Maps the state vector to the measurement space.
+- **Measurement Noise (\( \mathbf{v}_k \))**:
+  - Models the sensor noise (defined in `measurement_noise_`).
 
 ### Extended Kalman Filter Implementation
-**Prediction Step**:
-- **State Prediction**:
-  \[ ˆx_{k|k-1} = F ˆx_{k-1|k-1} \]
-- **Covariance Prediction**:
-  \[ P_{k|k-1} = F P_{k-1|k-1} F^T + Q \]
 
-**Update Step (GPS Callback)**:
-- **Innovation**:
-  \[ y_k = z_k - H ˆx_{k|k-1} \]
-- **Innovation Covariance**:
-  \[ S_k = H P_{k|k-1} H^T + R \]
-- **Kalman Gain**:
-  \[ K_k = P_{k|k-1} H^T S_k^{-1} \]
-- **State Update**:
-  \[ ˆx_{k|k} = ˆx_{k|k-1} + K_k y_k \]
-- **Covariance Update**:
-  \[ P_{k|k} = (I - K_k H) P_{k|k-1} \]
+1. **Prediction Step**:
+   - **State Prediction**:
+     \[
+     \hat{\mathbf{x}}_{k|k-1} = \mathbf{F} \hat{\mathbf{x}}_{k-1|k-1}
+     \]
+   - **Covariance Prediction**:
+     \[
+     \mathbf{P}_{k|k-1} = \mathbf{F} \mathbf{P}_{k-1|k-1} \mathbf{F}^T + \mathbf{Q}
+     \]
+   - **Process Noise (\( \mathbf{Q} \))**:
+     - Scaled by the time difference \( dt \).
 
-**IMU Data Integration**:
-- IMU data is used in the prediction step to update velocities and orientations.
+2. **Update Step (GPS Callback)**:
+   - **Compute Innovation**:
+     \[
+     \mathbf{y}_k = \mathbf{z}_k - \mathbf{H} \hat{\mathbf{x}}_{k|k-1}
+     \]
+   - **Innovation Covariance**:
+     \[
+     \mathbf{S}_k = \mathbf{H} \mathbf{P}_{k|k-1} \mathbf{H}^T + \mathbf{R}
+     \]
+   - **Kalman Gain**:
+     \[
+     \mathbf{K}_k = \mathbf{P}_{k|k-1} \mathbf{H}^T \mathbf{S}_k^{-1}
+     \]
+   - **State Update**:
+     \[
+     \hat{\mathbf{x}}_{k|k} = \hat{\mathbf{x}}_{k|k-1} + \mathbf{K}_k \mathbf{y}_k
+     \]
+   - **Covariance Update**:
+     \[
+     \mathbf{P}_{k|k} = (\mathbf{I} - \mathbf{K}_k \mathbf{H}) \mathbf{P}_{k|k-1}
+     \]
+
+3. **IMU Data Integration**:
+   - IMU data is primarily used in the prediction step to update velocities and orientations.
+   - Accelerations are integrated to update velocities.
+   - Angular velocities are integrated to update orientations.
+
 - Accelerations are integrated to update velocities, and angular velocities are integrated to update orientations.
 
 ## Coordinate Conversion
