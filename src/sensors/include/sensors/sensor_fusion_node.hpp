@@ -44,6 +44,7 @@ private:
     double reference_latitude_;
     double reference_longitude_;
     double reference_altitude_;
+	double geoid_height_;
 
     // Latest sensor data
     sensor_msgs::msg::NavSatFix::SharedPtr last_gps_data_;
