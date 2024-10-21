@@ -52,11 +52,11 @@ Navigating in environments with obstacles such as rocks requires precise localiz
 
 The state vector is defined as:
 
-\[
+$$
 \mathbf{x} = \begin{bmatrix}
 x & y & z & v_x & v_y & v_z & \phi & \theta & \psi
 \end{bmatrix}^T
-\]
+$$
 
 Where:
 - \( x, y, z \): Position in ENU coordinates.
@@ -67,9 +67,9 @@ Where:
 
 The process model predicts the next state based on the current state and control inputs (from the IMU):
 
-\[
+$$
 \mathbf{x}_{k+1} = \mathbf{F} \mathbf{x}_k + \mathbf{G} \mathbf{u}_k + \mathbf{w}_k
-\]
+$$
 
 - **State Transition Matrix (\( \mathbf{F} \))**:
   - Incorporates the effect of velocities on positions over time \( dt \).
@@ -82,9 +82,9 @@ The process model predicts the next state based on the current state and control
 
 The measurement model relates the state to the measurements from the GPS and IMU:
 
-\[
+$$
 \mathbf{z}_k = \mathbf{H} \mathbf{x}_k + \mathbf{v}_k
-\]
+$$
 
 - **Measurement Matrix (\( \mathbf{H} \))**:
   - Maps the state vector to the measurement space.
@@ -95,42 +95,43 @@ The measurement model relates the state to the measurements from the GPS and IMU
 
 1. **Prediction Step**:
    - **State Prediction**:
-     \[
+     $$
      \hat{\mathbf{x}}_{k|k-1} = \mathbf{F} \hat{\mathbf{x}}_{k-1|k-1}
-     \]
+     $$
    - **Covariance Prediction**:
-     \[
+     $$
      \mathbf{P}_{k|k-1} = \mathbf{F} \mathbf{P}_{k-1|k-1} \mathbf{F}^T + \mathbf{Q}
-     \]
+     $$
    - **Process Noise (\( \mathbf{Q} \))**:
      - Scaled by the time difference \( dt \).
 
 2. **Update Step (GPS Callback)**:
    - **Compute Innovation**:
-     \[
+     $$
      \mathbf{y}_k = \mathbf{z}_k - \mathbf{H} \hat{\mathbf{x}}_{k|k-1}
-     \]
+     $$
    - **Innovation Covariance**:
-     \[
+     $$
      \mathbf{S}_k = \mathbf{H} \mathbf{P}_{k|k-1} \mathbf{H}^T + \mathbf{R}
-     \]
+     $$
    - **Kalman Gain**:
-     \[
+     $$
      \mathbf{K}_k = \mathbf{P}_{k|k-1} \mathbf{H}^T \mathbf{S}_k^{-1}
-     \]
+     $$
    - **State Update**:
-     \[
+     $$
      \hat{\mathbf{x}}_{k|k} = \hat{\mathbf{x}}_{k|k-1} + \mathbf{K}_k \mathbf{y}_k
-     \]
+     $$
    - **Covariance Update**:
-     \[
+     $$
      \mathbf{P}_{k|k} = (\mathbf{I} - \mathbf{K}_k \mathbf{H}) \mathbf{P}_{k|k-1}
-     \]
+     $$
 
 3. **IMU Data Integration**:
    - IMU data is primarily used in the prediction step to update velocities and orientations.
    - Accelerations are integrated to update velocities.
    - Angular velocities are integrated to update orientations.
+
 
 - Accelerations are integrated to update velocities, and angular velocities are integrated to update orientations.
 
