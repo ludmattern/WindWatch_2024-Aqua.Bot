@@ -16,6 +16,7 @@ INSTALL_PATH = install/
 LOG_PATH = log/
 
 DEFAULT_WORLD = aquabot_regatta
+COMPET_WORLD = aquabot_windturbines_hard
 
 # ==============================
 # Targets - Main Commands
@@ -130,8 +131,8 @@ prepare:
 .PHONY: dependencies
 dependencies:
 	@echo "\e[32m[INFO] Installing necessary dependencies...\e[0m"
-	sudo apt update
-	sudo apt install -y \
+	apt update
+	apt install -y \
 		ros-humble-rosidl-typesupport-c \
 		libeigen3-dev
 
