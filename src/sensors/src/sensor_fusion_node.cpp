@@ -12,7 +12,7 @@ SensorFusionNode::SensorFusionNode() : Node("sensor_fusion_node"),
     // Point de référence pour la conversion ENU (latitude, longitude, altitude)
     reference_latitude_ = 48.046300;
     reference_longitude_ = -4.976320;
-    reference_altitude_ = 10.72; // Altitude de référence en mètres
+    reference_altitude_ = 1.20; // Altitude de référence en mètres
     geoid_height_ = 51.7976;     // Hauteur du géoïde à la position de référence
 
     // Initialisation des abonnements
