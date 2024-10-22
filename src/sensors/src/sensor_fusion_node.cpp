@@ -64,9 +64,6 @@ SensorFusionNode::SensorFusionNode() : Node("sensor_fusion_node"),
 
 void SensorFusionNode::gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr msg)
 {
-    RCLCPP_INFO(this->get_logger(), "Received GPS data - Latitude: %f, Longitude: %f, Altitude: %f",
-                msg->latitude, msg->longitude, msg->altitude);
-
     last_gps_data_ = msg;
 
     if (!initial_gps_received_)
