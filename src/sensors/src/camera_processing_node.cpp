@@ -1,23 +1,17 @@
 #include "sensors/camera_processing_node.hpp"
 
-#include <iostream>
-
 CameraProcessingNode::CameraProcessingNode() : Node("camera_processing_node")
 {
+	camera_pub_ = this->create_publisher<std_msgs::msg::Float64>("/aquabot/thrusters/main_camera_sensor/pos", 10);
+	
 	// Subscriber pour la position et orientation du bateau via nav_msgs::msg::Odometry
 	boat_pose_sub_ = this->create_subscription<nav_msgs::msg::Odometry>(
-		"/boat/odometry", 10, std::bind(&CameraProcessingNode::boatPoseCallback, this, std::placeholders::_1));
+		"/mission/odometry", 10, std::bind(&CameraProcessingNode::boatPoseCallback, this, std::placeholders::_1));
+	
 	// Subscriber pour la position du point à suivre (cela reste un PoseStamped)
 	// point_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
 	// "/target/pose", 10, std::bind(&CameraControllerNode::targetPoseCallback, this, std::placeholders::_1));
 	
-	camera_pub_ = this->create_publisher<std_msgs::msg::Float64>("/aquabot/thrusters/main_camera_sensor/pos", 10);
-
-	while (true)
-	{
-		targetPoseCallback();
-		sleep(1);
-	}
 	RCLCPP_INFO(this->get_logger(), "Camera Processing Node has started");
 }
 
@@ -32,6 +26,9 @@ void CameraProcessingNode::boatPoseCallback(const nav_msgs::msg::Odometry::Share
 	// Convertir le quaternion en angles de roulis, tangage, lacet (RPY)
 	tf2::Quaternion q(orientation.x, orientation.y, orientation.z, orientation.w);
 	tf2::Matrix3x3(q).getRPY(roll_, pitch_, yaw_);  // Ici, on récupère surtout le yaw (lacet)
+
+	// a virer 
+	this->targetPoseCallback();
 }
 
 void CameraProcessingNode::targetPoseCallback(void)
