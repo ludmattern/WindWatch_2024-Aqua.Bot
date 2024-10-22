@@ -8,5 +8,8 @@
 		"/WindWatch_2024-Aqua.Bot/install/local/lib/python3.10/dist-packages",
 		"/opt/ros/humble/lib/python3.10/site-packages",
 		"/opt/ros/humble/local/lib/python3.10/dist-packages"
-	]
+	],
+	"files.associations": {
+		"dense": "cpp"
+	}
 }
