@@ -1,4 +1,5 @@
-/* File: path_planning_node.cpp
+/*
+File: path_planning_node.cpp
 1. Node : path_planning_node
 Role: Calculates the optimal path for the Aqua.Bot to reach its mission objectives while avoiding obstacles and complying with mission constraints.
 Subscribed Topics:
@@ -10,7 +11,8 @@ Subscribed Topics:
 /aqua_bot/ais_sensor/obstacle_positions: Positions of static obstacles (e.g., rocks, islands, lighthouses).
 Published Topics:
 /navigation/desired_trajectory: The planned trajectory for the Aqua.Bot to follow.
-/navigation/navigation_status: Status updates on the navigation process for monitoring and debugging purposes.*/
+/navigation/navigation_status: Status updates on the navigation process for monitoring and debugging purposes.
+*/
 
 #include "navigation/path_planning_node.hpp"
 
