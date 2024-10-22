@@ -64,7 +64,6 @@ SensorFusionNode::SensorFusionNode() : Node("sensor_fusion_node"),
 
 void SensorFusionNode::gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr msg)
 {
-    RCLCPP_DEBUG(this->get_logger(), "GPS callback triggered.");
     RCLCPP_INFO(this->get_logger(), "Received GPS data - Latitude: %f, Longitude: %f, Altitude: %f",
                 msg->latitude, msg->longitude, msg->altitude);
 
@@ -119,15 +118,6 @@ void SensorFusionNode::gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr 
     state_(6) = std::atan2(std::sin(state_(6)), std::cos(state_(6)));
     state_(7) = std::atan2(std::sin(state_(7)), std::cos(state_(7)));
     state_(8) = std::atan2(std::sin(state_(8)), std::cos(state_(8)));
-
-    RCLCPP_DEBUG(this->get_logger(), "GPS update step executed.");
-
-    // Afficher l'état actuel
-    RCLCPP_INFO(this->get_logger(), "Current State after GPS update:");
-    RCLCPP_INFO(this->get_logger(), "Position -> x: %f, y: %f, z: %f", state_(0), state_(1), state_(2));
-    RCLCPP_INFO(this->get_logger(), "Velocity -> vx: %f, vy: %f, vz: %f", state_(3), state_(4), state_(5));
-    RCLCPP_INFO(this->get_logger(), "Orientation -> roll: %f, pitch: %f, yaw: %f",
-                state_(6) * 180.0 / M_PI, state_(7) * 180.0 / M_PI, state_(8) * 180.0 / M_PI);
 }
 
 void SensorFusionNode::imuCallback(const sensor_msgs::msg::Imu::SharedPtr msg)
@@ -239,13 +229,6 @@ void SensorFusionNode::imuCallback(const sensor_msgs::msg::Imu::SharedPtr msg)
     state_(5) += accel_nav.getZ() * dt;
 
     RCLCPP_DEBUG(this->get_logger(), "IMU prediction step executed.");
-
-    // Afficher l'état actuel
-    RCLCPP_INFO(this->get_logger(), "Current State after IMU prediction:");
-    RCLCPP_INFO(this->get_logger(), "Position -> x: %f, y: %f, z: %f", state_(0), state_(1), state_(2));
-    RCLCPP_INFO(this->get_logger(), "Velocity -> vx: %f, vy: %f, vz: %f", state_(3), state_(4), state_(5));
-    RCLCPP_INFO(this->get_logger(), "Orientation -> roll: %f, pitch: %f, yaw: %f",
-                state_(6) * 180.0 / M_PI, state_(7) * 180.0 / M_PI, state_(8) * 180.0 / M_PI);
 }
 
 void SensorFusionNode::predict(double dt)
@@ -305,13 +288,6 @@ void SensorFusionNode::publishOdometry()
 
         // Publication du message d'odométrie
         odometry_publisher_->publish(odom_msg);
-
-        // Afficher l'état actuel
-        RCLCPP_INFO(this->get_logger(), "Publishing Odometry:");
-        RCLCPP_INFO(this->get_logger(), "Position -> x: %f, y: %f, z: %f", state_(0), state_(1), state_(2));
-        RCLCPP_INFO(this->get_logger(), "Velocity -> vx: %f, vy: %f, vz: %f", state_(3), state_(4), state_(5));
-        RCLCPP_INFO(this->get_logger(), "Orientation -> roll: %f, pitch: %f, yaw: %f",
-                    state_(6) * 180.0 / M_PI, state_(7) * 180.0 / M_PI, state_(8) * 180.0 / M_PI);
     }
     else
     {
