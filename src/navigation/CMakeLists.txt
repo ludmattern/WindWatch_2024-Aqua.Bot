@@ -21,7 +21,7 @@ add_executable(control_node src/control_node.cpp)
 add_executable(propulsion_control_node src/propulsion_control_node.cpp)
 
 # Specify dependencies for executables
-ament_target_dependencies(path_planning_node rclcpp std_msgs geometry_msgs sensor_msgs)
+ament_target_dependencies(path_planning_node rclcpp std_msgs geometry_msgs sensor_msgs nav_msgs)
 ament_target_dependencies(obstacle_avoidance_node rclcpp sensor_msgs)
 ament_target_dependencies(control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs nav_msgs)
 ament_target_dependencies(propulsion_control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs)

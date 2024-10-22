@@ -16,7 +16,6 @@ class PathPlanningNode : public rclcpp::Node
         std::vector<std::vector<double>> Graph;
 
         rclcpp::Subscription<geometry_msgs::msg::PoseArray>::SharedPtr tgtPos_Subscirption_;
-        rclcpp::Subscription<>
 
         void FillPtsList(void);
 };
