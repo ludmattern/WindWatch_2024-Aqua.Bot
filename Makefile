@@ -46,6 +46,11 @@ launch_mission:
 	@echo "\e[32m[INFO] Launching the complete mission (all packages)...\e[0m"
 	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 launch mission_manager mission_launch.py
 
+.PHONY: launch_real_mission
+launch_real_mission:
+	@echo "\e[32m[INFO] Launching the real mission (all packages)...\e[0m"
+	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 launch mission_manager mission_launch.py world:=$(COMPET_WORLD) competition_mode:=false
+
 .PHONY: launch_headless
 launch_headless:
 	@echo "\e[32m[INFO] Launching the mission in headless mode...\e[0m"
