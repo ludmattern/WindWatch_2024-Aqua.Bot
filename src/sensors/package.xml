@@ -12,6 +12,7 @@
   <!-- Execution dependencies -->
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
   <depend>image_transport</depend>
   <depend>opencv</depend>
 
