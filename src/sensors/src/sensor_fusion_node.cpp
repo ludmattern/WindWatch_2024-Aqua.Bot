@@ -59,7 +59,7 @@ SensorFusionNode::SensorFusionNode() : Node("sensor_fusion_node"),
         std::chrono::milliseconds(100),  // 10 Hz
         std::bind(&SensorFusionNode::publishOdometry, this));
 
-    RCLCPP_INFO(this->get_logger(), "Sensor Fusion Node has started");
+   // RCLCPP_INFO(this->get_logger(), "Sensor Fusion Node has started");
 }
 
 void SensorFusionNode::gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr msg)
@@ -70,7 +70,7 @@ void SensorFusionNode::gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr 
     {
         last_gps_time_ = rclcpp::Time(msg->header.stamp);
         initial_gps_received_ = true;
-        RCLCPP_INFO(this->get_logger(), "Initial GPS data received.");
+        //RCLCPP_INFO(this->get_logger(), "Initial GPS data received.");
         return;
     }
 
@@ -79,7 +79,7 @@ void SensorFusionNode::gpsCallback(const sensor_msgs::msg::NavSatFix::SharedPtr 
 
     if (dt <= 0.0)
     {
-        RCLCPP_WARN(this->get_logger(), "Non-positive time difference in GPS callback.");
+        //RCLCPP_WARN(this->get_logger(), "Non-positive time difference in GPS callback.");
         return;
     }
 
@@ -125,7 +125,7 @@ void SensorFusionNode::imuCallback(const sensor_msgs::msg::Imu::SharedPtr msg)
     {
         last_imu_time_ = rclcpp::Time(msg->header.stamp);
         initial_imu_received_ = true;
-        RCLCPP_INFO(this->get_logger(), "Initial IMU data received.");
+        //RCLCPP_INFO(this->get_logger(), "Initial IMU data received.");
         return;
     }
 
@@ -134,7 +134,7 @@ void SensorFusionNode::imuCallback(const sensor_msgs::msg::Imu::SharedPtr msg)
 
     if (dt <= 0.0)
     {
-        RCLCPP_WARN(this->get_logger(), "Non-positive time difference in IMU callback.");
+        //RCLCPP_WARN(this->get_logger(), "Non-positive time difference in IMU callback.");
         return;
     }
 
@@ -225,7 +225,7 @@ void SensorFusionNode::imuCallback(const sensor_msgs::msg::Imu::SharedPtr msg)
     state_(4) += accel_nav.getY() * dt;
     state_(5) += accel_nav.getZ() * dt;
 
-    RCLCPP_DEBUG(this->get_logger(), "IMU prediction step executed.");
+    //RCLCPP_DEBUG(this->get_logger(), "IMU prediction step executed.");
 }
 
 void SensorFusionNode::predict(double dt)
@@ -251,7 +251,7 @@ void SensorFusionNode::predict(double dt)
 
     covariance_ = F * covariance_ * F.transpose() + Q;
 
-    RCLCPP_DEBUG(this->get_logger(), "Predict step executed with dt = %f", dt);
+    //RCLCPP_DEBUG(this->get_logger(), "Predict step executed with dt = %f", dt);
 }
 
 void SensorFusionNode::publishOdometry()
@@ -288,7 +288,7 @@ void SensorFusionNode::publishOdometry()
     }
     else
     {
-        RCLCPP_WARN(this->get_logger(), "Waiting for initial sensor data to publish odometry.");
+        //RCLCPP_WARN(this->get_logger(), "Waiting for initial sensor data to publish odometry.");
     }
 }
 
@@ -337,8 +337,8 @@ void SensorFusionNode::latLonToENU(double latitude, double longitude, double alt
     y = -cos_lon * sin_lat * dx - sin_lat * sin_lon * dy + cos_lat * dz;
     z = cos_lat * cos_lon * dx + cos_lat * sin_lon * dy + sin_lat * dz;
 
-    RCLCPP_DEBUG(this->get_logger(), "Converted lat/lon to ENU: (%f, %f, %f) -> (%f, %f, %f)",
-                 latitude, longitude, altitude, x, y, z);
+    //RCLCPP_DEBUG(this->get_logger(), "Converted lat/lon to ENU: (%f, %f, %f) -> (%f, %f, %f)",
+                 //latitude, longitude, altitude, x, y, z);
 }
 
 int main(int argc, char * argv[])
