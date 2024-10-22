@@ -7,6 +7,8 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 # Inclure le répertoire des en-têtes
 include_directories(include)
@@ -21,7 +23,7 @@ add_executable(propulsion_control_node src/propulsion_control_node.cpp)
 ament_target_dependencies(path_planning_node rclcpp std_msgs geometry_msgs sensor_msgs)
 ament_target_dependencies(obstacle_avoidance_node rclcpp sensor_msgs)
 ament_target_dependencies(control_node rclcpp std_msgs geometry_msgs sensor_msgs)
-ament_target_dependencies(propulsion_control_node rclcpp std_msgs geometry_msgs sensor_msgs)
+ament_target_dependencies(propulsion_control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs)
 
 # Install targets
 install(TARGETS
