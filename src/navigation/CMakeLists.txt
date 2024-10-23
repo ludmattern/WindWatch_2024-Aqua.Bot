@@ -10,6 +10,8 @@ find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(sensors REQUIRED)
 
 # Inclure le répertoire des en-têtes
 include_directories(include)
@@ -21,18 +23,18 @@ add_executable(control_node src/control_node.cpp)
 add_executable(propulsion_control_node src/propulsion_control_node.cpp)
 
 # Specify dependencies for executables
-ament_target_dependencies(path_planning_node rclcpp std_msgs geometry_msgs sensor_msgs nav_msgs)
+ament_target_dependencies(path_planning_node rclcpp std_msgs geometry_msgs sensor_msgs nav_msgs sensors)
 ament_target_dependencies(obstacle_avoidance_node rclcpp sensor_msgs)
 ament_target_dependencies(control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs nav_msgs)
 ament_target_dependencies(propulsion_control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs)
 
 # Install targets
 install(TARGETS
-  path_planning_node
-  obstacle_avoidance_node
-  control_node
-  propulsion_control_node
-  DESTINATION lib/${PROJECT_NAME}
+path_planning_node
+obstacle_avoidance_node
+control_node
+propulsion_control_node
+DESTINATION lib/${PROJECT_NAME}
 )
 
 # Install other necessary folders

@@ -16,39 +16,41 @@ Published Topics:
 
 #include "navigation/path_planning_node.hpp"
 
-PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), TgtAdded(false), ShipAdded(false)
+PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), ShipAdded(false)
 {
 	RCLCPP_INFO(this->get_logger(), "Path Planning Node has started");
 
-	//initialise subscriptions
-	tgtPos_Subscirption_ = this->create_subscription<geometry_msgs::msg::PoseArray>(
-		"/mission/target_positions", 10,
-		std::bind(&PathPlanningNode::AddTgtToPtsList, this, std::placeholders::_1));
-
+	//Initialise subscriptions
 	odometry_Subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
 		"/mission/odometry", 10,
 		std::bind(&PathPlanningNode::AddShipToPtsList, this, std::placeholders::_1));
 
+	//Initialise client for targets positions
+	TgtPos_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
+}
 
-	
+void PathPlanningNode::SendServiceRequest(void)
+{
+
 }
 
 void PathPlanningNode::AddTgtToPtsList(geometry_msgs::msg::PoseArray TgtPos)
 {
-	if (TgtAdded == false) //If targets not already added
+	RCLCPP_INFO(this->get_logger(), "AA TEST 3 %ld", TgtPos.poses.size());
+	for (int i = 0; i < TgtPos.poses.size(); ++i)
 	{
-		for (int i = 0; i < TgtPos.poses.size(); ++i)
-		{
-			sPoint point;
+		sPoint point;
 
-			//Fill point with the ship position
-			point.x = TgtPos.poses[i].position.x;
-			point.y = TgtPos.poses[i].position.y;
-			point.isTarget = true;
+		//Fill point with the target position
+		point.x = TgtPos.poses[i].position.x;
+		point.y = TgtPos.poses[i].position.y;
+		point.isTarget = true;
 
-			PointList.push_back(point); //Add to point list
-		}
-		TgtAdded = true;
+		PointList.push_back(point); //Add to point list
+	}
+	for (int i = 0; i < PointList.size(); ++i)
+	{
+		RCLCPP_INFO(this->get_logger(), "AA x: %f y: %f", PointList[i].x, PointList[i].y);
 	}
 }
 
@@ -73,11 +75,49 @@ void PathPlanningNode::AddObstaclePtsList(void)
 	
 }
 
+geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<PathPlanningNode> node, 
+	sensors::srv::TargetPositions::Request::SharedPtr request)
+{
+
+
+	//Send request to the service 
+	rclcpp::Client<sensors::srv::TargetPositions>::FutureAndRequestId future = node->TgtPos_Client_->async_send_request(request);
+
+	//Wait until a response
+	RCLCPP_INFO(node->get_logger(), "AA TEST");
+	if (rclcpp::spin_until_future_complete(node, future) == rclcpp::FutureReturnCode::SUCCESS) //If success
+		return(future.get()->poses);
+	else
+		RCLCPP_ERROR(node->get_logger(), "Failed to call service target_positions");
+	
+	RCLCPP_INFO(node->get_logger(), "AA TEST2");
+	return (future.get()->poses);
+}
+
 int main(int argc, char * argv[])
 {
 	rclcpp::init(argc, argv);
 	auto node = std::make_shared<PathPlanningNode>();
-	rclcpp::spin(node);
+
+	//Create the request
+	sensors::srv::TargetPositions::Request::SharedPtr request = std::make_shared<sensors::srv::TargetPositions::Request>();
+
+	//Wait until the service is available
+	while (node->TgtPos_Client_->wait_for_service(std::chrono::seconds(1)) == false)
+	{
+		if (rclcpp::ok() == false)
+		{
+			RCLCPP_ERROR(node->get_logger(), "Interrupted while waiting for the service. Exiting.");
+			return (1);
+		}
+	}
+
+	geometry_msgs::msg::PoseArray TgtPos;
+	while (TgtPos.poses.empty())
+		TgtPos = MakeRequest(node, request);
+
+	node->AddTgtToPtsList(TgtPos);
+
 	rclcpp::shutdown();
-	return 0;
+	return (0);
 }

@@ -34,9 +34,10 @@ add_executable(camera_processing_node src/camera_processing_node.cpp)
 # Specify dependencies for executables
 ament_target_dependencies(sensor_fusion_node rclcpp sensor_msgs nav_msgs tf2 tf2_geometry_msgs rosidl_typesupport_c)
 ament_target_dependencies(camera_control_node rclcpp image_transport OpenCV sensor_msgs rosidl_typesupport_c std_msgs tf2 tf2_geometry_msgs nav_msgs)
-ament_target_dependencies(tgt_pos_update_node rclcpp sensor_msgs rosidl_typesupport_c)
+ament_target_dependencies(tgt_pos_update_node rclcpp sensor_msgs rosidl_typesupport_c rosidl_default_runtime geometry_msgs)
 ament_target_dependencies(camera_processing_node rclcpp)
 
+ament_export_include_directories(include)
 
 rosidl_get_typesupport_target(ts_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
 target_link_libraries(tgt_pos_update_node ${ts_target})
