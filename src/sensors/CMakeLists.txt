@@ -15,6 +15,13 @@ find_package(rosidl_typesupport_c REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
+
+# Generate ROS2 interfaces (services / actions)
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "srv/TargetPositions.srv"
+  DEPENDENCIES geometry_msgs # Dependencies of the 
+)
+
 # Include directories
 include_directories(include)
 
@@ -27,6 +34,10 @@ add_executable(tgt_pos_update_node src/tgt_pos_update_node.cpp src/ConvertCoordi
 ament_target_dependencies(sensor_fusion_node rclcpp sensor_msgs nav_msgs tf2 tf2_geometry_msgs rosidl_typesupport_c)
 ament_target_dependencies(camera_processing_node rclcpp image_transport OpenCV sensor_msgs rosidl_typesupport_c std_msgs tf2 tf2_geometry_msgs nav_msgs)
 ament_target_dependencies(tgt_pos_update_node rclcpp sensor_msgs rosidl_typesupport_c)
+
+
+rosidl_get_typesupport_target(ts_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+target_link_libraries(tgt_pos_update_node ${ts_target})
 
 # Install targets
 install(TARGETS

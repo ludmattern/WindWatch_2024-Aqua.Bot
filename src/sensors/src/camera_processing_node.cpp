@@ -50,7 +50,7 @@ void CameraProcessingNode::targetPoseCallback(void)
 		theta_relative += 2 * M_PI;
 	}
 
-	RCLCPP_INFO(this->get_logger(), "Angle relatif de la caméra : %f rad", theta_relative);
+	//RCLCPP_INFO(this->get_logger(), "Angle relatif de la caméra : %f rad", theta_relative);
 
 	// Ici, orienter la caméra en fonction de theta_relative
 	controlCamera(theta_relative);
