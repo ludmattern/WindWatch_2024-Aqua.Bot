@@ -8,13 +8,15 @@ include_directories(include)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
 # Add executables
 add_executable(visualization_node src/visualization_node.cpp)
 
 # Specify dependencies for executables
-ament_target_dependencies(visualization_node rclcpp sensor_msgs visualization_msgs)
+ament_target_dependencies(visualization_node rclcpp sensor_msgs geometry_msgs visualization_msgs nav_msgs)
 
 # Install targets
 install(TARGETS
