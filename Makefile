@@ -28,7 +28,7 @@ all: build run
 .PHONY: build
 build:
 	@echo "\e[32m[INFO] Compiling ROS2 project with colcon...\e[0m"
-	colcon build --base-paths $(SRC_PATH) --merge-install
+	colcon build --merge-install
 	@echo "\e[32m[INFO] Please execute '. $(BASH_VRX_SOURCE)' to set up the environment\e[0m"
 
 .PHONY: run
