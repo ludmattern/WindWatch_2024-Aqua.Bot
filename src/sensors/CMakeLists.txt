@@ -27,13 +27,15 @@ include_directories(include)
 
 # Add executables
 add_executable(sensor_fusion_node src/sensor_fusion_node.cpp src/ConvertCoordinates.cpp)
-add_executable(camera_processing_node src/camera_processing_node.cpp)
+add_executable(camera_control_node src/camera_control_node.cpp)
 add_executable(tgt_pos_update_node src/tgt_pos_update_node.cpp src/ConvertCoordinates.cpp)
+add_executable(camera_processing_node src/camera_processing_node.cpp)
 
 # Specify dependencies for executables
 ament_target_dependencies(sensor_fusion_node rclcpp sensor_msgs nav_msgs tf2 tf2_geometry_msgs rosidl_typesupport_c)
-ament_target_dependencies(camera_processing_node rclcpp image_transport OpenCV sensor_msgs rosidl_typesupport_c std_msgs tf2 tf2_geometry_msgs nav_msgs)
+ament_target_dependencies(camera_control_node rclcpp image_transport OpenCV sensor_msgs rosidl_typesupport_c std_msgs tf2 tf2_geometry_msgs nav_msgs)
 ament_target_dependencies(tgt_pos_update_node rclcpp sensor_msgs rosidl_typesupport_c)
+ament_target_dependencies(camera_processing_node rclcpp)
 
 
 rosidl_get_typesupport_target(ts_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
@@ -42,8 +44,9 @@ target_link_libraries(tgt_pos_update_node ${ts_target})
 # Install targets
 install(TARGETS
   sensor_fusion_node
-  camera_processing_node
+  camera_control_node
   tgt_pos_update_node
+  camera_processing_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
