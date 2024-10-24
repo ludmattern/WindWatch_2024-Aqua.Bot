@@ -14,6 +14,7 @@ Published Topics:
 /navigation/navigation_status: Status updates on the navigation process for monitoring and debugging purposes.
 */
 
+#include <fstream>
 #include "navigation/path_planning_node.hpp"
 
 PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), ShipAdded(false)
@@ -29,14 +30,8 @@ PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), ShipAdded(fal
 	TgtPos_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
 }
 
-void PathPlanningNode::SendServiceRequest(void)
-{
-
-}
-
 void PathPlanningNode::AddTgtToPtsList(geometry_msgs::msg::PoseArray TgtPos)
 {
-	RCLCPP_INFO(this->get_logger(), "AA TEST 3 %ld", TgtPos.poses.size());
 	for (int i = 0; i < TgtPos.poses.size(); ++i)
 	{
 		sPoint point;
@@ -44,13 +39,8 @@ void PathPlanningNode::AddTgtToPtsList(geometry_msgs::msg::PoseArray TgtPos)
 		//Fill point with the target position
 		point.x = TgtPos.poses[i].position.x;
 		point.y = TgtPos.poses[i].position.y;
-		point.isTarget = true;
 
-		PointList.push_back(point); //Add to point list
-	}
-	for (int i = 0; i < PointList.size(); ++i)
-	{
-		RCLCPP_INFO(this->get_logger(), "AA x: %f y: %f", PointList[i].x, PointList[i].y);
+		PointListTarget.push_back(point); //Add to point list
 	}
 }
 
@@ -63,16 +53,52 @@ void PathPlanningNode::AddShipToPtsList(nav_msgs::msg::Odometry ShipPos)
 		//Fill point with the ship position
 		point.x = ShipPos.pose.pose.position.x;
 		point.y = ShipPos.pose.pose.position.y;
-		point.isTarget = false;
 
-		PointList.push_back(point); //Add to point list
+		PointListTarget.push_back(point); //Add to point list
 		ShipAdded = true;
 	}
 }
 
-void PathPlanningNode::AddObstaclePtsList(void)
+void AddPointToPolygon(sPolygon *polygon, std::string PointString)
 {
+	std::stringstream PointStream(PointString);
+	sPoint point;
+	char delimiter;
+
+	PointStream >> point.x >> delimiter >> point.y;
+
+	polygon->Points.push_back(point);
+}
+
+int PathPlanningNode::AddObstaclePtsList(void)
+{
+	std::ifstream ObstaclePos(OBSTACLE_FILE);
+	std::string line;
+	int i = 0;
+
+	if (ObstaclePos.is_open() == 0)
+		return (1);
 	
+	while (std::getline(ObstaclePos, line))
+	{
+		std::stringstream LineStream(line);
+		std::string point;
+
+		ObstacleList.resize(ObstacleList.size() + 1);
+		while (std::getline(LineStream, point, ' '))
+			AddPointToPolygon(&ObstacleList[i], point);
+		++i;
+	}
+
+	for (int k = 0; k < ObstacleList.size(); ++k)
+	{
+		RCLCPP_INFO(this->get_logger(), "Polygon: %d", k);
+		for (int j = 0; j < ObstacleList[k].Points.size(); ++j)
+			RCLCPP_INFO(this->get_logger(), "x :%f y: %f", ObstacleList[k].Points[j].x, ObstacleList[k].Points[j].y);
+		RCLCPP_INFO(this->get_logger(), "\n");
+	}
+
+	return (0);	
 }
 
 geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<PathPlanningNode> node, 
@@ -84,13 +110,11 @@ geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<PathPlanningNode> node
 	rclcpp::Client<sensors::srv::TargetPositions>::FutureAndRequestId future = node->TgtPos_Client_->async_send_request(request);
 
 	//Wait until a response
-	RCLCPP_INFO(node->get_logger(), "AA TEST");
 	if (rclcpp::spin_until_future_complete(node, future) == rclcpp::FutureReturnCode::SUCCESS) //If success
 		return(future.get()->poses);
 	else
 		RCLCPP_ERROR(node->get_logger(), "Failed to call service target_positions");
 	
-	RCLCPP_INFO(node->get_logger(), "AA TEST2");
 	return (future.get()->poses);
 }
 
@@ -108,6 +132,7 @@ int main(int argc, char * argv[])
 		if (rclcpp::ok() == false)
 		{
 			RCLCPP_ERROR(node->get_logger(), "Interrupted while waiting for the service. Exiting.");
+			rclcpp::shutdown();
 			return (1);
 		}
 	}
@@ -117,6 +142,11 @@ int main(int argc, char * argv[])
 		TgtPos = MakeRequest(node, request);
 
 	node->AddTgtToPtsList(TgtPos);
+	if (node->AddObstaclePtsList() == 1)
+	{
+		rclcpp::shutdown();
+		return (1);
+	}
 
 	rclcpp::shutdown();
 	return (0);

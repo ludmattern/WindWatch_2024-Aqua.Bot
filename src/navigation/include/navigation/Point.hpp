@@ -5,7 +5,6 @@ struct sPoint
 {
 	double x;
 	double y;
-	bool isTarget;
 };
 
 

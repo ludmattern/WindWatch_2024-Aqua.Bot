@@ -6,6 +6,9 @@
 #include "nav_msgs/msg/odometry.hpp"
 #include "Point.hpp"
 #include "sensors/srv/target_positions.hpp"
+#include "Polygon.hpp"
+
+#define OBSTACLE_FILE "src/navigation/ObstaclePos"
 
 class PathPlanningNode : public rclcpp::Node
 {
@@ -16,19 +19,18 @@ class PathPlanningNode : public rclcpp::Node
         rclcpp::Client<sensors::srv::TargetPositions>::SharedPtr TgtPos_Client_;
 
         void AddTgtToPtsList(geometry_msgs::msg::PoseArray TgtPos);
+        int AddObstaclePtsList(void);
 
     private:
 
-        std::vector<sPoint> PointList;
+        std::vector<sPoint> PointListTarget;
+        std::vector<sPolygon> ObstacleList;
         std::vector<std::vector<double>> Graph;
 
         //Subscription of targets positions and ship pos
         rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_Subscription_;
 
-
-        void SendServiceRequest(void);
         void AddShipToPtsList(nav_msgs::msg::Odometry ShipPos);
-        void AddObstaclePtsList(void);
 
         bool ShipAdded;
 };
