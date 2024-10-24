@@ -9,37 +9,67 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "action_manager_demo/action/action1.hpp"
-#include "action_manager_demo/action/action2.hpp"
+#include "action_manager_demo/action/navigation.hpp"
+#include "action_manager_demo/action/inspection.hpp"
+#include "action_manager_demo/action/stabilization.hpp"
+#include "action_manager_demo/action/rotation.hpp"
 
 class ActionManager : public rclcpp::Node
 {
 public:
-  using Action1 = action_manager_demo::action::Action1;
-  using Action2 = action_manager_demo::action::Action2;
-  using GoalHandleAction1 = rclcpp_action::ClientGoalHandle<Action1>;
-  using GoalHandleAction2 = rclcpp_action::ClientGoalHandle<Action2>;
+	using Navigation = action_manager_demo::action::Navigation;
+	using Inspection = action_manager_demo::action::Inspection;
+	using Stabilization = action_manager_demo::action::Stabilization;
+	using Rotation = action_manager_demo::action::Rotation;
+	using GoalHandleNavigation = rclcpp_action::ClientGoalHandle<Navigation>;
+	using GoalHandleInspection = rclcpp_action::ClientGoalHandle<Inspection>;
+	using GoalHandleStabilization = rclcpp_action::ClientGoalHandle<Stabilization>;
+	using GoalHandleRotation = rclcpp_action::ClientGoalHandle<Rotation>;
 
-  ActionManager();
+	ActionManager();
 
 private:
-  rclcpp_action::Client<Action1>::SharedPtr action1_client_;
-  rclcpp_action::Client<Action2>::SharedPtr action2_client_;
+	rclcpp_action::Client<Navigation>::SharedPtr navigation_client_;
+	rclcpp_action::Client<Inspection>::SharedPtr inspection_client_;
+	rclcpp_action::Client<Stabilization>::SharedPtr stabilization_client_;
+	rclcpp_action::Client<Rotation>::SharedPtr rotation_client_;
 
-  void send_action1_goal(int target_number);
-  void send_action2_goal(int target_number);
+	void send_navigation_goal(int target_number);
+	void send_inspection_goal(int target_number);
+	void send_stabilization_goal(int target_number);
+	void send_rotation_goal(int target_number);
 
-  void handle_action1_result(const GoalHandleAction1::WrappedResult & result);
-  void handle_action2_result(const GoalHandleAction2::WrappedResult & result);
+	void handle_navigation_result(const GoalHandleNavigation::WrappedResult & result);
+	void handle_inspection_result(const GoalHandleInspection::WrappedResult & result);
+	void handle_stabilization_result(const GoalHandleStabilization::WrappedResult & result);
+	void handle_rotation_result(const GoalHandleRotation::WrappedResult & result);
 
-  // Callbacks for feedback
-  void handle_action1_feedback(
-    GoalHandleAction1::SharedPtr,
-    const std::shared_ptr<const Action1::Feedback> feedback);
+	int sequence1_count_;          // Nombre de répétitions de la Séquence 1
+	const int sequence1_max_;      // Maximum de répétitions pour la Séquence 1
 
-  void handle_action2_feedback(
-    GoalHandleAction2::SharedPtr,
-    const std::shared_ptr<const Action2::Feedback> feedback);
+	enum class Sequence
+	{
+		SEQUENCE1,
+		SEQUENCE2,
+		DONE
+	} current_sequence_;            // Séquence actuelle
+
+// Callbacks for feedback
+void handle_navigation_feedback(
+	GoalHandleNavigation::SharedPtr,
+	const std::shared_ptr<const Navigation::Feedback> feedback);
+
+void handle_inspection_feedback(
+	GoalHandleInspection::SharedPtr,
+	const std::shared_ptr<const Inspection::Feedback> feedback);
+
+void handle_stabilization_feedback(
+	GoalHandleStabilization::SharedPtr,
+	const std::shared_ptr<const Stabilization::Feedback> feedback);
+
+void handle_rotation_feedback(
+	GoalHandleRotation::SharedPtr,
+	const std::shared_ptr<const Rotation::Feedback> feedback);
 };
 
 #endif  // ACTION_MANAGER_DEMO__ACTION_MANAGER_HPP_
