@@ -1,0 +1,12 @@
+# Rotation.action
+
+# Goal
+int32 target_number
+
+---
+# Result
+int32 final_count
+
+---
+# Feedback
+int32 current_number

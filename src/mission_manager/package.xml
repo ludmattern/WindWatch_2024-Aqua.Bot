@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>mission_manager</name>
-  <version>0.1.0</version>
-  <description>Package for managing mission coordination and target management nodes for Mission WindWatch 2024.</description>
-  <maintainer email="maintainer@windwatch.com">Your Name</maintainer>
-  <license>Apache 2.0</license>
+  <version>0.0.1</version>
+  <description>ROS 2 package demonstrating action manager with four actions</description>
 
-  <!-- Build dependencies -->
+  <maintainer email="you@example.com">Your Name</maintainer>
+  <license>Apache License 2.0</license>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <!-- Execution dependencies -->
   <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
   <depend>std_msgs</depend>
-  <depend>geometry_msgs</depend>
+
+  <build_depend>rosidl_default_generators</build_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
     <build_type>ament_cmake</build_type>
