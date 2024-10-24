@@ -2,18 +2,10 @@
 
 #include "visualization/visualization_node.hpp"
 
-geometry_msgs::msg::PointStamped LightHouse;
-geometry_msgs::msg::PointStamped Island1;
-geometry_msgs::msg::PointStamped Island2;
-geometry_msgs::msg::PointStamped RockIsland0;
-geometry_msgs::msg::PointStamped RockIsland1;
-geometry_msgs::msg::PointStamped Rock0;
-geometry_msgs::msg::PointStamped Rock1;
-geometry_msgs::msg::PointStamped Rock2;
-geometry_msgs::msg::PointStamped Rock3;
-
 VisualizationNode::VisualizationNode() : Node("visualization_node")
 {
+	Visual_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
+
     // Subscriptions
     //odometry_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
     //    "/mission/odometry", 10,
@@ -52,18 +44,9 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	VisualizationNode::setCoordinates(&Rock2, -44, -95);
 	VisualizationNode::setCoordinates(&Rock3, -30, -150);
 
-	point_timer_ = this->create_wall_timer(
-        std::chrono::milliseconds(100),  // 10 Hz
-        std::bind(&VisualizationNode::pointsPublisher, this));
+	VisualizationNode::pointsPublisher();
 
 	RCLCPP_INFO(this->get_logger(), "Visualization Node has started");
-}
-
-void VisualizationNode::setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z)
-{
-	Point->point.set__x(x);
-	Point->point.set__y(z);
-	Point->point.set__z(0);
 }
 
 void VisualizationNode::pointsPublisher()
@@ -79,10 +62,75 @@ void VisualizationNode::pointsPublisher()
 	rock_3_publisher_->publish(Rock3);
 }
 
+void VisualizationNode::setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z)
+{
+	Point->point.set__x(x);
+	Point->point.set__y(z);
+	Point->point.set__z(0);
+}
+
+void VisualizationNode::VisualRegister(geometry_msgs::msg::PoseArray msg)
+{
+    for (int i = 0; i < msg.poses.size(); ++i)
+	{
+		this->_markers[i].header.frame_id = "odom";
+		this->_markers[i].type = visualization_msgs::msg::Marker::CYLINDER;
+		this->_markers[i].action = visualization_msgs::msg::Marker::ADD;
+
+		this->_markers[i].pose.position.set__x(msg.poses[i].position.x);
+		this->_markers[i].pose.position.set__y(msg.poses[i].position.y);
+		this->_markers[i].pose.position.set__z(msg.poses[i].position.z);
+
+		this->_markers[i].scale.x = 5;
+		this->_markers[i].scale.y = 5;
+		this->_markers[i].scale.z = 5;
+
+		this->_markers[i].color.r = 0.5f;
+		this->_markers[i].color.g = 0.5f;
+		this->_markers[i].color.b = 0.5f;
+		this->_markers[i].color.a = 1.0f;
+
+		turbines_publisher_[i] = this->create_publisher<visualization_msgs::msg::Marker>(
+			"/minimap/turbine_marker_" + std::to_string(i), 10);
+		turbines_publisher_[i]->publish(this->_markers[i]);
+    }
+}
+
+geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<VisualizationNode> node, 
+	sensors::srv::TargetPositions::Request::SharedPtr request)
+{
+    //Send request to the service
+    rclcpp::Client<sensors::srv::TargetPositions>::FutureAndRequestId future = node->Visual_Client_->async_send_request(request);
+    //Wait until a response
+	//RCLCPP_INFO(node->get_logger(), "AA TEST");
+    if (rclcpp::spin_until_future_complete(node, future) == rclcpp::FutureReturnCode::SUCCESS) //If success
+		return(future.get()->poses);
+	else
+		RCLCPP_ERROR(node->get_logger(), "Failed to call service target_positions");
+    //RCLCPP_INFO(node->get_logger(), "AA TEST2");
+	return (future.get()->poses);
+}
+
 int main(int argc, char * argv[])
 {
     rclcpp::init(argc, argv);
     auto node = std::make_shared<VisualizationNode>();
+
+	// Log on the server
+    sensors::srv::TargetPositions::Request::SharedPtr request = std::make_shared<sensors::srv::TargetPositions::Request>();
+    while (node->Visual_Client_->wait_for_service(std::chrono::seconds(1)) == false)
+    {
+        if (rclcpp::ok() == false)
+        {
+            RCLCPP_ERROR(node->get_logger(), "Interrupted while waiting for the service. Exiting.");
+            return (1);
+        }
+    }
+    geometry_msgs::msg::PoseArray TgtPos;
+	while (TgtPos.poses.empty())
+		TgtPos = MakeRequest(node, request);
+	node->VisualRegister(TgtPos);
+
     rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;
