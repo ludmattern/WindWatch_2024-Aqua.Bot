@@ -5,6 +5,8 @@ struct sPoint
 {
 	double x;
 	double y;
+	bool IsGoal;
+	int PolygonId;
 };
 
 
