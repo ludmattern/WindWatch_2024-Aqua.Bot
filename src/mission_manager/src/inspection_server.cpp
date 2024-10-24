@@ -66,22 +66,22 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 	{
 		for(int i = 1; i <= goal->target_number; ++i)
 		{
-		// Vérifier si l'objectif a été annulé
-		if (goal_handle->is_canceling())
-		{
-			result->final_count = i - 1;
-			goal_handle->canceled(result);
-			RCLCPP_INFO(this->get_logger(), "Inspection goal canceled.");
-			return;
-		}
+			// Vérifier si l'objectif a été annulé
+			if (goal_handle->is_canceling())
+			{
+				result->final_count = i - 1;
+				goal_handle->canceled(result);
+				RCLCPP_INFO(this->get_logger(), "Inspection goal canceled.");
+				return;
+			}
 
-		// Simuler un travail en cours
-		loop_rate.sleep();
+			// Simuler un travail en cours
+			loop_rate.sleep();
 
-		// Publier le feedback
-		feedback->current_number = i;
-		goal_handle->publish_feedback(feedback);
-		RCLCPP_INFO(this->get_logger(), "Inspection Feedback: %d/%d", i, goal->target_number);
+			// Publier le feedback
+			feedback->current_number = i;
+			goal_handle->publish_feedback(feedback);
+			RCLCPP_INFO(this->get_logger(), "Inspection Feedback: %d/%d", i, goal->target_number);
 		}
 
 		// Indiquer que l'objectif est réussi
@@ -96,8 +96,8 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 	}
 }
 
-int main(int argc, char **argv)
-{
+	int main(int argc, char **argv)
+	{
 	rclcpp::init(argc, argv);
 	rclcpp::spin(std::make_shared<InspectionServer>());
 	rclcpp::shutdown();

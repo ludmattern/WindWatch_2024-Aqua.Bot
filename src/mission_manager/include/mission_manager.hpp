@@ -1,5 +1,5 @@
-#ifndef ACTION_MANAGER_DEMO__ACTION_MANAGER_HPP_
-#define ACTION_MANAGER_DEMO__ACTION_MANAGER_HPP_
+#ifndef MISSION_MANAGER_DEMO__MISSION_MANAGER_HPP_
+#define MISSION_MANAGER_DEMO__MISSION_MANAGER_HPP_
 
 #include <memory>
 #include <string>
@@ -8,19 +8,20 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "action_manager_demo/action/navigation.hpp"
-#include "action_manager_demo/action/inspection.hpp"
-#include "action_manager_demo/action/stabilization.hpp"
-#include "action_manager_demo/action/rotation.hpp"
+#include "mission_manager/action/inspection.hpp"
+#include "mission_manager/action/navigation.hpp"
+#include "mission_manager/action/rotation.hpp"
+#include "mission_manager/action/stabilization.hpp"
 
-class ActionManager : public rclcpp::Node
+
+class MissionManager : public rclcpp::Node
 {
 	public:
 	// Types d'action
-	using Navigation = action_manager_demo::action::Navigation;
-	using Inspection = action_manager_demo::action::Inspection;
-	using Stabilization = action_manager_demo::action::Stabilization;
-	using Rotation = action_manager_demo::action::Rotation;
+	using Navigation = mission_manager::action::Navigation;
+	using Inspection = mission_manager::action::Inspection;
+	using Stabilization = mission_manager::action::Stabilization;
+	using Rotation = mission_manager::action::Rotation;
 
 	// Définition des types
 	template<typename ActionT>
@@ -30,9 +31,9 @@ class ActionManager : public rclcpp::Node
 	using ActionClient = rclcpp_action::Client<ActionT>;
 
 	/**
-	 * @brief Constructeur par défaut de la classe ActionManager.
+	 * @brief Constructeur par défaut de la classe MissionManager.
 	 */
-	ActionManager();
+	MissionManager();
 
 	private:
 	// Énumération des séquences
@@ -129,4 +130,4 @@ class ActionManager : public rclcpp::Node
 	void handle_rotation_result(const GoalHandle<Rotation>::WrappedResult & result);
 };
 
-#endif  // ACTION_MANAGER_DEMO__ACTION_MANAGER_HPP_
+#endif  // MISSION_MANAGER_DEMO__MISSION_MANAGER_HPP_

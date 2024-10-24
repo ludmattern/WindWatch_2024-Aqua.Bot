@@ -1,10 +1,10 @@
-// src/action_manager.cpp
+// src/mission_manager.cpp
 
-#include "action_manager.hpp"
+#include "mission_manager.hpp"
 
 using namespace std::chrono_literals;
 
-ActionManager::ActionManager(): Node("action_manager"),  sequence1_iteration_count_(0),  sequence1_max_iterations_(3),  current_sequence_(Sequence::SEQUENCE1)
+MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_count_(0),  sequence1_max_iterations_(3),  current_sequence_(Sequence::SEQUENCE1)
 {
 	// Initialisation des clients d'actions
 	navigation_client_ = create_action_client<Navigation>("navigation");
@@ -31,31 +31,31 @@ ActionManager::ActionManager(): Node("action_manager"),  sequence1_iteration_cou
 	send_navigation_goal(1);
 }
 
-void ActionManager::send_navigation_goal(int target_number)
+void MissionManager::send_navigation_goal(int target_number)
 {
 	send_goal<Navigation>(target_number, navigation_client_, "navigation",
-		std::bind(&ActionManager::handle_navigation_result, this, std::placeholders::_1));
+		std::bind(&MissionManager::handle_navigation_result, this, std::placeholders::_1));
 }
 
-void ActionManager::send_inspection_goal(int target_number)
+void MissionManager::send_inspection_goal(int target_number)
 {
 	send_goal<Inspection>(target_number, inspection_client_, "inspection",
-		std::bind(&ActionManager::handle_inspection_result, this, std::placeholders::_1));
+		std::bind(&MissionManager::handle_inspection_result, this, std::placeholders::_1));
 }
 
-void ActionManager::send_stabilization_goal(int target_number)
+void MissionManager::send_stabilization_goal(int target_number)
 {
 	send_goal<Stabilization>(target_number, stabilization_client_, "stabilization",
-		std::bind(&ActionManager::handle_stabilization_result, this, std::placeholders::_1));
+		std::bind(&MissionManager::handle_stabilization_result, this, std::placeholders::_1));
 }
 
-void ActionManager::send_rotation_goal(int target_number)
+void MissionManager::send_rotation_goal(int target_number)
 {
 	send_goal<Rotation>(target_number, rotation_client_, "rotation",
-		std::bind(&ActionManager::handle_rotation_result, this, std::placeholders::_1));
+		std::bind(&MissionManager::handle_rotation_result, this, std::placeholders::_1));
 }
 
-void ActionManager::handle_navigation_result(const GoalHandle<Navigation>::WrappedResult & result)
+void MissionManager::handle_navigation_result(const GoalHandle<Navigation>::WrappedResult & result)
 {
 	handle_result<Navigation>(result, "Navigation");
 
@@ -68,7 +68,7 @@ void ActionManager::handle_navigation_result(const GoalHandle<Navigation>::Wrapp
 	}
 }
 
-void ActionManager::handle_inspection_result(const GoalHandle<Inspection>::WrappedResult & result)
+void MissionManager::handle_inspection_result(const GoalHandle<Inspection>::WrappedResult & result)
 {
 	handle_result<Inspection>(result, "Inspection");
 
@@ -90,7 +90,7 @@ void ActionManager::handle_inspection_result(const GoalHandle<Inspection>::Wrapp
 	}
 }
 
-void ActionManager::handle_stabilization_result(const GoalHandle<Stabilization>::WrappedResult & result)
+void MissionManager::handle_stabilization_result(const GoalHandle<Stabilization>::WrappedResult & result)
 {
 	handle_result<Stabilization>(result, "Stabilization");
 
@@ -98,7 +98,7 @@ void ActionManager::handle_stabilization_result(const GoalHandle<Stabilization>:
 		send_rotation_goal(10);
 }
 
-void ActionManager::handle_rotation_result(const GoalHandle<Rotation>::WrappedResult & result)
+void MissionManager::handle_rotation_result(const GoalHandle<Rotation>::WrappedResult & result)
 {
 	handle_result<Rotation>(result, "Rotation");
 
@@ -113,7 +113,7 @@ void ActionManager::handle_rotation_result(const GoalHandle<Rotation>::WrappedRe
 int main(int argc, char **argv)
 {
 	rclcpp::init(argc, argv);
-	auto node = std::make_shared<ActionManager>();
+	auto node = std::make_shared<MissionManager>();
 	rclcpp::spin(node);
 	rclcpp::shutdown();
 	return 0;
