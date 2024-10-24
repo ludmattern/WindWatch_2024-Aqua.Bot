@@ -15,6 +15,8 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(rosidl_typesupport_c REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(ament_cmake_python REQUIRED)
 
 # Include directories
 include_directories(include)
@@ -47,6 +49,16 @@ install(TARGETS
 # Install other necessary folders
 install(DIRECTORY launch config
   DESTINATION share/${PROJECT_NAME}
+)
+
+# Installer les scripts Python
+ament_python_install_package(src)
+
+# Cette section copie les scripts Python dans le répertoire d'installation
+install(
+  PROGRAMS
+    src/camera_processing_py_node.py  # Le chemin vers votre node Python
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 # ament package macro
