@@ -1,15 +1,19 @@
-// obstacle_avoidance_node.cpp
-
 #include "visualization/visualization_node.hpp"
+
+nav_msgs::msg::Path Path;
 
 VisualizationNode::VisualizationNode() : Node("visualization_node")
 {
 	Visual_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
 
     // Subscriptions
-    //odometry_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
-    //    "/mission/odometry", 10,
-    //    std::bind(&VisualizationNode::odometryCallback, this, std::placeholders::_1));
+    odometry_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
+        "/mission/odometry", 10,
+        std::bind(&VisualizationNode::odometryCallback, this, std::placeholders::_1));
+
+	camera_subscription_ = this->create_subscription<std_msgs::msg::Float64>(
+		"/aquabot/thrusters/main_camera_sensor/pos", 10,
+		std::bind(&VisualizationNode::cameraCallback, this, std::placeholders::_1));
 
 	// Publishers
     light_house_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/light_house", 10);
@@ -21,6 +25,8 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	rock_1_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/rock_1", 10);
 	rock_2_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/rock_2", 10);
 	rock_3_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/rock_3", 10);
+	camera_publisher = this->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>("/minimap/camera", 10);
+    path_publisher_ = this->create_publisher<nav_msgs::msg::Path>("/minimap/path", 10);
 
 	// Fixed frame name = odom
 	LightHouse.header.frame_id = "odom";
@@ -32,6 +38,8 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	Rock1.header.frame_id = "odom";
 	Rock2.header.frame_id = "odom";
 	Rock3.header.frame_id = "odom";
+	Camera.header.frame_id = "odom";
+    Path.header.frame_id = "odom";
 
 	// Coordinates reference on Discord
 	VisualizationNode::setCoordinates(&LightHouse, 120, -50);
@@ -44,13 +52,66 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	VisualizationNode::setCoordinates(&Rock2, -44, -95);
 	VisualizationNode::setCoordinates(&Rock3, -30, -150);
 
+	sleep(2);
+
 	VisualizationNode::pointsPublisher();
 
 	RCLCPP_INFO(this->get_logger(), "Visualization Node has started");
 }
 
+void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPtr msg)
+{
+	Camera.pose.pose.position.x = msg.get()->pose.pose.position.x;
+	Camera.pose.pose.position.y = msg.get()->pose.pose.position.y;
+	Camera.pose.pose.position.z = msg.get()->pose.pose.position.z;
+
+	camera_publisher->publish(Camera);
+	//geometry_msgs::msg::PoseStamped PoseStamped;
+//
+	//PoseStamped.pose.position.x = msg.get()->pose.pose.position.x;
+	//PoseStamped.pose.position.y = msg.get()->pose.pose.position.y;
+	//PoseStamped.pose.position.z = msg.get()->pose.pose.position.z;
+//
+	//Path.poses.push_back(PoseStamped);
+//
+	//path_publisher_->publish(Path);
+}
+
+void VisualizationNode::cameraCallback(const std_msgs::msg::Float64::SharedPtr msg)
+{
+    //Camera.pose.pose.orientation.z = -msg.get()->data;
+//
+    //camera_publisher->publish(Camera);
+
+	   // Position de la cible vers laquelle la caméra doit faire face
+    double target_x = 120 /* coordonnée x de la cible */;
+    double target_y = -50 /* coordonnée y de la cible */;
+
+    // Calculez la direction vers la cible
+    double delta_x = target_x - Camera.pose.pose.position.x;
+    double delta_y = target_y - Camera.pose.pose.position.y;
+
+    // Calculez l'angle en radians
+    double angle_radians = atan2(delta_y, delta_x);
+
+    // Définir l'orientation de la caméra
+    tf2::Quaternion q;
+    q.setRPY(0, 0, angle_radians); // RPY : roll, pitch, yaw (ici, roll et pitch sont 0)
+
+    // Appliquer la rotation
+    Camera.pose.pose.orientation.x = q.x();
+    Camera.pose.pose.orientation.y = q.y();
+    Camera.pose.pose.orientation.z = q.z();
+    Camera.pose.pose.orientation.w = q.w();
+
+    // Publier la pose de la caméra
+    camera_publisher->publish(Camera);
+}
+
 void VisualizationNode::pointsPublisher()
 {
+	RCLCPP_INFO(this->get_logger(), "Publishing");
+
 	light_house_publisher_->publish(LightHouse);
 	island_1_publisher_->publish(Island1);
 	island_2_publisher_->publish(Island2);
@@ -93,6 +154,15 @@ void VisualizationNode::VisualRegister(geometry_msgs::msg::PoseArray msg)
 		turbines_publisher_[i] = this->create_publisher<visualization_msgs::msg::Marker>(
 			"/minimap/turbine_marker_" + std::to_string(i), 10);
 		turbines_publisher_[i]->publish(this->_markers[i]);
+
+        geometry_msgs::msg::PoseStamped PoseStamped;
+
+        PoseStamped.header.frame_id = "odom";
+        PoseStamped.pose.position.set__x(msg.poses[i].position.x);
+        PoseStamped.pose.position.set__y(msg.poses[i].position.y);
+        PoseStamped.pose.position.set__z(msg.poses[i].position.z);
+
+        Path.poses.push_back(PoseStamped);
     }
 }
 
@@ -102,12 +172,10 @@ geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<VisualizationNode> nod
     //Send request to the service
     rclcpp::Client<sensors::srv::TargetPositions>::FutureAndRequestId future = node->Visual_Client_->async_send_request(request);
     //Wait until a response
-	//RCLCPP_INFO(node->get_logger(), "AA TEST");
     if (rclcpp::spin_until_future_complete(node, future) == rclcpp::FutureReturnCode::SUCCESS) //If success
 		return(future.get()->poses);
 	else
 		RCLCPP_ERROR(node->get_logger(), "Failed to call service target_positions");
-    //RCLCPP_INFO(node->get_logger(), "AA TEST2");
 	return (future.get()->poses);
 }
 
