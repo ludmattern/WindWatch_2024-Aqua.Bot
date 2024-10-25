@@ -1,6 +1,7 @@
 #include "visualization/visualization_node.hpp"
 
-nav_msgs::msg::Path Path;
+nav_msgs::msg::Path FullPath;
+nav_msgs::msg::Path ActualPath;
 
 VisualizationNode::VisualizationNode() : Node("visualization_node")
 {
@@ -26,7 +27,8 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	rock_2_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/rock_2", 10);
 	rock_3_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/rock_3", 10);
 	camera_publisher = this->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>("/minimap/camera", 10);
-    path_publisher_ = this->create_publisher<nav_msgs::msg::Path>("/minimap/path", 10);
+	actual_path_publisher_ = this->create_publisher<nav_msgs::msg::Path>("/minimap/path/actual", 10);
+    full_path_publisher_ = this->create_publisher<nav_msgs::msg::Path>("/minimap/path/full", 10);
 
 	// Fixed frame name = odom
 	LightHouse.header.frame_id = "odom";
@@ -39,7 +41,8 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	Rock2.header.frame_id = "odom";
 	Rock3.header.frame_id = "odom";
 	Camera.header.frame_id = "odom";
-    Path.header.frame_id = "odom";
+    FullPath.header.frame_id = "odom";
+	ActualPath.header.frame_id = "odom";
 
 	// Coordinates reference on Discord
 	VisualizationNode::setCoordinates(&LightHouse, 120, -50);
@@ -54,9 +57,32 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 
 	sleep(2);
 
+	// Test path
+	VisualizationNode::addPathPoint(FullPath, 0, 0);
+	VisualizationNode::addPathPoint(FullPath, 219, 0);
+	VisualizationNode::addPathPoint(FullPath, 219, 290);
+	VisualizationNode::addPathPoint(FullPath, -233, 290);
+	VisualizationNode::addPathPoint(FullPath, -233, 27);
+	VisualizationNode::addPathPoint(FullPath, -270, -187);
+	
+	VisualizationNode::addPathPoint(ActualPath, 0, 0);
+	VisualizationNode::addPathPoint(ActualPath, 219, 290);
+
 	VisualizationNode::pointsPublisher();
 
 	RCLCPP_INFO(this->get_logger(), "Visualization Node has started");
+}
+
+void VisualizationNode::addPathPoint(nav_msgs::msg::Path& path, double x, double y)
+{
+	geometry_msgs::msg::PoseStamped newPos;
+
+	newPos.header.frame_id = "odom";
+	newPos.pose.position.x = x;
+	newPos.pose.position.y = y;
+	newPos.pose.position.z = 0;
+
+	path.poses.push_back(newPos);
 }
 
 void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPtr msg)
@@ -66,6 +92,14 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
 	Camera.pose.pose.position.z = msg.get()->pose.pose.position.z;
 
 	camera_publisher->publish(Camera);
+
+	geometry_msgs::msg::PoseStamped boatPos;
+	boatPos.header.frame_id = "odom";
+	boatPos.pose = msg.get()->pose.pose;
+
+	ActualPath.poses.front().pose = msg.get()->pose.pose;
+	actual_path_publisher_->publish(ActualPath);
+
 	//geometry_msgs::msg::PoseStamped PoseStamped;
 //
 	//PoseStamped.pose.position.x = msg.get()->pose.pose.position.x;
@@ -121,6 +155,8 @@ void VisualizationNode::pointsPublisher()
 	rock_1_publisher_->publish(Rock1);
 	rock_2_publisher_->publish(Rock2);
 	rock_3_publisher_->publish(Rock3);
+
+	full_path_publisher_->publish(FullPath);
 }
 
 void VisualizationNode::setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z)
@@ -155,14 +191,14 @@ void VisualizationNode::VisualRegister(geometry_msgs::msg::PoseArray msg)
 			"/minimap/turbine_marker_" + std::to_string(i), 10);
 		turbines_publisher_[i]->publish(this->_markers[i]);
 
-        geometry_msgs::msg::PoseStamped PoseStamped;
-
-        PoseStamped.header.frame_id = "odom";
-        PoseStamped.pose.position.set__x(msg.poses[i].position.x);
-        PoseStamped.pose.position.set__y(msg.poses[i].position.y);
-        PoseStamped.pose.position.set__z(msg.poses[i].position.z);
-
-        Path.poses.push_back(PoseStamped);
+       // geometry_msgs::msg::PoseStamped PoseStamped;
+//
+       // PoseStamped.header.frame_id = "odom";
+       // PoseStamped.pose.position.set__x(msg.poses[i].position.x);
+       // PoseStamped.pose.position.set__y(msg.poses[i].position.y);
+       // PoseStamped.pose.position.set__z(msg.poses[i].position.z);
+//
+       // Path.poses.push_back(PoseStamped);
     }
 }
 

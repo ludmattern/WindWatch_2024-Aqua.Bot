@@ -30,6 +30,7 @@ private:
 	void cameraCallback(const std_msgs::msg::Float64::SharedPtr msg);
 
 	void pointsPublisher();
+	void addPathPoint(nav_msgs::msg::Path& path, double x, double y); // Test purpose function
 	void setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z);
 
     // Subscribtions
@@ -48,7 +49,8 @@ private:
 	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_2_publisher_;
 	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_3_publisher_;
 	rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr camera_publisher;
-	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr path_publisher_;
+	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr full_path_publisher_;
+	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr actual_path_publisher_;
 
 	// Obstacles
 	geometry_msgs::msg::PointStamped LightHouse;
