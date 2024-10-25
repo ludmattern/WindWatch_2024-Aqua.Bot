@@ -38,6 +38,8 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 			//attendre la reponse et stocker le prochain itinéraire (path_)
 
 	// Commencer la Séquence 1 en envoyant Navigation avec le prochain objectif (current_path_)
+
+	// temporaire, a remplacer par le service et son path
 	current_path_.header.frame_id = "map";
 	current_path_.poses.resize(3);
 	current_path_.poses[0].pose.position.x = 600.0;
@@ -52,7 +54,7 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 	current_path_.poses[2].pose.position.y = -100.0;
 	current_path_.poses[2].pose.orientation.w = 1.0;
 
-	//attendre 10 secondes
+	//attendre 20 secondes, fenetre gazebo (a retirer a la fin)
 	std::this_thread::sleep_for(20s);
 
 	send_navigation_goal(current_path_);
@@ -95,7 +97,7 @@ void MissionManager::handle_navigation_result(const GoalHandle<Navigation>::Wrap
 	if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
 	{
 		if (current_sequence_ == Sequence::SEQUENCE1)
-			send_inspection_goal(3);
+			send_inspection_goal(10);
 		else if (current_sequence_ == Sequence::SEQUENCE2)
 			send_stabilization_goal(3);
 	}

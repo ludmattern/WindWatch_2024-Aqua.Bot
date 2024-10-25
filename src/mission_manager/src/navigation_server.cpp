@@ -95,58 +95,58 @@ std::thread(
 
 void NavigationServer::execute(const std::shared_ptr<GoalHandleNavigation> goal_handle)
 {
-RCLCPP_INFO(this->get_logger(), "Executing Navigation goal...");
+	RCLCPP_INFO(this->get_logger(), "Executing Navigation goal...");
 
-// Obtenir l'itinéraire depuis le goal
-auto goal = goal_handle->get_goal();
-path_ = goal->path.poses;
-current_waypoint_index_ = 0;
-goal_cancelled_ = false;
+	// Obtenir l'itinéraire depuis le goal
+	auto goal = goal_handle->get_goal();
+	path_ = goal->path.poses;
+	current_waypoint_index_ = 0;
+	goal_cancelled_ = false;
 
-// Initialisation du feedback et du résultat
-auto feedback = std::make_shared<Navigation::Feedback>();
-auto result = std::make_shared<Navigation::Result>();
+	// Initialisation du feedback et du résultat
+	auto feedback = std::make_shared<Navigation::Feedback>();
+	auto result = std::make_shared<Navigation::Result>();
 
-// Démarrer la boucle de contrôle
-rclcpp::Rate rate(control_loop_rate_);
-while (rclcpp::ok())
-{
-	if (goal_handle->is_canceling())
+	// Démarrer la boucle de contrôle
+	rclcpp::Rate rate(control_loop_rate_);
+	while (rclcpp::ok())
 	{
-	goal_cancelled_ = true;
-	result->success = false;
-	goal_handle->canceled(result);
-	RCLCPP_INFO(this->get_logger(), "Navigation goal canceled.");
-	return;
+		if (goal_handle->is_canceling())
+		{
+		goal_cancelled_ = true;
+		result->success = false;
+		goal_handle->canceled(result);
+		RCLCPP_INFO(this->get_logger(), "Navigation goal canceled.");
+		return;
+		}
+
+		if (!odom_received_)
+		{
+		RCLCPP_WARN(this->get_logger(), "Waiting for odometry...");
+		rate.sleep();
+		continue;
+		}
+
+		controlLoop(goal_handle);
+
+		if (current_waypoint_index_ >= path_.size())
+		{
+		// Arrêter le bateau en envoyant une commande nulle
+		auto cmd_msg = geometry_msgs::msg::Twist();
+		cmd_publisher_->publish(cmd_msg);
+
+		result->success = true;
+		goal_handle->succeed(result);
+		RCLCPP_INFO(this->get_logger(), "Navigation goal succeeded.");
+		return;
+		}
+
+		// Mettre à jour le feedback
+		feedback->progress = static_cast<float>(current_waypoint_index_) / path_.size() * 100.0f;
+		goal_handle->publish_feedback(feedback);
+
+		rate.sleep();
 	}
-
-	if (!odom_received_)
-	{
-	RCLCPP_WARN(this->get_logger(), "Waiting for odometry...");
-	rate.sleep();
-	continue;
-	}
-
-	controlLoop(goal_handle);
-
-	if (current_waypoint_index_ >= path_.size())
-	{
-	// Arrêter le bateau en envoyant une commande nulle
-	auto cmd_msg = geometry_msgs::msg::Twist();
-	cmd_publisher_->publish(cmd_msg);
-
-	result->success = true;
-	goal_handle->succeed(result);
-	RCLCPP_INFO(this->get_logger(), "Navigation goal succeeded.");
-	return;
-	}
-
-	// Mettre à jour le feedback
-	feedback->progress = static_cast<float>(current_waypoint_index_) / path_.size() * 100.0f;
-	goal_handle->publish_feedback(feedback);
-
-	rate.sleep();
-}
 }
 
 void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> goal_handle)
@@ -232,14 +232,14 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
     double max_angular_speed = 0.785398; // rad/s (45 degrés/s)
     angular_speed = std::clamp(angular_speed, -max_angular_speed, max_angular_speed);
 
-    // Calcul de la distance parcourue vers le waypoint
+    // distance parcourue vers le waypoint
     double distance_traveled = initial_distance_to_goal_ - distance_to_goal;
 
-    // Définir les distances d'accélération et de décélération
+    // distances d'accélération et de décélération
     double acceleration_distance = 80.0; // mètres
     double slow_down_distance = 80.0;    // mètres
 
-    // Définir les vitesses minimale et maximale
+    // vitesses minimale et maximale
     double min_linear_speed = 0.5; // m/s
     double max_linear_speed = 6.0; // m/s (12 nœuds)
 
