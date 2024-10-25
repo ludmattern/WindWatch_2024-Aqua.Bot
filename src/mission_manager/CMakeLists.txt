@@ -50,6 +50,9 @@ ament_target_dependencies(rotation_server rclcpp rclcpp_action std_msgs rosidl_d
 add_executable(mission_manager_node src/mission_manager.cpp)
 ament_target_dependencies(mission_manager_node rclcpp rclcpp_action std_msgs rosidl_default_runtime)
 
+add_executable(target_manager_node src/target_manager_node.cpp)
+ament_target_dependencies(target_manager_node rclcpp rclcpp_action std_msgs rosidl_default_runtime)
+
 # Obtenir la cible de typesupport pour lier les bibliothèques générées
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
@@ -67,6 +70,7 @@ install(TARGETS
   stabilization_server
   rotation_server
   mission_manager_node
+  target_manager_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -81,8 +85,8 @@ install(DIRECTORY action
 )
 
 # Installer les fichiers de lancement
-install(DIRECTORY launch/
-  DESTINATION share/${PROJECT_NAME}/
+install(DIRECTORY launch config
+  DESTINATION share/${PROJECT_NAME}
 )
 
 # Finaliser le package

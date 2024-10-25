@@ -1,6 +1,6 @@
 // src/inspection_server.cpp
 
-#include "inspection_server.hpp"
+#include "mission_manager/inspection_server.hpp"
 
 #include <memory>
 #include <chrono>

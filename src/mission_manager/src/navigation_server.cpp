@@ -1,6 +1,6 @@
 // src/navigation_server.cpp
 
-#include "navigation_server.hpp"
+#include "mission_manager/navigation_server.hpp"
 
 #include <memory>
 #include <chrono>

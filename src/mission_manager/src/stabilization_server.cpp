@@ -1,6 +1,6 @@
 // src/stabilization_server.cpp
 
-#include "stabilization_server.hpp"
+#include "mission_manager/stabilization_server.hpp"
 
 #include <memory>
 #include <chrono>

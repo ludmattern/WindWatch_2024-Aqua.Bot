@@ -7,7 +7,7 @@ Subscribed Topics:
 /mission/objective_positions: Positions of the targets (wind turbines) to be reached.
 /mission/avoidance_course: Suggested avoidance paths from the obstacle_avoidance_node.
 /aqua_bot/ais_sensor/vessel_positions: Positions of nearby vessels for collision avoidance.
-/mission/mission_goal: Overall mission goals and parameters set by the mission_coordinator_node.
+/mission/mission_goal: Overall mission goals and parameters set by the mission_manager_node.
 /aqua_bot/ais_sensor/obstacle_positions: Positions of static obstacles (e.g., rocks, islands, lighthouses).
 Published Topics:
 /navigation/desired_trajectory: The planned trajectory for the Aqua.Bot to follow.

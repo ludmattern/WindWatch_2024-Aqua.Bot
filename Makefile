@@ -64,42 +64,10 @@ fclean:
 .PHONY: re
 re: fclean build run
 
-.PHONY: perception
-perception:
-	@echo "\e[32m[INFO] Launching the perception node...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run sensors camera_processing_node
-
-.PHONY: navigation
-navigation:
-	@echo "\e[32m[INFO] Launching the navigation node...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run navigation navigation_node
-
-.PHONY: obstacle_avoidance
-obstacle_avoidance:
-	@echo "\e[32m[INFO] Launching the obstacle avoidance node...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run navigation obstacle_avoidance_node
-
-.PHONY: mission_coordinator
-mission_coordinator:
-	@echo "\e[32m[INFO] Launching the mission coordinator node...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run mission_manager mission_coordinator_node
-
 .PHONY: rviz
 rviz:
 	@echo "\e[32m[INFO] Launching RViz for visualization...\e[0m"
 	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 launch visualization rviz.launch.py > /dev/null &
-
-.PHONY: teleop
-teleop:
-	@echo "\e[32m[INFO] Manual control via teleoperation...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run aquabot_python teleop_keyboard.py
-
-.PHONY: debug
-debug:
-	@echo "\e[32m[INFO] Launching in Debug mode (Run, RViz, and RQT)...\e[0m"
-	$(MAKE) run
-	$(MAKE) rviz
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && rqt &
 
 .PHONY: add_shell_source
 add_shell_source:
