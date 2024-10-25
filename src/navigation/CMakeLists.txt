@@ -17,20 +17,17 @@ include_directories(include)
 # Add executables
 add_executable(path_planning_node src/path_planning_node.cpp)
 add_executable(obstacle_avoidance_node src/obstacle_avoidance_node.cpp)
-add_executable(control_node src/control_node.cpp)
 add_executable(propulsion_control_node src/propulsion_control_node.cpp)
 
 # Specify dependencies for executables
 ament_target_dependencies(path_planning_node rclcpp std_msgs geometry_msgs sensor_msgs nav_msgs)
 ament_target_dependencies(obstacle_avoidance_node rclcpp sensor_msgs)
-ament_target_dependencies(control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs nav_msgs)
 ament_target_dependencies(propulsion_control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs)
 
 # Install targets
 install(TARGETS
   path_planning_node
   obstacle_avoidance_node
-  control_node
   propulsion_control_node
   DESTINATION lib/${PROJECT_NAME}
 )

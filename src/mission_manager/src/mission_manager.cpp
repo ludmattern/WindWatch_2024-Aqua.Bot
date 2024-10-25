@@ -38,6 +38,23 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 			//attendre la reponse et stocker le prochain itinéraire (path_)
 
 	// Commencer la Séquence 1 en envoyant Navigation avec le prochain objectif (current_path_)
+	current_path_.header.frame_id = "map";
+	current_path_.poses.resize(3);
+	current_path_.poses[0].pose.position.x = 600.0;
+	current_path_.poses[0].pose.position.y = -600.0;
+	current_path_.poses[0].pose.orientation.w = 1.0;
+
+	current_path_.poses[1].pose.position.x = 550.0;
+	current_path_.poses[1].pose.position.y = -550.0;
+	current_path_.poses[1].pose.orientation.w = 1.0;
+
+	current_path_.poses[2].pose.position.x = 300.0;
+	current_path_.poses[2].pose.position.y = -100.0;
+	current_path_.poses[2].pose.orientation.w = 1.0;
+
+	//attendre 10 secondes
+	std::this_thread::sleep_for(20s);
+
 	send_navigation_goal(current_path_);
 }
 

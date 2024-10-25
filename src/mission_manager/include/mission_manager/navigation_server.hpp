@@ -50,6 +50,7 @@ private:
   // PID Errors
   double prev_error_linear_, prev_error_angular_;
   double integral_error_linear_, integral_error_angular_;
+  double initial_distance_to_goal_;
 
   // Callbacks and Methods
   rclcpp_action::GoalResponse handle_goal(
