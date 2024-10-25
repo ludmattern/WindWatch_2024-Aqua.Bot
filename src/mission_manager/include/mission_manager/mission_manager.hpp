@@ -30,9 +30,6 @@ class MissionManager : public rclcpp::Node
 	template<typename ActionT>
 	using ActionClient = rclcpp_action::Client<ActionT>;
 
-	/**
-	 * @brief Constructeur par défaut de la classe MissionManager.
-	 */
 	MissionManager();
 
 	private:
@@ -53,6 +50,7 @@ class MissionManager : public rclcpp::Node
 	int sequence1_iteration_count_;        ///< Nombre d'itérations de la Séquence 1
 	const int sequence1_max_iterations_;   ///< Nombre maximal d'itérations pour la Séquence 1
 	Sequence current_sequence_;            ///< Séquence actuelle
+	nav_msgs::msg::Path current_path_;	   ///< current path
 
 	// Création des clients d'actions
 	template<typename ActionT>
@@ -98,7 +96,7 @@ class MissionManager : public rclcpp::Node
 		client->async_send_goal(goal_msg, send_goal_options);
 	}
 
-	void send_navigation_goal(int target_number);
+	void send_navigation_goal(const nav_msgs::msg::Path & path);
 	void send_inspection_goal(int target_number);
 	void send_stabilization_goal(int target_number);
 	void send_rotation_goal(int target_number);
@@ -110,7 +108,7 @@ class MissionManager : public rclcpp::Node
 		switch (result.code)
 		{
 			case rclcpp_action::ResultCode::SUCCEEDED:
-				RCLCPP_INFO(this->get_logger(), "%s succeeded with final count = %d", action_name.c_str(), result.result->final_count);
+				RCLCPP_INFO(this->get_logger(), "%s succeeded with final count = %d", action_name.c_str(), true);
 				break;
 			case rclcpp_action::ResultCode::ABORTED:
 				RCLCPP_ERROR(this->get_logger(), "%s was aborted", action_name.c_str());

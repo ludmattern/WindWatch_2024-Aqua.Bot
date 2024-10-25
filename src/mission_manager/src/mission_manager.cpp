@@ -6,6 +6,8 @@ using namespace std::chrono_literals;
 
 MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_count_(0),  sequence1_max_iterations_(3),  current_sequence_(Sequence::SEQUENCE1)
 {
+	current_path_ = nav_msgs::msg::Path();
+
 	// Initialisation des clients d'actions
 	navigation_client_ = create_action_client<Navigation>("navigation");
 	inspection_client_ = create_action_client<Inspection>("inspection");
@@ -27,14 +29,28 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 
 	RCLCPP_INFO(this->get_logger(), "All action servers are available.");
 
-	// Démarrer la séquence en envoyant le premier goal
-	send_navigation_goal(1);
+	// Attendre que tout le monde soit prêt
+		//boucle branchee sur un topic
+
+	// Demander le nombre d'objectifs à atteindre
+		//service pour demander le nombre d'objectifs et le prochain itinéraire
+			//attendre la réponse et changer sequence1_max_iterations_
+			//attendre la reponse et stocker le prochain itinéraire (path_)
+
+	// Commencer la Séquence 1 en envoyant Navigation avec le prochain objectif (current_path_)
+	send_navigation_goal(current_path_);
 }
 
-void MissionManager::send_navigation_goal(int target_number)
+void MissionManager::send_navigation_goal(const nav_msgs::msg::Path & path)
 {
-	send_goal<Navigation>(target_number, navigation_client_, "navigation",
-		std::bind(&MissionManager::handle_navigation_result, this, std::placeholders::_1));
+	auto goal_msg = Navigation::Goal();
+	goal_msg.path = path;
+
+	// Envoyer le goal comme précédemment, en utilisant le client d'action
+	auto send_goal_options = rclcpp_action::Client<Navigation>::SendGoalOptions();
+	send_goal_options.result_callback = std::bind(&MissionManager::handle_navigation_result, this, std::placeholders::_1);
+
+	navigation_client_->async_send_goal(goal_msg, send_goal_options);
 }
 
 void MissionManager::send_inspection_goal(int target_number)
@@ -78,14 +94,14 @@ void MissionManager::handle_inspection_result(const GoalHandle<Inspection>::Wrap
 	{
 		sequence1_iteration_count_++;
 		if (sequence1_iteration_count_ < sequence1_max_iterations_)
-			send_navigation_goal(5);
+			send_navigation_goal(current_path_);
 		else
 		{
 			// Transition vers la Séquence 2
 			current_sequence_ = Sequence::SEQUENCE2;
 			RCLCPP_INFO(this->get_logger(), "Transitioning to SEQUENCE2");
 			// Commencer la Séquence 2 en envoyant Navigation
-			send_navigation_goal(5);
+			send_navigation_goal(current_path_);
 		}
 	}
 }

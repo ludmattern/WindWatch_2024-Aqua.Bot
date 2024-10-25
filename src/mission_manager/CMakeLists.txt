@@ -10,6 +10,11 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rosidl_default_runtime REQUIRED)
 
@@ -19,7 +24,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "action/Inspection.action"
   "action/Stabilization.action"
   "action/Rotation.action"
-  DEPENDENCIES std_msgs
+  DEPENDENCIES std_msgs nav_msgs geometry_msgs
 )
 
 # Assurer que les messages sont générés avant de construire les exécutables
@@ -36,7 +41,17 @@ ament_export_include_directories(include)
 
 # Ajouter les exécutables
 add_executable(navigation_server src/navigation_server.cpp)
-ament_target_dependencies(navigation_server rclcpp rclcpp_action std_msgs rosidl_default_runtime)
+ament_target_dependencies(navigation_server
+  rclcpp
+  rclcpp_action
+  std_msgs
+  nav_msgs
+  geometry_msgs
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
+  rosidl_default_runtime
+)
 
 add_executable(inspection_server src/inspection_server.cpp)
 ament_target_dependencies(inspection_server rclcpp rclcpp_action std_msgs rosidl_default_runtime)

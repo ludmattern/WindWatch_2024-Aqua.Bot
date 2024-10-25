@@ -1,12 +1,8 @@
-# Navigation.action
-
 # Goal
-int32 target_number
-
+nav_msgs/Path path
 ---
 # Result
-int32 final_count
-
+bool success
 ---
 # Feedback
-int32 current_number
+float32 progress  # Pourcentage d'achèvement
