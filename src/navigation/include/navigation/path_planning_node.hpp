@@ -33,9 +33,11 @@ class PathPlanningNode : public rclcpp::Node
 
         void AddShipToPtsList(nav_msgs::msg::Odometry ShipPos);
         void InitGraphSize(int size);
-        bool CheckInterPoly(sPoint FirstPoint, sPoint SecondPoint);
+        bool CheckInterPoly(const sPoint &FirstPoint, const sPoint &SecondPoint);
 
         bool ShipAdded;
 };
+
+bool CheckInterLines(const sPoint &p1, const sPoint &q1, const sPoint &p2, const sPoint &q2);
 
 #endif // PATH_PLANNING_NODE_HPP

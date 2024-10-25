@@ -116,129 +116,6 @@ geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<PathPlanningNode> node
 	return (future.get()->poses);
 }
 
-void PathPlanningNode::InitGraphSize(int size)
-{
-	Graph.resize(size);
-	for (int i = 0; i < size; ++i)
-		Graph[i].resize(size);
-}
-
-int orientation(sPoint p, sPoint q, sPoint r)
-{
-	double val;
-
-	//Calculate orientation 
-	val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-
-	if (val == 0)
-		return 0; //collinear
-	else if (val > 0)
-		return (1); //clockwise
-	else
-		return (2); //Counter clockwise
-}
-
-bool onSegment(sPoint p, sPoint q, sPoint r)
-{
-	//Check if q is on pr
-	if (q.x <= std::max(p.x, r.x) && q.x >= std::min(p.x, r.x) &&
-		q.y <= std::max(p.y, r.y) && q.y >= std::min(p.y, r.y))
-		return (true);
-	return (false);
-}
-
-bool CheckInterLines(sPoint p1, sPoint q1, sPoint p2, sPoint q2)
-{
-	int o1 = orientation(p1, q1, p2);
-	int o2 = orientation(p1, q1, q2);
-	int o3 = orientation(p2, q2, q1);
-	int o4 = orientation(p2, q2, q1);
-
-	//General case
-	if (o1 != o2 && o3 != o4)
-		return (true);
-	
-	//If colinear
-	if (o1 == 0 && onSegment(p1, p2, q1))
-		return (true);
-	if (o2 == 0 && onSegment(p1, q2, q1))
-		return (true);
-	if (o3 == 0 && onSegment(p2, p1, q2))
-		return (true);
-	if (o4 == 0 && onSegment(p2, q1, q2))
-		return (true);
-	
-	return (false);
-}
-
-bool PathPlanningNode::CheckInterPoly(sPoint FirstPoint, sPoint SecondPoint)
-{
-	int i = 0;
-	//Check if the line cross any polygon side
-	while (i < ObstacleList.size());
-	{
-		for (int j = 0; j < ObstacleList[i].Points.size(); ++j)
-		{
-			int nextPoint = (j + 1) % (ObstacleList[i].Points.size() + 1); //If j = end check with point 0
-
-			if (CheckInterLines(FirstPoint, SecondPoint, ObstacleList[i].Points[j], 
-				ObstacleList[i].Points[nextPoint]) == true)
-				return (true);
-		}
-		++i;
-	}
-}
-
-void PathPlanningNode::CreateGraph(void)
-{
-	InitGraphSize(PointList.size());
-
-	//Connect all points together
-	for (int i = 0; i < PointList.size(); ++i)
-	{
-		for (int j = 0; j < PointList.size(); ++j)
-		{
-			int PointIndex = i * PointList.size() + j;
-
-			//If the points are the same point 
-			if (i == j)
-				Graph[i][j] = std::numeric_limits<double>::infinity();
-
-			//If the points are in the same polygon
-			else if (PointList[i].PolygonId != -1 && PointList[i].PolygonId == PointList[PointIndex].PolygonId)
-				Graph[i][j] = std::numeric_limits<double>::infinity();
-			
-
-		}
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main(int argc, char * argv[])
 {
 	rclcpp::init(argc, argv);
@@ -268,6 +145,9 @@ int main(int argc, char * argv[])
 		rclcpp::shutdown();
 		return (1);
 	}
+
+	RCLCPP_INFO(node->get_logger(), "Creating Graph");
+	node->CreateGraph();
 
 	rclcpp::shutdown();
 	return (0);
