@@ -193,7 +193,7 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
         return;
     }
 
-    // Initialiser `initial_distance_to_goal_` si elle n'est pas encore définie
+    // Initialiser initial_distance_to_goal_ si elle n'est pas encore définie
     if (initial_distance_to_goal_ == 0.0)
     {
         initial_distance_to_goal_ = distance_to_goal;
