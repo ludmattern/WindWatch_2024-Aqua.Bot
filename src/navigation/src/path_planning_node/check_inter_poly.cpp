@@ -20,7 +20,7 @@ bool PathPlanningNode::CheckInterPoly(const sPoint &FirstPoint, const sPoint &Se
 	const size_t NbObstacle = ObstacleList.size();
 
 	//Points adjacent in a polygon
-	if (FirstPoint.PolygonId == SecondPoint.PolygonId)
+	if (FirstPoint.PolygonId != -1 && FirstPoint.PolygonId == SecondPoint.PolygonId)
 		return (false);
 
 	//Check if the line cross any polygon side

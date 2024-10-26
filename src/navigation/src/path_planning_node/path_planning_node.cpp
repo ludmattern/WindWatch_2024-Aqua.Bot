@@ -15,9 +15,10 @@ Published Topics:
 */
 
 #include <fstream>
+#include <queue>
 #include "navigation/path_planning_node.hpp"
 
-PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), ShipAdded(false)
+PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), ShipAdded(false), NbObjectives(0)
 {
 	RCLCPP_INFO(this->get_logger(), "Path Planning Node has started");
 
@@ -42,6 +43,7 @@ void PathPlanningNode::AddTgtToPtsList(geometry_msgs::msg::PoseArray TgtPos)
 		point.IsGoal = true;
 		point.PolygonId = -1;
 
+		++NbObjectives;
 		PointList.push_back(point); //Add to point list
 	}
 }
@@ -58,7 +60,8 @@ void PathPlanningNode::AddShipToPtsList(nav_msgs::msg::Odometry ShipPos)
 		point.IsGoal = true;
 		point.PolygonId = -1;
 
-		PointList.push_back(point); //Add to point list
+		++NbObjectives;
+		PointList.insert(PointList.begin(), point); //Add to point list at first element
 		ShipAdded = true;
 	}
 }
@@ -114,6 +117,91 @@ geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<PathPlanningNode> node
 	return (future.get()->poses);
 }
 
+
+std::pair<double, std::vector<int>> PathPlanningNode::Dijkstra(int start, int end)
+{
+	//Distance from the starting point
+	std::vector<double> dist(Graph.size(), std::numeric_limits<double>::infinity());
+
+	//Predecessor of each point
+	std::vector<int> previous(Graph.size(), -1);
+
+	dist[start] = 0;
+
+	//Priority queue to store the points to explore sort by distance
+	std::priority_queue<std::pair<double, int>, std::vector<std::pair<double, int>>, 
+		std::greater<>> PriorityQueue;
+
+	PriorityQueue.push({0, start});
+
+	while (PriorityQueue.empty() == false)
+	{
+		int Point = PriorityQueue.top().second;
+		int Distance = PriorityQueue.top().first;
+		PriorityQueue.pop();
+
+		if (Point == end) //If reach the end
+			break;
+
+		if (Distance != dist[Point]) //If a best path was found for this point
+			continue ;
+
+		for (int i = 0; i < Graph.size(); ++i)
+		{
+			//Distance vers ele point voisin i
+			double WeightNeighbour = Graph[Point][i];
+
+			//If shortest path is found
+			if (dist[Point] + WeightNeighbour < dist[i])
+			{
+				dist[i] = dist[Point] + WeightNeighbour;
+				previous[i] = Point;
+				PriorityQueue.push({dist[i], i});
+			}
+		}
+		
+	}
+
+	//Path to go from start to end
+	std::vector<int> Path;
+
+	for (int CurrentPoint = end; CurrentPoint != -1; CurrentPoint = previous[CurrentPoint])
+		Path.push_back(CurrentPoint);
+	std::reverse(Path.begin(), Path.end());
+
+	return {dist[end], Path};
+}
+
+void PathPlanningNode::CreateObjectivesGraph(void)
+{
+	for (int i = 0; i < NbObjectives; ++i)
+	{
+		for (int j = i; j < NbObjectives; ++j)
+		{
+
+		}
+	}
+}
+
+void PathPlanningNode::CreatePath(void)
+{
+	std::pair<double, std::vector<int>> Path = Dijkstra(0, 1);
+
+	std::ostringstream str;
+
+	str << "Dist: " << Path.first << '\n';
+
+	for(int i = 0; i < Path.second.size(); ++i)
+		str << Path.second[i] << " : " << PointList[Path.second[i]].x << "," << PointList[Path.second[i]].y << '\n';
+	
+	RCLCPP_INFO(this->get_logger(), "%s", str.str().c_str());
+}
+
+
+
+
+
+
 int main(int argc, char * argv[])
 {
 	rclcpp::init(argc, argv);
@@ -146,6 +234,8 @@ int main(int argc, char * argv[])
 
 	RCLCPP_INFO(node->get_logger(), "Creating Graph");
 	node->CreateGraph();
+
+	node->CreatePath();
 
 	rclcpp::shutdown();
 	return (0);
