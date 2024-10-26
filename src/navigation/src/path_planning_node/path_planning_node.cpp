@@ -63,7 +63,7 @@ void PathPlanningNode::AddShipToPtsList(nav_msgs::msg::Odometry ShipPos)
 	}
 }
 
-void AddPointToPolygon(sPolygon *polygon, std::vector<sPoint> *PointList, std::string PointString, int PolygonId)
+static void AddPointToPolygon(sPolygon *polygon, std::vector<sPoint> *PointList, std::string PointString, int PolygonId)
 {
 	std::stringstream PointStream(PointString);
 	sPoint point;
@@ -102,8 +102,6 @@ int PathPlanningNode::AddObstaclePtsList(void)
 geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<PathPlanningNode> node, 
 	sensors::srv::TargetPositions::Request::SharedPtr request)
 {
-
-
 	//Send request to the service 
 	rclcpp::Client<sensors::srv::TargetPositions>::FutureAndRequestId future = node->TgtPos_Client_->async_send_request(request);
 

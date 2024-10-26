@@ -3,13 +3,13 @@
 static bool CheckIfValidLine(const sPoint &p1, const sPoint &p2, const sPoint &p3, const sPoint &p4)
 {
 	//Check if p1p2 and p3p4 have a point in common
-	if (p1.x == p3.x && p1.y == p3.y)
+	if (p1 == p3)
 		return (false);
-	if (p1.x == p4.x && p1.y == p4.y)
+	if (p1 == p4)
 		return (false);
-	if (p2.x == p3.x && p2.y == p3.y)
+	if (p2 == p3)
 		return (false);
-	if (p2.x == p4.x && p2.y == p4.y)
+	if (p2 == p4)
 		return (false);
 	return (true);
 }
@@ -18,6 +18,10 @@ bool PathPlanningNode::CheckInterPoly(const sPoint &FirstPoint, const sPoint &Se
 {
 	int i = 0;
 	const size_t NbObstacle = ObstacleList.size();
+
+	//Points adjacent in a polygon
+	if (FirstPoint.PolygonId == SecondPoint.PolygonId)
+		return (false);
 
 	//Check if the line cross any polygon side
 	while (i < NbObstacle)

@@ -25,6 +25,23 @@ void PathPlanningNode::InitGraphSize(const int size)
 		Graph[i].resize(size);
 }
 
+bool PathPlanningNode::IsPointsAdjacent(const sPoint &FirstPoint, const sPoint &SecondPoint)
+{
+	const sPolygon Polygon = ObstacleList[FirstPoint.PolygonId];
+	std::vector<sPoint>::const_iterator it = std::find(Polygon.Points.begin(), Polygon.Points.end(), FirstPoint);
+	std::vector<sPoint>::const_iterator NextPoint = ++it;
+	std::vector<sPoint>::const_iterator PreviousPoint = --it;
+
+	if (NextPoint == Polygon.Points.end())
+		NextPoint = Polygon.Points.begin() + 1;
+	if (PreviousPoint == Polygon.Points.begin())
+		PreviousPoint == Polygon.Points.end() - 1;
+	
+	if (*PreviousPoint == SecondPoint ||  *NextPoint == SecondPoint)
+		return (true);
+	return (false);
+}
+
 void PathPlanningNode::CreateGraph(void)
 {
 	const size_t NBPoint = PointList.size();
@@ -39,8 +56,9 @@ void PathPlanningNode::CreateGraph(void)
 			if (i == j)
 				Graph[i][j] = std::numeric_limits<double>::infinity();
 
-			//If the points are in the same polygon
-			else if (PointList[i].PolygonId != -1 && PointList[i].PolygonId == PointList[j].PolygonId)
+			//If the points are in the same polygon but not adjacent
+			else if (PointList[i].PolygonId != -1 && PointList[i].PolygonId == PointList[j].PolygonId 
+				&& IsPointsAdjacent(PointList[i], PointList[j]) == false)
 				Graph[i][j] = std::numeric_limits<double>::infinity();
 			
 			//If the line cross an obstacle
