@@ -26,7 +26,7 @@ bool CheckInterLines(const sPoint &p1, const sPoint &q1, const sPoint &p2, const
 {
 	const int o1 = orientation(p1, q1, p2);
 	const int o2 = orientation(p1, q1, q2);
-	const int o3 = orientation(p2, q2, q1);
+	const int o3 = orientation(p2, q2, p1);
 	const int o4 = orientation(p2, q2, q1);
 
 	//General case

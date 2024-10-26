@@ -87,4 +87,19 @@ void PathPlanningNode::CreateGraph(void)
 			}
 		}
 	}
+	/*std::ostringstream oss;
+    for (const auto& row : Graph)
+    {
+        oss << "[";
+        for (size_t i = 0; i < row.size(); ++i)
+        {
+            oss << row[i];
+            if (i < row.size() - 1)
+            {
+                oss << ", ";
+            }
+        }
+        oss << "]\n";
+    }
+    RCLCPP_INFO(rclcpp::get_logger("VectorLogger"), "Vecteur de vecteurs de double :\n%s", oss.str().c_str());*/
 }

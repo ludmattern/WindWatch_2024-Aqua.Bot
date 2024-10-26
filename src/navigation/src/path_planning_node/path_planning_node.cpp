@@ -137,29 +137,29 @@ std::pair<double, std::vector<int>> PathPlanningNode::Dijkstra(int start, int en
 	while (PriorityQueue.empty() == false)
 	{
 		int Point = PriorityQueue.top().second;
-		int Distance = PriorityQueue.top().first;
+		double CurrentDistance = PriorityQueue.top().first;
 		PriorityQueue.pop();
 
 		if (Point == end) //If reach the end
 			break;
 
-		if (Distance != dist[Point]) //If a best path was found for this point
+		if (CurrentDistance != dist[Point]) //If a best path was found for this point
 			continue ;
 
-		for (int i = 0; i < Graph.size(); ++i)
+		for (int i = 0; i < Graph[Point].size(); ++i)
 		{
-			//Distance vers ele point voisin i
+			//Distance vers le point voisin i
 			double WeightNeighbour = Graph[Point][i];
 
 			//If shortest path is found
-			if (dist[Point] + WeightNeighbour < dist[i])
+			if (WeightNeighbour != std::numeric_limits<double>::infinity() && 
+				dist[Point] + WeightNeighbour < dist[i])
 			{
 				dist[i] = dist[Point] + WeightNeighbour;
 				previous[i] = Point;
 				PriorityQueue.push({dist[i], i});
 			}
 		}
-		
 	}
 
 	//Path to go from start to end
@@ -185,7 +185,7 @@ void PathPlanningNode::CreateObjectivesGraph(void)
 
 void PathPlanningNode::CreatePath(void)
 {
-	std::pair<double, std::vector<int>> Path = Dijkstra(0, 1);
+	std::pair<double, std::vector<int>> Path = Dijkstra(0, 3);
 
 	std::ostringstream str;
 
