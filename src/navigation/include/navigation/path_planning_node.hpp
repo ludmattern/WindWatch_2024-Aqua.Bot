@@ -21,12 +21,22 @@ class PathPlanningNode : public rclcpp::Node
         void AddTgtToPtsList(geometry_msgs::msg::PoseArray TgtPos);
         int AddObstaclePtsList(void);
         void CreateGraph(void);
+        
+        void CreatePath(void);
 
     private:
 
+        //List of all the points of the graph
         std::vector<sPoint> PointList;
+
+        //List of all the polygons that represent the obtacles
         std::vector<sPolygon> ObstacleList;
+
+        //Graph with all the points
         std::vector<std::vector<double>> Graph;
+
+        //Graph with only the objectives
+        std::vector<std::vector<std::pair<double, std::vector<int>>>> GraphObjectives;
 
         //Subscription of targets positions and ship pos
         rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_Subscription_;
@@ -36,7 +46,11 @@ class PathPlanningNode : public rclcpp::Node
         bool CheckInterPoly(const sPoint &FirstPoint, const sPoint &SecondPoint);
         bool IsPointsAdjacent(const sPoint &FirstPoint, const sPoint &SecondPoint);
 
+        void CreateObjectivesGraph(void); 
+        std::pair<double, std::vector<int>> Dijkstra(int start, int end);
+
         bool ShipAdded;
+        int NbObjectives;
 };
 
 bool CheckInterLines(const sPoint &p1, const sPoint &q1, const sPoint &p2, const sPoint &q2);
