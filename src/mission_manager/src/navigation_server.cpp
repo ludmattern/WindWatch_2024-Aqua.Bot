@@ -213,57 +213,67 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 
     double dt = 1.0 / control_loop_rate_;
 
-    double linear_speed = linear_pid_.compute(0.0, -error_linear, dt);
-    double angular_speed = angular_pid_.compute(0.0, -error_theta, dt);
+    // Calcul des commandes PID
+    double linear_speed_pid = linear_pid_.compute(0.0, -error_linear, dt);
+    double angular_speed_pid = angular_pid_.compute(0.0, -error_theta, dt);
 
+    // Contrôle d'accélération et de décélération
     double accel_distance = 100.0; // mètres
     double decel_distance = 100.0; // mètres
     double target_speed = max_linear_speed_;
 
+    // Phase d'accélération : augmenter la vitesse jusqu'à max_linear_speed_ sur accel_distance
+    if (distance_traveled <= accel_distance)
+    {
+        // Calculer un facteur de mise à l'échelle basé sur la distance parcourue
+        double scaling_factor = distance_traveled / accel_distance;
+        scaling_factor = std::clamp(scaling_factor, 0.0, 1.0); // Assurer qu'il est entre 0 et 1
+        target_speed = scaling_factor * max_linear_speed_;
+    }
+
+    // Phase de décélération : diminuer la vitesse à l'approche du waypoint sur decel_distance
     if (distance_to_goal <= decel_distance)
     {
-        target_speed = (distance_to_goal / decel_distance) * max_linear_speed_;
-    }
-    else if (distance_to_goal <= (accel_distance + decel_distance))
-    {
-        target_speed = ((distance_to_goal - decel_distance) / accel_distance) * max_linear_speed_;
+        double decel_factor = distance_to_goal / decel_distance;
+        decel_factor = std::clamp(decel_factor, 0.0, 1.0); // Assurer qu'il est entre 0 et 1
+        target_speed = std::min(target_speed, decel_factor * max_linear_speed_);
     }
 
-    // Limiter la vitesse cible pour ne pas dépasser la vitesse maximale
-    target_speed = std::clamp(target_speed, 0.0, max_linear_speed_);
+    // Limiter la vitesse cible entre min et max
+    target_speed = std::clamp(target_speed, min_linear_speed_, max_linear_speed_);
 
     // Calcul du changement de vitesse autorisé
-    double max_delta_speed = 0.0;
-    if (target_speed > current_linear_speed_)
+    double delta_speed = target_speed - current_linear_speed_;
+
+    if (delta_speed > 0)
     {
-        // Accélération
-        max_delta_speed = max_acceleration_ * dt;
+        // Accélération : limiter par max_acceleration_
+        delta_speed = std::min(delta_speed, max_acceleration_ * dt);
     }
     else
     {
-        // Décélération
-        max_delta_speed = max_deceleration_ * dt;
+        // Décélération : limiter par max_deceleration_
+        delta_speed = std::max(delta_speed, -max_deceleration_ * dt);
     }
 
-    double delta_speed = target_speed - current_linear_speed_;
-    delta_speed = std::clamp(delta_speed, -max_deceleration_ * dt, max_acceleration_ * dt);
-
+    // Mettre à jour la vitesse actuelle
     current_linear_speed_ += delta_speed;
 
     // Appliquer la vitesse actuelle contrôlée
-    linear_speed = current_linear_speed_;
+    double linear_speed = current_linear_speed_;
 
     // Ajuster la vitesse linéaire en fonction de l'erreur angulaire
     double angular_error_threshold = 0.5; // radians
     if (std::abs(error_theta) > angular_error_threshold)
     {
         double scaling_factor = angular_error_threshold / std::abs(error_theta);
+        scaling_factor = std::clamp(scaling_factor, 0.0, 1.0); // Assurer qu'il est entre 0 et 1
         linear_speed *= scaling_factor;
     }
 
     // Limitation des vitesses
     linear_speed = std::clamp(linear_speed, min_linear_speed_, max_linear_speed_);
-    angular_speed = std::clamp(angular_speed, -max_angular_speed_, max_angular_speed_);
+    double angular_speed = std::clamp(angular_speed_pid, -max_angular_speed_, max_angular_speed_);
 
     // Création du message de commande
     auto cmd_msg = geometry_msgs::msg::Twist();
@@ -286,7 +296,6 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
     RCLCPP_INFO(this->get_logger(), "Control Outputs: linear_speed=%.2f m/s, angular_speed=%.2f rad/s",
                 linear_speed, angular_speed);
 }
-
 
 int main(int argc, char **argv)
 {
