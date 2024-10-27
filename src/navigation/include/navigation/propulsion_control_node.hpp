@@ -31,6 +31,8 @@ private:
 
     // Scaling factor for linear velocity to thruster speed
     double scale_factor_;
+    double min_linear_speed_;
+    double rotation_gain_;
 };
 
 #endif // PROPULSION_CONTROL_NODE_HPP

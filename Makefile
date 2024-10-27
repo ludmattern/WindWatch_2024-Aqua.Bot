@@ -109,6 +109,19 @@ dependencies:
 		ros-humble-rosidl-typesupport-c \
 		libeigen3-dev
 
+TARGET_DIRS := ./src/mission_manager ./src/navigation ./src/sensors ./src/visualization
+
+.PHONY: create-config-dirs
+create-config-dirs:
+	@for dir in $(TARGET_DIRS); do \
+		if [ ! -d "$$dir/config" ]; then \
+			echo "Creating $$dir/config"; \
+			mkdir -p "$$dir/config"; \
+		else \
+			echo "$$dir/config already exists"; \
+		fi \
+	done
+
 # ==============================
 # Usage Instructions
 # ==============================

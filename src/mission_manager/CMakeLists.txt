@@ -5,7 +5,7 @@ if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
 endif()
 
-# Trouver les packages requis
+# Find required packages
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
@@ -18,7 +18,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rosidl_default_runtime REQUIRED)
 
-# Générer les interfaces d'action
+# Generate action interfaces
 rosidl_generate_interfaces(${PROJECT_NAME}
   "action/Navigation.action"
   "action/Inspection.action"
@@ -27,20 +27,23 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES std_msgs nav_msgs geometry_msgs
 )
 
-# Assurer que les messages sont générés avant de construire les exécutables
+# Ensure messages are generated before building executables
 ament_export_dependencies(rosidl_default_runtime)
 
-# Inclure les fichiers header
+# Include header files
 include_directories(
   include
   ${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp
 )
 
-# Exporter les répertoires d'inclusion
+# Export include directories
 ament_export_include_directories(include)
 
-# Ajouter les exécutables
-add_executable(navigation_server src/navigation_server.cpp)
+# Add executables
+add_executable(navigation_server
+  src/navigation_server.cpp
+  src/pid_controller.cpp   # Add pid_controller.cpp here
+)
 ament_target_dependencies(navigation_server
   rclcpp
   rclcpp_action
@@ -54,31 +57,56 @@ ament_target_dependencies(navigation_server
 )
 
 add_executable(inspection_server src/inspection_server.cpp)
-ament_target_dependencies(inspection_server rclcpp rclcpp_action std_msgs rosidl_default_runtime)
+ament_target_dependencies(inspection_server
+  rclcpp
+  rclcpp_action
+  std_msgs
+  rosidl_default_runtime
+)
 
 add_executable(stabilization_server src/stabilization_server.cpp)
-ament_target_dependencies(stabilization_server rclcpp rclcpp_action std_msgs rosidl_default_runtime)
+ament_target_dependencies(stabilization_server
+  rclcpp
+  rclcpp_action
+  std_msgs
+  rosidl_default_runtime
+)
 
 add_executable(rotation_server src/rotation_server.cpp)
-ament_target_dependencies(rotation_server rclcpp rclcpp_action std_msgs rosidl_default_runtime)
+ament_target_dependencies(rotation_server
+  rclcpp
+  rclcpp_action
+  std_msgs
+  rosidl_default_runtime
+)
 
 add_executable(mission_manager_node src/mission_manager.cpp)
-ament_target_dependencies(mission_manager_node rclcpp rclcpp_action std_msgs rosidl_default_runtime)
+ament_target_dependencies(mission_manager_node
+  rclcpp
+  rclcpp_action
+  std_msgs
+  rosidl_default_runtime
+)
 
 add_executable(target_manager_node src/target_manager_node.cpp)
-ament_target_dependencies(target_manager_node rclcpp rclcpp_action std_msgs rosidl_default_runtime)
+ament_target_dependencies(target_manager_node
+  rclcpp
+  rclcpp_action
+  std_msgs
+  rosidl_default_runtime
+)
 
-# Obtenir la cible de typesupport pour lier les bibliothèques générées
+# Get the typesupport target to link generated libraries
 rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-# Lier les bibliothèques de typesupport aux exécutables
+# Link typesupport libraries to executables
 target_link_libraries(navigation_server ${cpp_typesupport_target})
 target_link_libraries(inspection_server ${cpp_typesupport_target})
 target_link_libraries(stabilization_server ${cpp_typesupport_target})
 target_link_libraries(rotation_server ${cpp_typesupport_target})
 target_link_libraries(mission_manager_node ${cpp_typesupport_target})
 
-# Installer les exécutables
+# Install executables
 install(TARGETS
   navigation_server
   inspection_server
@@ -89,20 +117,20 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# Installer les fichiers header
+# Install header files
 install(DIRECTORY include/
   DESTINATION include/
 )
 
-# Installer les fichiers d'action
+# Install action files
 install(DIRECTORY action
   DESTINATION share/${PROJECT_NAME}/
 )
 
-# Installer les fichiers de lancement
+# Install launch and config files
 install(DIRECTORY launch config
   DESTINATION share/${PROJECT_NAME}
 )
 
-# Finaliser le package
+# Finalize the package
 ament_package()

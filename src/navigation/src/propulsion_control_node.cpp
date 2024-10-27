@@ -1,29 +1,8 @@
-/*
-Node propulsion_control_node
-Role: Converts high-level propulsion commands into low-level control signals for the motors, handling the physical interaction with the hardware.
-Subscribed Topics:
-/propulsion/command: Commands from the control_node.
-Published Topics:
-/aquabot/thrusters/left/pos: Steering angle command for the left thruster.
-/aquabot/thrusters/right/pos: Steering angle command for the right thruster.
-/aquabot/thrusters/left/thrust: Thrust command for the left thruster.
-/aquabot/thrusters/right/thrust: Thrust command for the right thruster.
-
-recoit un msg::Twist: Command message for the thrusters.
-exemple:
-linear:
-x: 1.0    # Vitesse linéaire longitudinale
-y: 0.0	# Vitesse linéaire latérale
-z: 0.0	# Vitese linéaire verticale (non utilisee)
-angular:
-x: 0.0    # Vitesse angulaire autour de l'axe x (non utilisee)
-y: 0.0    # Vitesse angulaire autour de l'axe y (non utilisee)
-z: 0.5    # Vitesse angulaire autour de l'axe z (rotation, en rad/s)
-*/
 // propulsion_control_node.cpp
 
 #include "navigation/propulsion_control_node.hpp"
 #include <algorithm>
+#include <cmath>
 
 PropulsionControlNode::PropulsionControlNode()
 : Node("propulsion_control_node")
@@ -34,12 +13,16 @@ PropulsionControlNode::PropulsionControlNode()
     this->declare_parameter<double>("max_thrust", 5000.0);             // Vitesse maximale de l'hélice
     this->declare_parameter<double>("max_steering_angle", 0.785398);   // Angle maximal en radians (45 degrés)
     this->declare_parameter<double>("scale_factor", 810.0);            // Facteur d'échelle pour la vitesse linéaire
+    this->declare_parameter<double>("min_linear_speed", 0.0);          // Vitesse linéaire minimale (m/s)
+    this->declare_parameter<double>("rotation_gain", 1000.0);          // Gain pour les rotations sur place
 
     this->get_parameter("distance_between_thrusters", distance_between_thrusters_);
     this->get_parameter("steering_gain", steering_gain_);
     this->get_parameter("max_thrust", max_thrust_);
     this->get_parameter("max_steering_angle", max_steering_angle_);
     this->get_parameter("scale_factor", scale_factor_);
+    this->get_parameter("min_linear_speed", min_linear_speed_);
+    this->get_parameter("rotation_gain", rotation_gain_);
 
     // Souscription au topic /propulsion/command
     cmd_subscription_ = this->create_subscription<geometry_msgs::msg::Twist>(
@@ -65,21 +48,59 @@ void PropulsionControlNode::cmdCallback(const geometry_msgs::msg::Twist::SharedP
     double linear_velocity = msg->linear.x;    // Vitesse linéaire longitudinale (m/s)
     double angular_velocity = msg->angular.z;  // Vitesse angulaire autour de l'axe z (rad/s)
 
-    // Calcul des poussées pour chaque thruster avec échelle
-    double thrust_left = (linear_velocity * scale_factor_) - (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
-    double thrust_right = (linear_velocity * scale_factor_) + (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+    // Définir un epsilon pour détecter la vitesse linéaire proche de zéro
+    const double epsilon = 0.1; // Ajustez cette valeur si nécessaire
 
-    // Limitation des poussées pour éviter de dépasser les capacités physiques
-    thrust_left = std::clamp(thrust_left, -max_thrust_, max_thrust_);
-    thrust_right = std::clamp(thrust_right, -max_thrust_, max_thrust_);
+    double thrust_left, thrust_right;
+    double steering_angle_left, steering_angle_right;
 
-    // Calcul des angles de braquage
-    double steering_angle_left = steering_gain_ * angular_velocity;
-    double steering_angle_right = -steering_gain_ * angular_velocity;
+    if (std::abs(angular_velocity) > 0.0 && std::abs(linear_velocity) < epsilon)
+    {
+        // Rotation sur place avec une petite vitesse linéaire minimale pour stabiliser
+        double rotation_thrust = angular_velocity * rotation_gain_; // `rotation_gain_` à définir expérimentalement
 
-    // Limitation des angles de braquage
-    steering_angle_left = std::clamp(steering_angle_left, -max_steering_angle_, max_steering_angle_);
-    steering_angle_right = std::clamp(steering_angle_right, -max_steering_angle_, max_steering_angle_);
+        // Limiter la poussée
+        rotation_thrust = std::clamp(rotation_thrust, -max_thrust_, max_thrust_);
+
+        // Angles de braquage à +/- max_steering_angle_
+        steering_angle_left = steering_gain_ * angular_velocity;
+        steering_angle_right = -steering_gain_ * angular_velocity;
+
+        // Limitation des angles de braquage
+        steering_angle_left = std::clamp(steering_angle_left, -max_steering_angle_, max_steering_angle_);
+        steering_angle_right = std::clamp(steering_angle_right, -max_steering_angle_, max_steering_angle_);
+
+        // Poussées opposées pour créer un couple de rotation
+        thrust_left = rotation_thrust;
+        thrust_right = rotation_thrust;
+    }
+    else
+    {
+        // Calculs normaux
+        // Calcul des poussées pour chaque propulseur avec échelle
+        thrust_left = (linear_velocity * scale_factor_) - (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+        thrust_right = (linear_velocity * scale_factor_) + (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+
+        // Limitation des poussées
+        thrust_left = std::clamp(thrust_left, -max_thrust_, max_thrust_);
+        thrust_right = std::clamp(thrust_right, -max_thrust_, max_thrust_);
+
+        // Calcul des angles de braquage
+        steering_angle_left = steering_gain_ * angular_velocity;
+        steering_angle_right = -steering_gain_ * angular_velocity;
+
+        // Limitation des angles de braquage
+        steering_angle_left = std::clamp(steering_angle_left, -max_steering_angle_, max_steering_angle_);
+        steering_angle_right = std::clamp(steering_angle_right, -max_steering_angle_, max_steering_angle_);
+
+        // Assurer une vitesse linéaire minimale si nécessaire
+        if (std::abs(linear_velocity) > epsilon)
+        {
+            double min_thrust = min_linear_speed_ * scale_factor_;
+            thrust_left = std::max(std::abs(thrust_left), min_thrust) * (thrust_left >= 0 ? 1.0 : -1.0);
+            thrust_right = std::max(std::abs(thrust_right), min_thrust) * (thrust_right >= 0 ? 1.0 : -1.0);
+        }
+    }
 
     // Préparation des messages pour les thrusters
     std_msgs::msg::Float64 left_pos_msg;

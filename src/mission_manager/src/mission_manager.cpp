@@ -113,7 +113,11 @@ void MissionManager::handle_inspection_result(const GoalHandle<Inspection>::Wrap
 	{
 		sequence1_iteration_count_++;
 		if (sequence1_iteration_count_ < sequence1_max_iterations_)
+		{
+			// recuperer le futur itinéraire
+			// current_path_ = //service pour demander le prochain itinéraire
 			send_navigation_goal(current_path_);
+		}
 		else
 		{
 			// Transition vers la Séquence 2
