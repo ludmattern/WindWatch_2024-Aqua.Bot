@@ -38,13 +38,13 @@ current_linear_speed_(0.0)
 	this->declare_parameter<double>("Ki_angular", 0.0);
 	this->declare_parameter<double>("Kd_angular", 0.0);
 	this->declare_parameter<double>("Kd_disturbance", 0.0);
-	this->declare_parameter<double>("position_tolerance", 20.0);
+	this->declare_parameter<double>("position_tolerance", 2.0);
 	this->declare_parameter<double>("control_loop_rate", 20.0);
 	this->declare_parameter<double>("min_linear_speed", 0.0);
 	this->declare_parameter<double>("max_linear_speed", 6.0);
 	this->declare_parameter<double>("max_angular_speed", 0.5);
-    this->declare_parameter<double>("max_acceleration", 1.0); // m/s²
-    this->declare_parameter<double>("max_deceleration", 1.0); // m/s²
+	this->declare_parameter<double>("max_acceleration", 1.0); // m/s²
+	this->declare_parameter<double>("max_deceleration", 1.0); // m/s²
 
 	this->get_parameter("Kp_linear", Kp_linear_);
 	this->get_parameter("Ki_linear", Ki_linear_);
@@ -58,8 +58,8 @@ current_linear_speed_(0.0)
 	this->get_parameter("min_linear_speed", min_linear_speed_);
 	this->get_parameter("max_linear_speed", max_linear_speed_);
 	this->get_parameter("max_angular_speed", max_angular_speed_);
-    this->get_parameter("max_acceleration", max_acceleration_);
-    this->get_parameter("max_deceleration", max_deceleration_);
+	this->get_parameter("max_acceleration", max_acceleration_);
+	this->get_parameter("max_deceleration", max_deceleration_);
 
 	linear_pid_.set_parameters(Kp_linear_, Ki_linear_, Kd_linear_);
 	angular_pid_.set_parameters(Kp_angular_, Ki_angular_, Kd_angular_);
@@ -158,143 +158,113 @@ void NavigationServer::execute(const std::shared_ptr<GoalHandleNavigation> goal_
 
 void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> goal_handle)
 {
-    if (current_waypoint_index_ >= path_.size())
-    {
-        return;
-    }
+	if (current_waypoint_index_ >= path_.size())
+		return;
 
-    auto current_waypoint = path_[current_waypoint_index_].pose;
+	auto current_waypoint = path_[current_waypoint_index_].pose;
 
-    double x_current = current_odometry_.pose.pose.position.x;
-    double y_current = current_odometry_.pose.pose.position.y;
+	double x_current = current_odometry_.pose.pose.position.x;
+	double y_current = current_odometry_.pose.pose.position.y;
 
-    tf2::Quaternion q_current(
-        current_odometry_.pose.pose.orientation.x,
-        current_odometry_.pose.pose.orientation.y,
-        current_odometry_.pose.pose.orientation.z,
-        current_odometry_.pose.pose.orientation.w
-    );
-    double roll_current, pitch_current, yaw_current;
-    tf2::Matrix3x3(q_current).getRPY(roll_current, pitch_current, yaw_current);
+	tf2::Quaternion q_current(
+		current_odometry_.pose.pose.orientation.x,
+		current_odometry_.pose.pose.orientation.y,
+		current_odometry_.pose.pose.orientation.z,
+		current_odometry_.pose.pose.orientation.w
+	);
+	double roll_current, pitch_current, yaw_current;
+	tf2::Matrix3x3(q_current).getRPY(roll_current, pitch_current, yaw_current);
 
-    double x_goal = current_waypoint.position.x;
-    double y_goal = current_waypoint.position.y;
+	double x_goal = current_waypoint.position.x;
+	double y_goal = current_waypoint.position.y;
 
-    double error_x = x_goal - x_current;
-    double error_y = y_goal - y_current;
-    double distance_to_goal = std::sqrt(error_x * error_x + error_y * error_y);
+	double error_x = x_goal - x_current;
+	double error_y = y_goal - y_current;
+	double distance_to_goal = std::sqrt(error_x * error_x + error_y * error_y);
 
-    if (distance_to_goal < position_tolerance_)
-    {
-        RCLCPP_INFO(this->get_logger(), "Waypoint %zu reached.", current_waypoint_index_ + 1);
-        current_waypoint_index_++;
-        initial_distance_to_goal_ = 0.0;
-        return;
-    }
+	if (distance_to_goal < position_tolerance_)
+	{
+		RCLCPP_INFO(this->get_logger(), "Waypoint %zu reached.", current_waypoint_index_ + 1);
+		current_waypoint_index_++;
+		initial_distance_to_goal_ = 0.0;
+		return;
+	}
 
-    if (last_waypoint_index_ != current_waypoint_index_)
-    {
-        initial_distance_to_goal_ = distance_to_goal;
-        last_waypoint_index_ = current_waypoint_index_;
-        
-        linear_pid_.reset();
-        angular_pid_.reset();
-    }
+	if (last_waypoint_index_ != current_waypoint_index_)
+	{
+		initial_distance_to_goal_ = distance_to_goal;
+		last_waypoint_index_ = current_waypoint_index_;
+		
+		linear_pid_.reset();
+		angular_pid_.reset();
+	}
 
-    double distance_traveled = initial_distance_to_goal_ - distance_to_goal;
-    distance_traveled = std::max(0.0, distance_traveled);
+	double distance_traveled = initial_distance_to_goal_ - distance_to_goal;
+	// distance_traveled = std::max(0.0, distance_traveled);
 
-    double theta_goal = std::atan2(error_y, error_x);
+	double theta_goal = std::atan2(error_y, error_x);
 
-    double error_theta = theta_goal - yaw_current;
-    error_theta = std::atan2(std::sin(error_theta), std::cos(error_theta));
+	double error_theta = theta_goal - yaw_current;
+	error_theta = std::atan2(std::sin(error_theta), std::cos(error_theta));
 
-    double error_linear = distance_to_goal;
+	double error_linear = distance_to_goal;
 
-    double dt = 1.0 / control_loop_rate_;
+	double dt = 1.0 / control_loop_rate_;
 
-    // Calcul des commandes PID
-    double linear_speed_pid = linear_pid_.compute(0.0, -error_linear, dt);
-    double angular_speed_pid = angular_pid_.compute(0.0, -error_theta, dt);
+	double linear_speed_pid = linear_pid_.compute(0.0, -error_linear, dt);
+	double angular_speed_pid = angular_pid_.compute(0.0, -error_theta, dt);
 
-    // Contrôle d'accélération et de décélération
-    double accel_distance = 100.0; // mètres
-    double decel_distance = 100.0; // mètres
-    double target_speed = max_linear_speed_;
+	double accel_distance = 100.0; // mètres
+	double decel_distance = 100.0; // mètres
+	double target_speed = max_linear_speed_;
 
-    // Phase d'accélération : augmenter la vitesse jusqu'à max_linear_speed_ sur accel_distance
-    if (distance_traveled <= accel_distance)
-    {
-        // Calculer un facteur de mise à l'échelle basé sur la distance parcourue
-        double scaling_factor = distance_traveled / accel_distance;
-        scaling_factor = std::clamp(scaling_factor, 0.0, 1.0); // Assurer qu'il est entre 0 et 1
-        target_speed = scaling_factor * max_linear_speed_;
-    }
+	if (distance_traveled <= accel_distance)
+	{
+		double scaling_factor = std::abs(distance_traveled) / accel_distance;
+		scaling_factor = std::clamp(scaling_factor, 0.0, 1.0);
+		target_speed = scaling_factor * max_linear_speed_;
+	}
 
-    // Phase de décélération : diminuer la vitesse à l'approche du waypoint sur decel_distance
-    if (distance_to_goal <= decel_distance)
-    {
-        double decel_factor = distance_to_goal / decel_distance;
-        decel_factor = std::clamp(decel_factor, 0.0, 1.0); // Assurer qu'il est entre 0 et 1
-        target_speed = std::min(target_speed, decel_factor * max_linear_speed_);
-    }
+	if (distance_to_goal <= decel_distance)
+	{
+		double decel_factor = distance_to_goal / decel_distance;
+		decel_factor = std::clamp(decel_factor, 0.0, 1.0);
+		target_speed = std::min(target_speed, decel_factor * max_linear_speed_);
+	}
 
-    // Limiter la vitesse cible entre min et max
-    target_speed = std::clamp(target_speed, min_linear_speed_, max_linear_speed_);
+	target_speed = std::clamp(target_speed, min_linear_speed_, max_linear_speed_);
 
-    // Calcul du changement de vitesse autorisé
-    double delta_speed = target_speed - current_linear_speed_;
+	double delta_speed = target_speed - current_linear_speed_;
 
-    if (delta_speed > 0)
-    {
-        // Accélération : limiter par max_acceleration_
-        delta_speed = std::min(delta_speed, max_acceleration_ * dt);
-    }
-    else
-    {
-        // Décélération : limiter par max_deceleration_
-        delta_speed = std::max(delta_speed, -max_deceleration_ * dt);
-    }
+	if (delta_speed > 0)
+		delta_speed = std::min(delta_speed, max_acceleration_ * dt);
+	else
+		delta_speed = std::max(delta_speed, -max_deceleration_ * dt);
 
-    // Mettre à jour la vitesse actuelle
-    current_linear_speed_ += delta_speed;
+	current_linear_speed_ += delta_speed;
 
-    // Appliquer la vitesse actuelle contrôlée
-    double linear_speed = current_linear_speed_;
+	double linear_speed = current_linear_speed_;
 
-    // Ajuster la vitesse linéaire en fonction de l'erreur angulaire
-    double angular_error_threshold = 0.5; // radians
-    if (std::abs(error_theta) > angular_error_threshold)
-    {
-        double scaling_factor = angular_error_threshold / std::abs(error_theta);
-        scaling_factor = std::clamp(scaling_factor, 0.0, 1.0); // Assurer qu'il est entre 0 et 1
-        linear_speed *= scaling_factor;
-    }
+	double angular_error_threshold = 0.5; // radians
+	if (std::abs(error_theta) > angular_error_threshold)
+	{
+		double scaling_factor = angular_error_threshold / std::abs(error_theta);
+		scaling_factor = std::clamp(scaling_factor, 0.0, 1.0);
+		linear_speed *= scaling_factor;
+	}
 
-    // Limitation des vitesses
-    linear_speed = std::clamp(linear_speed, min_linear_speed_, max_linear_speed_);
-    double angular_speed = std::clamp(angular_speed_pid, -max_angular_speed_, max_angular_speed_);
+	linear_speed = std::clamp(linear_speed, min_linear_speed_, max_linear_speed_);
+	double angular_speed = std::clamp(angular_speed_pid, -max_angular_speed_, max_angular_speed_);
 
-    // Création du message de commande
-    auto cmd_msg = geometry_msgs::msg::Twist();
-    cmd_msg.linear.x = linear_speed;
-    cmd_msg.angular.z = angular_speed;
+	auto cmd_msg = geometry_msgs::msg::Twist();
+	cmd_msg.linear.x = linear_speed;
+	cmd_msg.angular.z = angular_speed;
 
-    // Publication de la commande
-    cmd_publisher_->publish(cmd_msg);
+	cmd_publisher_->publish(cmd_msg);
 
-    // Logs pour le débogage
-    RCLCPP_INFO(this->get_logger(), "distance_to_goal: %.2f", distance_to_goal);
-    RCLCPP_INFO(this->get_logger(), "initial_distance_to_goal_: %.2f", initial_distance_to_goal_);
-    RCLCPP_INFO(this->get_logger(), "distance_traveled: %.2f", distance_traveled);
-    RCLCPP_INFO(this->get_logger(), "linear_speed before clamp: %.2f", linear_speed);
-    RCLCPP_INFO(this->get_logger(), "Angular Speed Commanded: %.2f rad/s", angular_speed);
-    RCLCPP_INFO(this->get_logger(), "Current Position: x=%.2f, y=%.2f, yaw=%.2f rad", x_current, y_current, yaw_current);
-    RCLCPP_INFO(this->get_logger(), "Goal Position: x=%.2f, y=%.2f", x_goal, y_goal);
-    RCLCPP_INFO(this->get_logger(), "Errors: error_x=%.2f, error_y=%.2f, distance=%.2f, error_theta=%.2f rad",
-                error_x, error_y, distance_to_goal, error_theta);
-    RCLCPP_INFO(this->get_logger(), "Control Outputs: linear_speed=%.2f m/s, angular_speed=%.2f rad/s",
-                linear_speed, angular_speed);
+	RCLCPP_INFO(this->get_logger(), "distance_to_goal: %.2f", distance_to_goal);
+	RCLCPP_INFO(this->get_logger(), "Control Outputs: linear_speed=%.2f m/s, angular_speed=%.2f rad/s",
+				linear_speed, angular_speed);
 }
 
 int main(int argc, char **argv)
@@ -305,3 +275,124 @@ int main(int argc, char **argv)
 	rclcpp::shutdown();
 	return 0;
 }
+
+
+/* fonction point projete de reference sur l'itineraire initial
+startPoint correspond au point de depart de l'itineraire initial
+endPointA correspond au point de fin de l'itineraire initial
+externalPoint correspond au point de reference
+##include <iostream>
+#include <cmath>
+
+struct Point {
+    double x;
+    double y;
+};
+
+// Fonction pour calculer la distance entre deux points
+double calculateDistance(const Point& p1, const Point& p2) {
+    double dx = p2.x - p1.x;
+    double dy = p2.y - p1.y;
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+// Fonction pour calculer la projection perpendiculaire de B sur l'itinéraire DA
+Point calculatePerpendicularProjection(const Point& A, const Point& D, const Point& B) {
+    double DAx = A.x - D.x;
+    double DAy = A.y - D.y;
+    double DBx = B.x - D.x;
+    double DBy = B.y - D.y;
+
+    double dotProduct = DAx * DBx + DAy * DBy;
+    double lengthSquared = DAx * DAx + DAy * DAy;
+
+    double t = 0.0;
+    if (lengthSquared != 0) {
+        t = dotProduct / lengthSquared;
+    }
+
+    // Clamp t to the [0,1] interval to stay within the segment DA
+    t = std::fmax(0.0, std::fmin(1.0, t));
+
+    Point projection;
+    projection.x = D.x + t * DAx;
+    projection.y = D.y + t * DAy;
+
+    return projection;
+}
+
+// Fonction pour calculer l'écart de trajectoire entre la projection et le point externe
+double calculateTrajectoryDeviation(const Point& projection, const Point& B) {
+    return calculateDistance(projection, B);
+}
+
+// Fonction pour déterminer de quel côté du segment DA se trouve B (produit vectoriel)
+double crossProduct(const Point& D, const Point& A, const Point& B) {
+    double DAx = A.x - D.x;
+    double DAy = A.y - D.y;
+    double DBx = B.x - D.x;
+    double DBy = B.y - D.y;
+    return DAx * DBy - DAy * DBx;
+}
+
+// Fonction pour calculer le point d'arrivée corrigé qui est perpendiculaire à la ligne DA et de l'autre côté de B
+Point calculateCorrectedEndpoint(const Point& projection, const Point& A, const Point& D, const Point& B) {
+    // Calculer la distance entre B et la projection R
+    double distanceBR = calculateDistance(B, projection);
+
+    // Calculer le vecteur orthogonal à DA
+    double DAx = A.x - D.x;
+    double DAy = A.y - D.y;
+
+    // Normaliser le vecteur orthogonal
+    double lengthDA = std::sqrt(DAx * DAx + DAy * DAy);
+    double orthogonalDx = -DAy / lengthDA;
+    double orthogonalDy = DAx / lengthDA;
+
+    // Déterminer de quel côté se trouve le point B par rapport à DA
+    double cross = crossProduct(D, A, B);
+
+    // Toujours déplacer dans la direction opposée au point B pour obtenir la symétrie
+    if (cross > 0) {
+        orthogonalDx = -orthogonalDx;
+        orthogonalDy = -orthogonalDy;
+    }
+
+    // Calculer le point corrigé en se déplaçant depuis A dans la direction orthogonale
+    Point correctedEndpoint;
+    correctedEndpoint.x = A.x + orthogonalDx * distanceBR;
+    correctedEndpoint.y = A.y + orthogonalDy * distanceBR;
+
+    return correctedEndpoint;
+}
+
+int main() {
+    Point A, D, B;
+    std::cout << "Entrez les coordonnées du point A (x y) : ";
+    std::cin >> A.x >> A.y;
+    std::cout << "Entrez les coordonnées du point de départ D (x y) : ";
+    std::cin >> D.x >> D.y;
+    std::cout << "Entrez les coordonnées du point externe B (x y) : ";
+    std::cin >> B.x >> B.y;
+
+    // Calcul de la projection perpendiculaire de B sur DA
+    Point projection = calculatePerpendicularProjection(A, D, B);
+
+    // Calcul de l'écart de trajectoire
+    double deviation = calculateTrajectoryDeviation(projection, B);
+
+    // Calcul du point d'arrivée corrigé
+    Point correctedEndpoint = calculateCorrectedEndpoint(projection, A, D, B);
+
+    // Affichage des résultats
+    std::cout << "Les coordonnées du point projeté sont : (" 
+              << projection.x << ", " << projection.y << ")" << std::endl;
+    std::cout << "L'écart de trajectoire est : " << deviation << std::endl;
+    std::cout << "Les coordonnées du point d'arrivée corrigé sont : (" 
+              << correctedEndpoint.x << ", " << correctedEndpoint.y << ")" << std::endl;
+
+    return 0;
+}
+
+
+*/
