@@ -3,6 +3,7 @@
 #include "mission_manager/navigation_server.hpp"
 #include <algorithm>
 #include <limits>
+#include <iostream>
 #include <cmath>
 
 using namespace std::chrono_literals;
@@ -13,6 +14,7 @@ odom_received_(false),
 initial_distance_to_goal_(0.0),
 estimated_disturbance_angular_(0.0),
 last_waypoint_index_(std::numeric_limits<size_t>::max()),
+starting_point_{0.0, 0.0, false},
 current_linear_speed_(0.0)
 {
 	action_server_ = rclcpp_action::create_server<Navigation>(
@@ -67,6 +69,80 @@ current_linear_speed_(0.0)
 	RCLCPP_INFO(this->get_logger(), "Navigation Server has been started.");
 }
 
+double calculateDistance(const Point& p1, const Point& p2) {
+    double dx = p2.x - p1.x;
+    double dy = p2.y - p1.y;
+    return std::sqrt(dx * dx + dy * dy);
+}
+
+// Fonction pour déterminer de quel côté du segment DA se trouve B (produit vectoriel)
+double crossProduct(const Point& D, const Point& A, const Point& B) {
+    double DAx = A.x - D.x;
+    double DAy = A.y - D.y;
+    double DBx = B.x - D.x;
+    double DBy = B.y - D.y;
+    return DAx * DBy - DAy * DBx;
+}
+
+Point calculateCorrectedEndpoint(const Point& projection, const Point& A, const Point& D, const Point& B) {
+    // Calculer la distance entre B et la projection R
+    double distanceBR = calculateDistance(B, projection);
+
+    // Calculer le vecteur orthogonal à DA
+    double DAx = A.x - D.x;
+    double DAy = A.y - D.y;
+
+    // Normaliser le vecteur orthogonal
+    double lengthDA = std::sqrt(DAx * DAx + DAy * DAy);
+    double orthogonalDx = -DAy / lengthDA;
+    double orthogonalDy = DAx / lengthDA;
+
+    // Déterminer de quel côté se trouve le point B par rapport à DA
+    double cross = crossProduct(D, A, B);
+
+    // Toujours déplacer dans la direction opposée au point B pour obtenir la symétrie
+    if (cross > 0) {
+        orthogonalDx = -orthogonalDx;
+        orthogonalDy = -orthogonalDy;
+    }
+
+    // Calculer le point corrigé en se déplaçant depuis A dans la direction orthogonale
+    Point correctedEndpoint;
+    correctedEndpoint.x = A.x + orthogonalDx * distanceBR;
+    correctedEndpoint.y = A.y + orthogonalDy * distanceBR;
+
+    return correctedEndpoint;
+}
+
+
+// Fonction pour calculer la projection perpendiculaire de B sur l'itinéraire DA
+Point calculatePerpendicularProjection(const Point& A, const Point& D, const Point& B) {
+    double DAx = A.x - D.x;
+    double DAy = A.y - D.y;
+    double DBx = B.x - D.x;
+    double DBy = B.y - D.y;
+
+    double dotProduct = DAx * DBx + DAy * DBy;
+    double lengthSquared = DAx * DAx + DAy * DAy;
+
+    double t = 0.0;
+    if (lengthSquared != 0) {
+        t = dotProduct / lengthSquared;
+    }
+
+    // Calculer la projection sur la droite DA (pas de limitation à l'intervalle [0, 1])
+    Point projection;
+    projection.x = D.x + t * DAx;
+    projection.y = D.y + t * DAy;
+
+    return projection;
+}
+
+// Fonction pour calculer l'écart de trajectoire entre la projection et le point externe
+double calculateTrajectoryDeviation(const Point& projection, const Point& B) {
+    return calculateDistance(projection, B);
+}
+
 
 void NavigationServer::odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg)
 {
@@ -112,6 +188,7 @@ void NavigationServer::execute(const std::shared_ptr<GoalHandleNavigation> goal_
 	auto goal = goal_handle->get_goal();
 	path_ = goal->path.poses;
 	current_waypoint_index_ = 0;
+	starting_point_ = {0.0, 0.0, false};
 	goal_cancelled_ = false;
 
 	auto feedback = std::make_shared<Navigation::Feedback>();
@@ -175,8 +252,29 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 	double roll_current, pitch_current, yaw_current;
 	tf2::Matrix3x3(q_current).getRPY(roll_current, pitch_current, yaw_current);
 
-	double x_goal = current_waypoint.position.x;
-	double y_goal = current_waypoint.position.y;
+	Point A = {current_waypoint.position.x, current_waypoint.position.y};
+
+	if (current_waypoint_index_ != 0)
+		starting_point_ = {current_waypoint.position.x, current_waypoint.position.y, true};
+	else if (current_waypoint_index_ == 0 && starting_point_.initialized == false)
+		starting_point_ = {current_odometry_.pose.pose.position.x, current_odometry_.pose.pose.position.y, true};
+
+	Point D = {starting_point_.x, starting_point_.y};
+	Point B = {x_current, y_current};
+
+	Point projection = calculatePerpendicularProjection(A, D, B);
+    double deviation = calculateTrajectoryDeviation(projection, B);
+    Point correctedEndpoint = calculateCorrectedEndpoint(projection, A, D, B);
+
+	//log des valeurs waypoint index, A D B et correctedEndpoint
+	RCLCPP_INFO(this->get_logger(), "Waypoint Index: %zu", current_waypoint_index_);
+	RCLCPP_INFO(this->get_logger(), "A: %.2f, %.2f", A.x, A.y);
+	RCLCPP_INFO(this->get_logger(), "D: %.2f, %.2f", D.x, D.y);
+	RCLCPP_INFO(this->get_logger(), "B: %.2f, %.2f", B.x, B.y);
+	RCLCPP_INFO(this->get_logger(), "Corrected Endpoint: %.2f, %.2f", correctedEndpoint.x, correctedEndpoint.y);
+
+	double x_goal = correctedEndpoint.x;
+	double y_goal = correctedEndpoint.y;
 
 	double error_x = x_goal - x_current;
 	double error_y = y_goal - y_current;
@@ -275,124 +373,3 @@ int main(int argc, char **argv)
 	rclcpp::shutdown();
 	return 0;
 }
-
-
-/* fonction point projete de reference sur l'itineraire initial
-startPoint correspond au point de depart de l'itineraire initial
-endPointA correspond au point de fin de l'itineraire initial
-externalPoint correspond au point de reference
-##include <iostream>
-#include <cmath>
-
-struct Point {
-    double x;
-    double y;
-};
-
-// Fonction pour calculer la distance entre deux points
-double calculateDistance(const Point& p1, const Point& p2) {
-    double dx = p2.x - p1.x;
-    double dy = p2.y - p1.y;
-    return std::sqrt(dx * dx + dy * dy);
-}
-
-// Fonction pour calculer la projection perpendiculaire de B sur l'itinéraire DA
-Point calculatePerpendicularProjection(const Point& A, const Point& D, const Point& B) {
-    double DAx = A.x - D.x;
-    double DAy = A.y - D.y;
-    double DBx = B.x - D.x;
-    double DBy = B.y - D.y;
-
-    double dotProduct = DAx * DBx + DAy * DBy;
-    double lengthSquared = DAx * DAx + DAy * DAy;
-
-    double t = 0.0;
-    if (lengthSquared != 0) {
-        t = dotProduct / lengthSquared;
-    }
-
-    // Clamp t to the [0,1] interval to stay within the segment DA
-    t = std::fmax(0.0, std::fmin(1.0, t));
-
-    Point projection;
-    projection.x = D.x + t * DAx;
-    projection.y = D.y + t * DAy;
-
-    return projection;
-}
-
-// Fonction pour calculer l'écart de trajectoire entre la projection et le point externe
-double calculateTrajectoryDeviation(const Point& projection, const Point& B) {
-    return calculateDistance(projection, B);
-}
-
-// Fonction pour déterminer de quel côté du segment DA se trouve B (produit vectoriel)
-double crossProduct(const Point& D, const Point& A, const Point& B) {
-    double DAx = A.x - D.x;
-    double DAy = A.y - D.y;
-    double DBx = B.x - D.x;
-    double DBy = B.y - D.y;
-    return DAx * DBy - DAy * DBx;
-}
-
-// Fonction pour calculer le point d'arrivée corrigé qui est perpendiculaire à la ligne DA et de l'autre côté de B
-Point calculateCorrectedEndpoint(const Point& projection, const Point& A, const Point& D, const Point& B) {
-    // Calculer la distance entre B et la projection R
-    double distanceBR = calculateDistance(B, projection);
-
-    // Calculer le vecteur orthogonal à DA
-    double DAx = A.x - D.x;
-    double DAy = A.y - D.y;
-
-    // Normaliser le vecteur orthogonal
-    double lengthDA = std::sqrt(DAx * DAx + DAy * DAy);
-    double orthogonalDx = -DAy / lengthDA;
-    double orthogonalDy = DAx / lengthDA;
-
-    // Déterminer de quel côté se trouve le point B par rapport à DA
-    double cross = crossProduct(D, A, B);
-
-    // Toujours déplacer dans la direction opposée au point B pour obtenir la symétrie
-    if (cross > 0) {
-        orthogonalDx = -orthogonalDx;
-        orthogonalDy = -orthogonalDy;
-    }
-
-    // Calculer le point corrigé en se déplaçant depuis A dans la direction orthogonale
-    Point correctedEndpoint;
-    correctedEndpoint.x = A.x + orthogonalDx * distanceBR;
-    correctedEndpoint.y = A.y + orthogonalDy * distanceBR;
-
-    return correctedEndpoint;
-}
-
-int main() {
-    Point A, D, B;
-    std::cout << "Entrez les coordonnées du point A (x y) : ";
-    std::cin >> A.x >> A.y;
-    std::cout << "Entrez les coordonnées du point de départ D (x y) : ";
-    std::cin >> D.x >> D.y;
-    std::cout << "Entrez les coordonnées du point externe B (x y) : ";
-    std::cin >> B.x >> B.y;
-
-    // Calcul de la projection perpendiculaire de B sur DA
-    Point projection = calculatePerpendicularProjection(A, D, B);
-
-    // Calcul de l'écart de trajectoire
-    double deviation = calculateTrajectoryDeviation(projection, B);
-
-    // Calcul du point d'arrivée corrigé
-    Point correctedEndpoint = calculateCorrectedEndpoint(projection, A, D, B);
-
-    // Affichage des résultats
-    std::cout << "Les coordonnées du point projeté sont : (" 
-              << projection.x << ", " << projection.y << ")" << std::endl;
-    std::cout << "L'écart de trajectoire est : " << deviation << std::endl;
-    std::cout << "Les coordonnées du point d'arrivée corrigé sont : (" 
-              << correctedEndpoint.x << ", " << correctedEndpoint.y << ")" << std::endl;
-
-    return 0;
-}
-
-
-*/
