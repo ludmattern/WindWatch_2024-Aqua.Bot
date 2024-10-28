@@ -40,7 +40,7 @@ current_linear_speed_(0.0)
 	this->declare_parameter<double>("Ki_angular", 0.0);
 	this->declare_parameter<double>("Kd_angular", 0.0);
 	this->declare_parameter<double>("Kd_disturbance", 0.0);
-	this->declare_parameter<double>("position_tolerance", 1.5);
+	this->declare_parameter<double>("position_tolerance", 1.0);
 	this->declare_parameter<double>("control_loop_rate", 20.0);
 	this->declare_parameter<double>("min_linear_speed", 0.0);
 	this->declare_parameter<double>("max_linear_speed", 6.0);
@@ -112,7 +112,7 @@ Point calculateCorrectedEndpoint(const Point& projection, const Point& A, const 
 	// correctedEndpoint.y = A.y + orthogonalDy * distanceBR;
 
 	//test avec correction renforcée
-	double correction_factor = 3;
+	double correction_factor = 10;
     Point correctedEndpoint;
     correctedEndpoint.x = A.x + correction_factor * (orthogonalDx * distanceBR);
     correctedEndpoint.y = A.y + correction_factor * (orthogonalDy * distanceBR);
@@ -285,7 +285,11 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 
 	double error_x = x_goal - x_current;
 	double error_y = y_goal - y_current;
-	double distance_to_goal = std::sqrt(error_x * error_x + error_y * error_y);
+
+	//real distance to goal
+	double real_error_x = current_waypoint.position.x - x_current;
+	double real_error_y = current_waypoint.position.y - y_current;
+	double distance_to_goal = std::sqrt(real_error_x * real_error_x + real_error_y * real_error_y);
 
 	if (distance_to_goal < position_tolerance_)
 	{
