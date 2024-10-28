@@ -15,8 +15,8 @@
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 
 #include "mission_manager/action/navigation.hpp"
-
 #include "mission_manager/pid_controller.hpp"
+#include "mission_manager/Point.hpp"
 
 class NavigationServer : public rclcpp::Node
 {
@@ -76,6 +76,8 @@ private:
     // Control flags
     bool goal_cancelled_;
 
+	Point starting_point_;
+	
     // Action server callbacks
     rclcpp_action::GoalResponse handle_goal(
         const rclcpp_action::GoalUUID &uuid,
