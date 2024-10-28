@@ -107,9 +107,16 @@ Point calculateCorrectedEndpoint(const Point& projection, const Point& A, const 
 	}
 
 	// Calculer le point corrigé en se déplaçant depuis A dans la direction orthogonale
-	Point correctedEndpoint;
-	correctedEndpoint.x = A.x + orthogonalDx * distanceBR;
-	correctedEndpoint.y = A.y + orthogonalDy * distanceBR;
+	// Point correctedEndpoint;
+	// correctedEndpoint.x = A.x + orthogonalDx * distanceBR;
+	// correctedEndpoint.y = A.y + orthogonalDy * distanceBR;
+
+	//test avec correction renforcée
+	double correction_factor = 1.5;
+    Point correctedEndpoint;
+    correctedEndpoint.x = A.x + correction_factor * (orthogonalDx * distanceBR);
+    correctedEndpoint.y = A.y + correction_factor * (orthogonalDy * distanceBR);
+
 
 	return correctedEndpoint;
 }
@@ -313,7 +320,9 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 	double angular_speed_pid = angular_pid_.compute(0.0, -error_theta, dt);
 
 	double accel_distance = 100.0; // mètres
-	double decel_distance = 100.0; // mètres
+	//double decel_distance = 100.0; // mètres
+	//test leger
+	double decel_distance = 10.0; // mètres
 	double target_speed = max_linear_speed_;
 
 	if (distance_traveled <= accel_distance)
