@@ -178,21 +178,96 @@ void PathPlanningNode::CreateObjectivesGraph(void)
 	{
 		for (int j = i; j < NbObjectives; ++j)
 		{
+			if (i == j)
+				GraphObjectives[i][j].first = std::numeric_limits<double>::infinity();
 
+			else
+			{
+				std::pair<double, std::vector<int>> Path = Dijkstra(i, j);
+
+				GraphObjectives[i][j] = Path;
+
+				std::reverse(Path.second.begin(), Path.second.end());
+				GraphObjectives[j][i] = Path;
+			}
 		}
 	}
 }
 
+double PathPlanningNode::tsp(int pos, int mask, std::vector<std::vector<double>> &dp, std::vector<std::vector<int>> &next)
+{
+	RCLCPP_INFO(this->get_logger(), "in TSP");
+	//All objectives are visited
+	if (mask == (1 << NbObjectives) - 1)
+		return (0);
+
+	//Solutions already memorised
+	if (dp[mask][pos] != std::numeric_limits<double>::infinity())
+		return (dp[mask][pos]);
+
+	double Answer = std::numeric_limits<double>::infinity();
+
+	for (int NextPoint = 0; NextPoint < NbObjectives; ++NextPoint)
+	{
+		if ((mask & (1 << NextPoint)) == 0) //If NextPoint isn't visited
+		{
+			double NewAnswer = GraphObjectives[pos][NextPoint].first + tsp(NextPoint, mask | (1 << NextPoint), dp, next);
+			if (NewAnswer < Answer) //Better path found
+			{
+				Answer = NewAnswer;
+				next[mask][pos] = NextPoint;
+			}	
+		}
+	}
+	dp[mask][pos] = Answer;
+	return (Answer);
+}
+
 void PathPlanningNode::CreatePath(void)
 {
-	std::pair<double, std::vector<int>> Path = Dijkstra(0, 3);
+	//Fill GraphObjectives
+	RCLCPP_INFO(this->get_logger(), "Create Objectives Graph");
+	CreateObjectivesGraph();
 
+	//Init dp vector for the tsp
+	std::vector<std::vector<double>> dp(1 << NbObjectives, 
+		std::vector<double>(NbObjectives, std::numeric_limits<double>::infinity()));
+	
+	//Init next vector for the tsp
+	std::vector<std::vector<int>> next(1 << NbObjectives, std::vector<int>(NbObjectives, -1));
+
+	RCLCPP_INFO(this->get_logger(), "TSP");
+	int mask = 1 << 0;
+	int pos = 0;
+	double minDist = tsp(0, mask, dp, next);
+
+	std::vector<int> Path;
+
+
+	std::ostringstream str2;
+
+	str2 << minDist << ": ";
+	for (int i = 0; i < next.size(); ++i)
+		str2 << next[i];
+	
+	RCLCPP_INFO(this->get_logger(), "%s", str2.str().c_str());
+
+	RCLCPP_INFO(this->get_logger(), "End TSP %ld", next.size());
+	while (mask != ((1 << next.size()) - 1))
+	{
+		RCLCPP_INFO(this->get_logger(), "End TSP %d", pos);
+		Path.push_back(pos);
+		pos = next[mask][pos];
+		mask |= (1 << pos);
+	}
+
+	Path.push_back(pos);
+	
 	std::ostringstream str;
 
-	str << "Dist: " << Path.first << '\n';
-
-	for(int i = 0; i < Path.second.size(); ++i)
-		str << Path.second[i] << " : " << PointList[Path.second[i]].x << "," << PointList[Path.second[i]].y << '\n';
+	str << minDist << ": ";
+	for (int i = 0; i < Path.size(); ++i)
+		str << Path[i] << ": " << PointList[Path[i]].x << ", " << PointList[Path[i]].y;
 	
 	RCLCPP_INFO(this->get_logger(), "%s", str.str().c_str());
 }

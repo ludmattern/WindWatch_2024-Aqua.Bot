@@ -48,6 +48,7 @@ class PathPlanningNode : public rclcpp::Node
 
         void CreateObjectivesGraph(void); 
         std::pair<double, std::vector<int>> Dijkstra(int start, int end);
+        double tsp(int pos, int mask, std::vector<std::vector<double>> &dp, std::vector<std::vector<int>> &next);
 
         bool ShipAdded;
         int NbObjectives;
