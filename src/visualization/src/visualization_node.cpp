@@ -1,8 +1,5 @@
 #include "visualization/visualization_node.hpp"
 
-nav_msgs::msg::Path FullPath;
-nav_msgs::msg::Path ActualPath;
-
 VisualizationNode::VisualizationNode() : Node("visualization_node")
 {
 	Visual_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
@@ -26,9 +23,14 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	rock_1_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/rock_1", 10);
 	rock_2_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/rock_2", 10);
 	rock_3_publisher_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/minimap/rock_3", 10);
-	camera_publisher = this->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>("/minimap/camera", 10);
+	camera_publisher_ = this->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>("/minimap/camera", 10);
 	actual_path_publisher_ = this->create_publisher<nav_msgs::msg::Path>("/minimap/path/actual", 10);
     full_path_publisher_ = this->create_publisher<nav_msgs::msg::Path>("/minimap/path/full", 10);
+	polygon_publisher_1_ = this->create_publisher<geometry_msgs::msg::PolygonStamped>("minimap/polygon_1", 10);
+	polygon_publisher_2_ = this->create_publisher<geometry_msgs::msg::PolygonStamped>("minimap/polygon_2", 10);
+	polygon_publisher_3_ = this->create_publisher<geometry_msgs::msg::PolygonStamped>("minimap/polygon_3", 10);
+	polygon_publisher_4_ = this->create_publisher<geometry_msgs::msg::PolygonStamped>("minimap/polygon_4", 10);
+	polygon_publisher_5_ = this->create_publisher<geometry_msgs::msg::PolygonStamped>("minimap/polygon_5", 10);
 
 	// Fixed frame name = odom
 	LightHouse.header.frame_id = "odom";
@@ -43,6 +45,11 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	Camera.header.frame_id = "odom";
     FullPath.header.frame_id = "odom";
 	ActualPath.header.frame_id = "odom";
+	Polygon1.header.frame_id = "odom";
+	Polygon2.header.frame_id = "odom";
+	Polygon3.header.frame_id = "odom";
+	Polygon4.header.frame_id = "odom";
+	Polygon5.header.frame_id = "odom";
 
 	// Coordinates reference on Discord
 	VisualizationNode::setCoordinates(&LightHouse, 120, -50);
@@ -54,6 +61,37 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	VisualizationNode::setCoordinates(&Rock1, -40, 220);
 	VisualizationNode::setCoordinates(&Rock2, -44, -95);
 	VisualizationNode::setCoordinates(&Rock3, -30, -150);
+
+	VisualizationNode::addPolygonPoint(Polygon1, -122,206);
+	VisualizationNode::addPolygonPoint(Polygon1, -76,255);
+	VisualizationNode::addPolygonPoint(Polygon1, -32,260);
+	VisualizationNode::addPolygonPoint(Polygon1, -15,215);
+	VisualizationNode::addPolygonPoint(Polygon1, -45,190);
+	VisualizationNode::addPolygonPoint(Polygon1, -62,146);
+	VisualizationNode::addPolygonPoint(Polygon1, -122,146);
+
+	VisualizationNode::addPolygonPoint(Polygon2, 100,-30);
+	VisualizationNode::addPolygonPoint(Polygon2, 145, -30);
+	VisualizationNode::addPolygonPoint(Polygon2, 145, -75);
+	VisualizationNode::addPolygonPoint(Polygon2, 100, -75);
+
+	VisualizationNode::addPolygonPoint(Polygon3, -190,33);
+	VisualizationNode::addPolygonPoint(Polygon3, -120,30);
+	VisualizationNode::addPolygonPoint(Polygon3, -127,-50);
+	VisualizationNode::addPolygonPoint(Polygon3, -167,-54);
+
+	VisualizationNode::addPolygonPoint(Polygon4, 42,165);
+	VisualizationNode::addPolygonPoint(Polygon4, 100,210);
+	VisualizationNode::addPolygonPoint(Polygon4, 153,135);
+	VisualizationNode::addPolygonPoint(Polygon4, 105,90);
+
+	VisualizationNode::addPolygonPoint(Polygon5, -67,-75);
+	VisualizationNode::addPolygonPoint(Polygon5, -20,-75);
+	VisualizationNode::addPolygonPoint(Polygon5, 23,-75);
+	VisualizationNode::addPolygonPoint(Polygon5, 43,-110);
+	VisualizationNode::addPolygonPoint(Polygon5, -5,-120);
+	VisualizationNode::addPolygonPoint(Polygon5, -7,-170);
+	VisualizationNode::addPolygonPoint(Polygon5, -60,-165);
 
 	sleep(2);
 
@@ -71,6 +109,17 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	VisualizationNode::pointsPublisher();
 
 	RCLCPP_INFO(this->get_logger(), "Visualization Node has started");
+}
+
+void VisualizationNode::addPolygonPoint(geometry_msgs::msg::PolygonStamped& Polygon, double x, double y)
+{
+	geometry_msgs::msg::Point32 Point32;
+
+	Point32.x = x;
+	Point32.y = y;
+	Point32.z = 5;
+
+	Polygon.polygon.points.push_back(Point32);
 }
 
 void VisualizationNode::addPathPoint(nav_msgs::msg::Path& path, double x, double y)
@@ -91,7 +140,7 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
 	Camera.pose.pose.position.y = msg.get()->pose.pose.position.y;
 	Camera.pose.pose.position.z = msg.get()->pose.pose.position.z;
 
-	camera_publisher->publish(Camera);
+	camera_publisher_->publish(Camera);
 
 	geometry_msgs::msg::PoseStamped boatPos;
 	boatPos.header.frame_id = "odom";
@@ -139,7 +188,7 @@ void VisualizationNode::cameraCallback(const std_msgs::msg::Float64::SharedPtr m
     Camera.pose.pose.orientation.w = q.w();
 
     // Publier la pose de la caméra
-    camera_publisher->publish(Camera);
+    camera_publisher_->publish(Camera);
 }
 
 void VisualizationNode::pointsPublisher()
@@ -157,6 +206,12 @@ void VisualizationNode::pointsPublisher()
 	rock_3_publisher_->publish(Rock3);
 
 	full_path_publisher_->publish(FullPath);
+
+	polygon_publisher_1_->publish(Polygon1);
+	polygon_publisher_2_->publish(Polygon2);
+	polygon_publisher_3_->publish(Polygon3);
+	polygon_publisher_4_->publish(Polygon4);
+	polygon_publisher_5_->publish(Polygon5);
 }
 
 void VisualizationNode::setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z)

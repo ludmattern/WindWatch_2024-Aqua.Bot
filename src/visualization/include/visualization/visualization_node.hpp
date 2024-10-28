@@ -10,8 +10,10 @@
 #include "geometry_msgs/msg/point_stamped.hpp"
 #include "geometry_msgs/msg/pose_array.hpp"
 #include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
+#include "geometry_msgs/msg/polygon_stamped.hpp"
 #include "sensors/srv/target_positions.hpp"
 #include "std_msgs/msg/float64.hpp"
+#include "robot/robot.hpp"
 
 class VisualizationNode : public rclcpp::Node
 {
@@ -30,6 +32,7 @@ private:
 	void cameraCallback(const std_msgs::msg::Float64::SharedPtr msg);
 
 	void pointsPublisher();
+	void addPolygonPoint(geometry_msgs::msg::PolygonStamped& Polygon, double x, double y);
 	void addPathPoint(nav_msgs::msg::Path& path, double x, double y); // Test purpose function
 	void setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z);
 
@@ -48,7 +51,12 @@ private:
 	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_1_publisher_;
 	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_2_publisher_;
 	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_3_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr camera_publisher;
+	rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr camera_publisher_;
+	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_1_;
+	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_2_;
+	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_3_;
+	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_4_;
+	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_5_;
 	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr full_path_publisher_;
 	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr actual_path_publisher_;
 
@@ -62,7 +70,14 @@ private:
 	geometry_msgs::msg::PointStamped Rock1;
 	geometry_msgs::msg::PointStamped Rock2;
 	geometry_msgs::msg::PointStamped Rock3;
+	geometry_msgs::msg::PolygonStamped Polygon1;
+	geometry_msgs::msg::PolygonStamped Polygon2;
+	geometry_msgs::msg::PolygonStamped Polygon3;
+	geometry_msgs::msg::PolygonStamped Polygon4;
+	geometry_msgs::msg::PolygonStamped Polygon5;
 	geometry_msgs::msg::PoseWithCovarianceStamped Camera;
+	nav_msgs::msg::Path FullPath;
+	nav_msgs::msg::Path ActualPath;
 
 	// Timers
 	rclcpp::TimerBase::SharedPtr point_timer_;
