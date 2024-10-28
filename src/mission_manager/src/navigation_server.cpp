@@ -40,7 +40,7 @@ current_linear_speed_(0.0)
 	this->declare_parameter<double>("Ki_angular", 0.0);
 	this->declare_parameter<double>("Kd_angular", 0.0);
 	this->declare_parameter<double>("Kd_disturbance", 0.0);
-	this->declare_parameter<double>("position_tolerance", 1.0);
+	this->declare_parameter<double>("position_tolerance", 5.0);
 	this->declare_parameter<double>("control_loop_rate", 20.0);
 	this->declare_parameter<double>("min_linear_speed", 0.0);
 	this->declare_parameter<double>("max_linear_speed", 6.0);
@@ -94,6 +94,7 @@ Point calculateCorrectedEndpoint(const Point& projection, const Point& A, const 
 
 	// Normaliser le vecteur orthogonal
 	double lengthDA = std::sqrt(DAx * DAx + DAy * DAy);
+
 	double orthogonalDx = -DAy / lengthDA;
 	double orthogonalDy = DAx / lengthDA;
 
@@ -112,7 +113,7 @@ Point calculateCorrectedEndpoint(const Point& projection, const Point& A, const 
 	// correctedEndpoint.y = A.y + orthogonalDy * distanceBR;
 
 	//test avec correction renforcée
-	double correction_factor = 10;
+	double correction_factor = 1;
     Point correctedEndpoint;
     correctedEndpoint.x = A.x + correction_factor * (orthogonalDx * distanceBR);
     correctedEndpoint.y = A.y + correction_factor * (orthogonalDy * distanceBR);
@@ -262,7 +263,7 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 	Point A = {current_waypoint.position.x, current_waypoint.position.y};
 
 	if (current_waypoint_index_ != 0)
-		starting_point_ = {current_waypoint.position.x, current_waypoint.position.y, true};
+		starting_point_ = {path_[current_waypoint_index_ - 1].pose.position.x, path_[current_waypoint_index_ - 1].pose.position.y, true};
 	else if (current_waypoint_index_ == 0 && starting_point_.initialized == false)
 		starting_point_ = {current_odometry_.pose.pose.position.x, current_odometry_.pose.pose.position.y, true};
 
@@ -323,23 +324,23 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 	double linear_speed_pid = linear_pid_.compute(0.0, -error_linear, dt);
 	double angular_speed_pid = angular_pid_.compute(0.0, -error_theta, dt);
 
-	// double accel_distance = 0.0; // mètres
-	// double decel_distance = 0.0; // mètres
+	double accel_distance = 50.0; // mètres
+	double decel_distance = 50.0; // mètres
 	double target_speed = max_linear_speed_;
 
-	// if (distance_traveled <= accel_distance)
-	// {
-	// 	double scaling_factor = std::abs(distance_traveled) / accel_distance;
-	// 	scaling_factor = std::clamp(scaling_factor, 0.0, 1.0);
-	// 	target_speed = scaling_factor * max_linear_speed_;
-	// }
+	if (distance_traveled <= accel_distance)
+	{
+		double scaling_factor = std::abs(distance_traveled) / accel_distance;
+		scaling_factor = std::clamp(scaling_factor, 0.0, 1.0);
+		target_speed = scaling_factor * max_linear_speed_;
+	}
 
-	// if (distance_to_goal <= decel_distance)
-	// {
-	// 	double decel_factor = distance_to_goal / decel_distance;
-	// 	decel_factor = std::clamp(decel_factor, 0.0, 1.0);
-	// 	target_speed = std::min(target_speed, decel_factor * max_linear_speed_);
-	// }
+	if (distance_to_goal <= decel_distance)
+	{
+		double decel_factor = distance_to_goal / decel_distance;
+		decel_factor = std::clamp(decel_factor, 0.0, 1.0);
+		target_speed = std::min(target_speed, decel_factor * max_linear_speed_);
+	}
 
 	target_speed = std::clamp(target_speed, min_linear_speed_, max_linear_speed_);
 
