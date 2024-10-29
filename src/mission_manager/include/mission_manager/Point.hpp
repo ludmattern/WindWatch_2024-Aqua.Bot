@@ -1,11 +1,19 @@
-#ifndef POINT_HPP
-#define POINT_HPP
+// include/mission_manager/Point.hpp
 
-struct Point
-{
-	double x;
-	double y;
-	bool initialized;
+#ifndef MISSION_MANAGER__POINT_HPP_
+#define MISSION_MANAGER__POINT_HPP_
+
+namespace mission_manager {
+
+/**
+ * @brief Structure représentant un point dans l'espace 2D.
+ */
+struct Point {
+    double x;
+    double y;
+    bool initialized = false;
 };
 
-#endif
+} // namespace mission_manager
+
+#endif  // MISSION_MANAGER__POINT_HPP_

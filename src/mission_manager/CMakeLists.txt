@@ -42,7 +42,9 @@ ament_export_include_directories(include)
 # Add executables
 add_executable(navigation_server
   src/navigation_server.cpp
-  src/pid_controller.cpp   # Add pid_controller.cpp here
+  src/pid_controller.cpp
+  src/trajectory_manager.cpp
+  src/geometry_utils.cpp
 )
 ament_target_dependencies(navigation_server
   rclcpp
