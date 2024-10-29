@@ -13,7 +13,6 @@
 #include "geometry_msgs/msg/polygon_stamped.hpp"
 #include "sensors/srv/target_positions.hpp"
 #include "std_msgs/msg/float64.hpp"
-#include "robot/robot.hpp"
 
 class VisualizationNode : public rclcpp::Node
 {
