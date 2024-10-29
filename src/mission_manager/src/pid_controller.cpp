@@ -1,33 +1,33 @@
+// src/pid_controller.cpp
+
 #include "mission_manager/pid_controller.hpp"
 
-PIDController::PIDController()
-	: kp_(0.0), ki_(0.0), kd_(0.0), integral_(0.0), prev_error_(0.0)
-{}
+namespace mission_manager {
 
 PIDController::PIDController(double kp, double ki, double kd)
-	: kp_(kp), ki_(ki), kd_(kd), integral_(0.0), prev_error_(0.0)
+: kp_(kp), ki_(ki), kd_(kd), previous_error_(0.0), integral_(0.0)
 {}
 
-double PIDController::compute(double setpoint, double measured_value, double dt)
+void PIDController::set_parameters(double kp, double ki, double kd)
 {
-	double error = setpoint - measured_value;
-	integral_ += error * dt;
-	double derivative = (error - prev_error_) / dt;
-	prev_error_ = error;
+    kp_ = kp;
+    ki_ = ki;
+    kd_ = kd;
+}
 
-	double output = kp_ * error + ki_ * integral_ + kd_ * derivative;
-	return output;
+double PIDController::compute(double setpoint, double measured, double dt)
+{
+    double error = setpoint - measured;
+    integral_ += error * dt;
+    double derivative = (error - previous_error_) / dt;
+    previous_error_ = error;
+    return kp_ * error + ki_ * integral_ + kd_ * derivative;
 }
 
 void PIDController::reset()
 {
-	integral_ = 0.0;
-	prev_error_ = 0.0;
+    previous_error_ = 0.0;
+    integral_ = 0.0;
 }
 
-void PIDController::set_parameters(double kp, double ki, double kd)
-{
-	kp_ = kp;
-	ki_ = ki;
-	kd_ = kd;
-}
+} // namespace mission_manager
