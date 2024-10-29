@@ -104,7 +104,9 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	VisualizationNode::addPathPoint(FullPath, -270, -187);
 	
 	VisualizationNode::addPathPoint(ActualPath, 0, 0);
-	VisualizationNode::addPathPoint(ActualPath, 219, 290);
+	VisualizationNode::addPathPoint(ActualPath, 600, -600);
+	VisualizationNode::addPathPoint(ActualPath, 550, -550);
+	VisualizationNode::addPathPoint(ActualPath, 300, -100);
 
 	VisualizationNode::pointsPublisher();
 

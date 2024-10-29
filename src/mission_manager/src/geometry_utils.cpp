@@ -64,7 +64,7 @@ Point calculateCorrectedEndpoint(const Point& projection, const Point& A, const 
         orthogonalDy = -orthogonalDy;
     }
 
-    static constexpr double CORRECTION_FACTOR = 3.0;
+    static constexpr double CORRECTION_FACTOR = 10.0;
     Point correctedEndpoint;
     correctedEndpoint.x = A.x + CORRECTION_FACTOR * (orthogonalDx * distanceBR);
     correctedEndpoint.y = A.y + CORRECTION_FACTOR * (orthogonalDy * distanceBR);
