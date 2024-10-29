@@ -236,7 +236,7 @@ void PathPlanningNode::CreatePath(void)
 	//Init next vector for the tsp
 	std::vector<std::vector<int>> next(1 << NbObjectives, std::vector<int>(NbObjectives, -1));
 
-	RCLCPP_INFO(this->get_logger(), "TSP");
+	RCLCPP_INFO(this->get_logger(), "TSP %ld %d", next.size(), NbObjectives);
 	int mask = 1 << 0;
 	int pos = 0;
 	double minDist = tsp(0, mask, dp, next);
@@ -246,14 +246,18 @@ void PathPlanningNode::CreatePath(void)
 
 	std::ostringstream str2;
 
-	str2 << minDist << ": ";
+	str2 << next.size() << " " << minDist << ": ";
 	for (int i = 0; i < next.size(); ++i)
-		str2 << next[i];
+	{
+		for (int j = 0; j < next[i].size(); ++j)
+			str2 << next[i][j] << " ";
+		str2 << "\n";
+	}
 	
 	RCLCPP_INFO(this->get_logger(), "%s", str2.str().c_str());
 
 	RCLCPP_INFO(this->get_logger(), "End TSP %ld", next.size());
-	while (mask != ((1 << next.size()) - 1))
+	while (mask != ((1 << NbObjectives) - 1))
 	{
 		RCLCPP_INFO(this->get_logger(), "End TSP %d", pos);
 		Path.push_back(pos);
@@ -266,8 +270,15 @@ void PathPlanningNode::CreatePath(void)
 	std::ostringstream str;
 
 	str << minDist << ": ";
-	for (int i = 0; i < Path.size(); ++i)
-		str << Path[i] << ": " << PointList[Path[i]].x << ", " << PointList[Path[i]].y;
+	for (int i = 1; i < Path.size(); ++i)
+	{
+		for (int j = 0; j < GraphObjectives[Path[i - 1]][Path[i]].second.size(); ++j)
+		{
+			RCLCPP_INFO(this->get_logger(), "%d %d", i, j);
+			str << PointList[GraphObjectives[Path[i - 1]][Path[i]].second[j]].x << "," << PointList[GraphObjectives[Path[i - 1]][Path[i]].second[j]].y << " ";
+		}
+		str << "\n";
+	}
 	
 	RCLCPP_INFO(this->get_logger(), "%s", str.str().c_str());
 }
