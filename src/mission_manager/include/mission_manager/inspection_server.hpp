@@ -66,12 +66,7 @@ private:
 
     // Odometry callback
     void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
-	OdometryData getOdometryData(const geometry_msgs::msg::PoseStamped & target);
-	double getTgtAngleError(const OdometryData & odometryData, const geometry_msgs::msg::PoseStamped & target);
-	void sendThrustersCommands(double speedOutput, double headingOutput);
-	void adjustPIDSettings(double distanceToTarget, double requestedPrecision);
 	bool isGoalReached(void);
-	bool isPointTGT(const geometry_msgs::msg::PoseStamped & target);
 
 	// PID controllers
 	PIDController headingController_;

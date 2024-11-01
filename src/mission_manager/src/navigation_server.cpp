@@ -1,6 +1,7 @@
 // src/navigation_server.cpp
 
 #include "mission_manager/navigation_server.hpp"
+#include "mission_manager/controlUtils.hpp"
 #include <algorithm>
 #include <limits>
 #include <iostream>
@@ -8,25 +9,17 @@
 
 using namespace std::chrono_literals;
 
-NavigationServer::NavigationServer()
-: Node("navigation_server"),
-odom_received_(false)
+NavigationServer::NavigationServer(): Node("navigation_server"), odom_received_(false)
 {
-	action_server_ = rclcpp_action::create_server<Navigation>(
-		this,
-		"navigation",
+	action_server_ = rclcpp_action::create_server<Navigation>(this, "navigation",
 		std::bind(&NavigationServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
 		std::bind(&NavigationServer::handle_cancel, this, std::placeholders::_1),
-		std::bind(&NavigationServer::handle_accepted, this, std::placeholders::_1)
-	);
+		std::bind(&NavigationServer::handle_accepted, this, std::placeholders::_1));
 
-	cmdPublisher_ = this->create_publisher<geometry_msgs::msg::Twist>(
-		"/propulsion/command", 10);
+	cmdPublisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/propulsion/command", 10);
 
-	odom_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
-		"/mission/odometry", 10,
-		std::bind(&NavigationServer::odomCallback, this, std::placeholders::_1)
-	);
+	odom_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>("/mission/odometry", 10,
+		std::bind(&NavigationServer::odomCallback, this, std::placeholders::_1));
 
 	headingController_ = PIDController(0.7, 0.01, 0.0, 0.78, -0.78, 0.5, 0.017);
 	speedController_ = PIDController(0.1, 0.005, 0.02, 6.17, 0.0, 0.5, 0.1);
@@ -55,22 +48,19 @@ rclcpp_action::GoalResponse NavigationServer::handle_goal(const rclcpp_action::G
 
 rclcpp_action::CancelResponse NavigationServer::handle_cancel(const std::shared_ptr<GoalHandleNavigation> goal_handle)
 {
-	RCLCPP_INFO(this->get_logger(), "Received request to cancel Navigation goal.");
+	RCLCPP_INFO(this->get_logger(), "Received request to cancel Navigation");
 	return rclcpp_action::CancelResponse::ACCEPT;
 }
 
 void NavigationServer::handle_accepted(const std::shared_ptr<GoalHandleNavigation> goal_handle)
 {
-	std::thread(
-		[this, goal_handle]() {
-			execute(goal_handle);
-		}
-	).detach();
+	std::thread([this, goal_handle](){ execute(goal_handle); }).detach();
 }
 
 void NavigationServer::execute(const std::shared_ptr<GoalHandleNavigation> goal_handle)
 {
-	RCLCPP_INFO(this->get_logger(), "Executing Navigation goal...");
+	RCLCPP_INFO(this->get_logger(), "Executing Navigation goal.");
+
 
 	auto goal = goal_handle->get_goal();
 	path_ = goal->path.poses;
@@ -87,7 +77,7 @@ void NavigationServer::execute(const std::shared_ptr<GoalHandleNavigation> goal_
 			goalCancelled_ = true;
 			result->success = false;
 			goal_handle->canceled(result);
-			RCLCPP_INFO(this->get_logger(), "Navigation goal canceled.");
+			RCLCPP_INFO(this->get_logger(), "Navigation canceled");
 			return;
 		}
 
@@ -107,7 +97,7 @@ void NavigationServer::execute(const std::shared_ptr<GoalHandleNavigation> goal_
 			targetIndex_ = 0;
 			result->success = true;
 			goal_handle->succeed(result);
-			RCLCPP_INFO(this->get_logger(), "Navigation goal succeeded.");
+			RCLCPP_INFO(this->get_logger(), "Navigation succeeded");
 			return;
 		}
 
@@ -116,51 +106,6 @@ void NavigationServer::execute(const std::shared_ptr<GoalHandleNavigation> goal_
 
 		rate.sleep();
 	}
-}
-
-NavigationServer::OdometryData NavigationServer::getOdometryData(const geometry_msgs::msg::PoseStamped & target)
-{
-	std::lock_guard<std::mutex> lock(odom_mutex_);
-	nav_msgs::msg::Odometry odom = current_odometry_;
-
-	OdometryData data;
-	data.pos_x = odom.pose.pose.position.x;
-	data.pos_y = odom.pose.pose.position.y;
-
-	tf2::Quaternion q(
-    odom.pose.pose.orientation.x,
-    odom.pose.pose.orientation.y,
-    odom.pose.pose.orientation.z,
-    odom.pose.pose.orientation.w);
-
-	tf2::Matrix3x3 m(q);
-	double roll, pitch, yaw;
-
-	m.getRPY(roll, pitch, yaw);
-	data.yaw = yaw;
-
-	data.linear_velocity = std::sqrt(
-		std::pow(odom.twist.twist.linear.x, 2) +
-		std::pow(odom.twist.twist.linear.y, 2));
-
-	data.distanceToTarget = std::sqrt(
-		std::pow(target.pose.position.x - data.pos_x, 2) +
-		std::pow(target.pose.position.y - data.pos_y, 2));
-
-	return data;
-}
-
-double NavigationServer::getTgtAngleError(const OdometryData & odometryData, const geometry_msgs::msg::PoseStamped & target)
-{
-	double targetAngleError = std::atan2(
-		target.pose.position.y - odometryData.pos_y,
-		target.pose.position.x - odometryData.pos_x);
-
-	double angleError = targetAngleError - odometryData.yaw;
-    while (angleError > M_PI) angleError -= 2 * M_PI;
-    while (angleError < -M_PI) angleError += 2 * M_PI;
-
-	return angleError;
 }
 
 bool NavigationServer::isPointTGT(const geometry_msgs::msg::PoseStamped & target)
@@ -188,23 +133,16 @@ void NavigationServer::adjustPIDSettings(double distanceToTarget, double request
 	}
 }
 
-void NavigationServer::sendThrustersCommands(double speedOutput, double headingOutput)
-{
-	geometry_msgs::msg::Twist cmdMsg;
-	cmdMsg.linear.x = speedOutput;
-	cmdMsg.angular.z = headingOutput;
-	cmdPublisher_->publish(cmdMsg);
-}
-
 void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> goal_handle)
 {
 	if (goalCancelled_ || isGoalReached()) return;
 
 	const geometry_msgs::msg::PoseStamped & target = path_[targetIndex_];
 
-	OdometryData odometryData = getOdometryData(target);
+	std::lock_guard<std::mutex> lock(odom_mutex_);
+	controlUtils::OdometryData odometryData = controlUtils::getOdometryData(target, current_odometry_);
 
-	double requestedPrecision_ = isPointTGT(target) ? 60.0 : 60.0;
+	double requestedPrecision_ = isPointTGT(target) ? 20.0 : 60.0;
 
 	if (odometryData.distanceToTarget <= requestedPrecision_)
 	{
@@ -215,14 +153,14 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 		return;
 	}
 
-	double targetAngleError = getTgtAngleError(odometryData, target);
+	double targetAngleError = controlUtils::getTgtAngleError(odometryData, target);
 
 	adjustPIDSettings(odometryData.distanceToTarget, requestedPrecision_);
 	
 	double headingOutput = headingController_.calculate(targetAngleError, odometryData.distanceToTarget);
 	double speedOutput = speedController_.calculate(odometryData.distanceToTarget);
 
-	sendThrustersCommands(speedOutput, headingOutput);
+	controlUtils::sendThrustersCommands(speedOutput, headingOutput, cmdPublisher_);
 }
 
 int main(int argc, char **argv)

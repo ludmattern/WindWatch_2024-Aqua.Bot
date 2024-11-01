@@ -1,6 +1,7 @@
 // src/inspection_server.cpp
 
 #include "mission_manager/inspection_server.hpp"
+#include "mission_manager/controlUtils.hpp"
 #include <algorithm>
 #include <limits>
 #include <iostream>
@@ -118,62 +119,9 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 	}
 }
 
-InspectionServer::OdometryData InspectionServer::getOdometryData(const geometry_msgs::msg::PoseStamped & target)
-{
-	std::lock_guard<std::mutex> lock(odom_mutex_);
-	nav_msgs::msg::Odometry odom = current_odometry_;
-
-	OdometryData data;
-	data.pos_x = odom.pose.pose.position.x;
-	data.pos_y = odom.pose.pose.position.y;
-
-	tf2::Quaternion q(
-    odom.pose.pose.orientation.x,
-    odom.pose.pose.orientation.y,
-    odom.pose.pose.orientation.z,
-    odom.pose.pose.orientation.w);
-
-	tf2::Matrix3x3 m(q);
-	double roll, pitch, yaw;
-
-	m.getRPY(roll, pitch, yaw);
-	data.yaw = yaw;
-
-	data.linear_velocity = std::sqrt(
-		std::pow(odom.twist.twist.linear.x, 2) +
-		std::pow(odom.twist.twist.linear.y, 2));
-
-	data.distanceToTarget = std::sqrt(
-		std::pow(target.pose.position.x - data.pos_x, 2) +
-		std::pow(target.pose.position.y - data.pos_y, 2));
-
-	return data;
-}
-
-double InspectionServer::getTgtAngleError(const OdometryData & odometryData, const geometry_msgs::msg::PoseStamped & target)
-{
-	double targetAngleError = std::atan2(
-		target.pose.position.y - odometryData.pos_y,
-		target.pose.position.x - odometryData.pos_x);
-
-	double angleError = targetAngleError - odometryData.yaw;
-    while (angleError > M_PI) angleError -= 2 * M_PI;
-    while (angleError < -M_PI) angleError += 2 * M_PI;
-
-	return angleError;
-}
-
 bool InspectionServer::isGoalReached(void)
 {
 	return false;
-}
-
-void InspectionServer::sendThrustersCommands(double speedOutput, double headingOutput)
-{
-	geometry_msgs::msg::Twist cmdMsg;
-	cmdMsg.linear.x = speedOutput;
-	cmdMsg.angular.z = headingOutput;
-	cmdPublisher_->publish(cmdMsg);
 }
 
 void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> goal_handle)
@@ -181,11 +129,13 @@ void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> g
 	if (goalCancelled_ || isGoalReached()) return;
 
 	const geometry_msgs::msg::PoseStamped & target = path_[path_.size() - 1];
-	OdometryData odometryData = getOdometryData(target);
+
+	std::lock_guard<std::mutex> lock(odom_mutex_);
+	controlUtils::OdometryData odometryData = controlUtils::getOdometryData(target, current_odometry_);
 
 	double orbitDistance = 6.0;
 	double orbitSpeed = 2.0;
-	double angleToTarget = getTgtAngleError(odometryData, target);
+	double angleToTarget = controlUtils::getTgtAngleError(odometryData, target);
 
 	double distanceError = odometryData.distanceToTarget - orbitDistance;
 	double angleAdjustment = atan2(distanceError, orbitDistance);
@@ -198,7 +148,7 @@ void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> g
 
 	RCLCPP_INFO(this->get_logger(), "INSPECTION : Heading: %f, Speed: %f, Distance Error: %f", headingOutput, speedOutput, distanceError);
 
-	sendThrustersCommands(speedOutput, headingOutput);
+	controlUtils::sendThrustersCommands(speedOutput, headingOutput, cmdPublisher_);
 }
 
 int main(int argc, char **argv)

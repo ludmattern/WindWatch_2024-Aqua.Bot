@@ -27,8 +27,8 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES std_msgs nav_msgs geometry_msgs
 )
 
-# Ensure messages are generated before building executables
-ament_export_dependencies(rosidl_default_runtime)
+# Export dependencies before ament_package()
+ament_export_dependencies(rosidl_default_runtime rclcpp geometry_msgs nav_msgs tf2 tf2_ros tf2_geometry_msgs)
 
 # Include header files
 include_directories(
@@ -43,6 +43,7 @@ ament_export_include_directories(include)
 add_executable(navigation_server
   src/navigation_server.cpp
   src/PIDController.cpp
+  src/controlUtils.cpp
 )
 ament_target_dependencies(navigation_server
   rclcpp
@@ -59,17 +60,18 @@ ament_target_dependencies(navigation_server
 add_executable(inspection_server
   src/inspection_server.cpp
   src/PIDController.cpp
+  src/controlUtils.cpp
 )
 ament_target_dependencies(inspection_server
-rclcpp
-rclcpp_action
-std_msgs
-nav_msgs
-geometry_msgs
-tf2
-tf2_ros
-tf2_geometry_msgs
-rosidl_default_runtime
+  rclcpp
+  rclcpp_action
+  std_msgs
+  nav_msgs
+  geometry_msgs
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
+  rosidl_default_runtime
 )
 
 add_executable(stabilization_server src/stabilization_server.cpp)
@@ -113,6 +115,7 @@ target_link_libraries(inspection_server ${cpp_typesupport_target})
 target_link_libraries(stabilization_server ${cpp_typesupport_target})
 target_link_libraries(rotation_server ${cpp_typesupport_target})
 target_link_libraries(mission_manager_node ${cpp_typesupport_target})
+target_link_libraries(target_manager_node ${cpp_typesupport_target})
 
 # Install executables
 install(TARGETS

@@ -8,7 +8,6 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 {
 	current_path_ = nav_msgs::msg::Path();
 
-	// Initialisation des clients d'actions
 	navigation_client_ = create_action_client<Navigation>("navigation");
 	inspection_client_ = create_action_client<Inspection>("inspection");
 	stabilization_client_ = create_action_client<Stabilization>("stabilization");
@@ -16,7 +15,6 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 
 	RCLCPP_INFO(this->get_logger(), "Action Manager has been started.");
 
-	// Attendre que tous les serveurs d'actions soient disponibles
 	if (!wait_for_action_server<Navigation>(navigation_client_, "navigation", 5s) ||
 		!wait_for_action_server<Inspection>(inspection_client_, "inspection", 5s) ||
 		!wait_for_action_server<Stabilization>(stabilization_client_, "stabilization", 5s) ||

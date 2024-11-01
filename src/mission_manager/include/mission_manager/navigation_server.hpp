@@ -37,16 +37,6 @@ private:
     std::mutex odom_mutex_;
     bool odom_received_;
 
-	struct OdometryData
-	{
-		double pos_x;
-		double pos_y;
-		double pos_z;
-		double yaw;
-		double linear_velocity;
-		double distanceToTarget;
-	};
-
     // Path and waypoints
     std::vector<geometry_msgs::msg::PoseStamped> path_;
     size_t targetIndex_;
@@ -66,9 +56,6 @@ private:
 
     // Odometry callback
     void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
-	OdometryData getOdometryData(const geometry_msgs::msg::PoseStamped & target);
-	double getTgtAngleError(const OdometryData & odometryData, const geometry_msgs::msg::PoseStamped & target);
-	void sendThrustersCommands(double speedOutput, double headingOutput);
 	void adjustPIDSettings(double distanceToTarget, double requestedPrecision);
 	bool isGoalReached(void);
 	bool isPointTGT(const geometry_msgs::msg::PoseStamped & target);
