@@ -13,10 +13,8 @@
 #include "nav_msgs/msg/odometry.hpp"
 #include "nav_msgs/msg/path.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
-
 #include "mission_manager/action/navigation.hpp"
-#include "mission_manager/pid_controller.hpp"
-#include "mission_manager/Point.hpp"
+#include "mission_manager/PIDController.hpp"
 
 class NavigationServer : public rclcpp::Node
 {
@@ -39,54 +37,28 @@ private:
     std::mutex odom_mutex_;
     bool odom_received_;
 
+	struct OdometryData
+	{
+		double pos_x;
+		double pos_y;
+		double pos_z;
+		double yaw;
+		double linear_velocity;
+		double distance_to_target;
+	};
+
     // Path and waypoints
     std::vector<geometry_msgs::msg::PoseStamped> path_;
-    size_t current_waypoint_index_;
-
-    // Acceleration parameters
-    double max_acceleration_;
-    double max_deceleration_;
-
-    // Control parameters
-    double position_tolerance_;
-    double control_loop_rate_;
-    double initial_distance_to_goal_;
-    double estimated_disturbance_angular_;
-    size_t last_waypoint_index_;
-
-    // PID parameters
-    double Kp_linear_;
-    double Ki_linear_;
-    double Kd_linear_;
-    double Kp_angular_;
-    double Ki_angular_;
-    double Kd_angular_;
-    double Kd_disturbance_;
-
-    // Speed limits
-    double max_linear_speed_;
-    double min_linear_speed_;
-    double max_angular_speed_;
-    double current_linear_speed_;
-
-    // PID Controllers
-    PIDController linear_pid_;
-    PIDController angular_pid_;
+    size_t target_index_;
 
     // Control flags
     bool goal_cancelled_;
 
-	Point starting_point_;
-	
     // Action server callbacks
-    rclcpp_action::GoalResponse handle_goal(
-        const rclcpp_action::GoalUUID &uuid,
-        std::shared_ptr<const Navigation::Goal> goal);
-
-    rclcpp_action::CancelResponse handle_cancel(
-        const std::shared_ptr<GoalHandleNavigation> goal_handle);
-
+    rclcpp_action::GoalResponse handle_goal(const rclcpp_action::GoalUUID &uuid, std::shared_ptr<const Navigation::Goal> goal);
+    rclcpp_action::CancelResponse handle_cancel(const std::shared_ptr<GoalHandleNavigation> goal_handle);
     void handle_accepted(const std::shared_ptr<GoalHandleNavigation> goal_handle);
+
 
     // Execution and control loop
     void execute(const std::shared_ptr<GoalHandleNavigation> goal_handle);
@@ -94,6 +66,14 @@ private:
 
     // Odometry callback
     void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
+	OdometryData getOdometryData(const geometry_msgs::msg::PoseStamped & target);
+	double getTgtAngleError(const OdometryData & odometryData, const geometry_msgs::msg::PoseStamped & target);
+	double calculatePIDHeadingOutput(double angleError, double distanceError);
+
+	// PID controllers
+	PIDController headingController_;
+	PIDController speedController_;
+
 };
 
 #endif  // MISSION_MANAGER__NAVIGATION_SERVER_HPP_

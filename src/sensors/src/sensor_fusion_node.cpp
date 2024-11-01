@@ -256,40 +256,40 @@ void SensorFusionNode::predict(double dt)
 
 void SensorFusionNode::publishOdometry()
 {
-    if (initial_gps_received_ && initial_imu_received_)
-    {
-        auto odom_msg = nav_msgs::msg::Odometry();
-        odom_msg.header.stamp = this->get_clock()->now();
-        odom_msg.header.frame_id = "odom";
+	if (initial_gps_received_ && initial_imu_received_)
+	{
+		auto odom_msg = nav_msgs::msg::Odometry();
+		odom_msg.header.stamp = this->get_clock()->now();
+		odom_msg.header.frame_id = "odom";
 
-        // Remplissage des données de position et d'orientation à partir de l'état
-        odom_msg.pose.pose.position.x = state_(0);
-        odom_msg.pose.pose.position.y = state_(1);
-        odom_msg.pose.pose.position.z = state_(2);
+		// Remplissage des données de position et d'orientation à partir de l'état
+		odom_msg.pose.pose.position.x = state_(0);
+		odom_msg.pose.pose.position.y = state_(1);
+		odom_msg.pose.pose.position.z = state_(2);
 
-        // Conversion de roll, pitch, yaw en quaternion pour l'orientation
-        tf2::Quaternion q;
-        q.setRPY(state_(6), state_(7), state_(8));
-        odom_msg.pose.pose.orientation = tf2::toMsg(q);
+		// Conversion de roll, pitch, yaw en quaternion pour l'orientation
+		tf2::Quaternion q;
+		q.setRPY(state_(6), state_(7), state_(8));
+		odom_msg.pose.pose.orientation = tf2::toMsg(q);
 
-        // Définition des vitesses
-        odom_msg.twist.twist.linear.x = state_(3);
-        odom_msg.twist.twist.linear.y = state_(4);
-        odom_msg.twist.twist.linear.z = state_(5);
+		// Définition des vitesses
+		odom_msg.twist.twist.linear.x = state_(3);
+		odom_msg.twist.twist.linear.y = state_(4);
+		odom_msg.twist.twist.linear.z = state_(5);
 
-        // Remplissage de la matrice de covariance
-        for (int i = 0; i < 6; ++i)
-        {
-            odom_msg.pose.covariance[i * 6 + i] = covariance_(i, i);
-        }
+		// Remplissage de la matrice de covariance
+		for (int i = 0; i < 6; ++i)
+		{
+			odom_msg.pose.covariance[i * 6 + i] = covariance_(i, i);
+		}
 
-        // Publication du message d'odométrie
-        odometry_publisher_->publish(odom_msg);
-    }
-    else
-    {
-        //RCLCPP_WARN(this->get_logger(), "Waiting for initial sensor data to publish odometry.");
-    }
+		// Publication du message d'odométrie
+		odometry_publisher_->publish(odom_msg);
+	}
+	else
+	{
+		//RCLCPP_WARN(this->get_logger(), "Waiting for initial sensor data to publish odometry.");
+	}
 }
 
 void SensorFusionNode::latLonToENU(double latitude, double longitude, double altitude, double& x, double& y, double& z)
