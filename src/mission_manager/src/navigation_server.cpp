@@ -177,22 +177,24 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 		target_index_++;
 		headingController_.reset();
 		speedController_.reset();
+		speedController_.setMaxOutput(3.0); 
 		return;
 	}
 
 	double targetAngleError = getTgtAngleError(odometryData, target);
 
 
-	if (odometryData.distance_to_target < 100.0)
+	if (odometryData.distance_to_target < 80.0)
 	{
-		if (std::abs(targetAngleError) > 0.349)
-			speedController_.setMaxOutput(2);
-		headingController_.setMultipliers(0.3, 0.01, 0.05);
+		speedController_.setMultipliers(0.4, 0.02, 0.03);
+		headingController_.setMultipliers(1.5, 0.025, 0.04);
+		// speedController_.setMaxOutput(2); // fonctionne
 	}
 	else
 	{
 		speedController_.setMaxOutput(6.17);
-		headingController_.setMultipliers(0.7, 0.01, 0.0);
+		headingController_.setMultipliers(1.0, 0.02, 0.05);
+		speedController_.setMultipliers(0.1, 0.005, 0.02);
 	}
 	
 	double headingOutput = headingController_.calculate(targetAngleError, odometryData.distance_to_target);
