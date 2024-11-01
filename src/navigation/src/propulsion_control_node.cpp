@@ -91,65 +91,44 @@ void PropulsionControlNode::cmdCallback(const geometry_msgs::msg::Twist::SharedP
         steering_angle_left = max_steering_angle_ * (angular_velocity >= 0 ? 1 : -1);
         steering_angle_right = max_steering_angle_ * (angular_velocity >= 0 ? 1 : -1);
     }
-    else
-    {
-        // Calcul des angles de braquage avec signe opposé
-        steering_angle_left = steering_gain_adjusted * angular_velocity;
-        steering_angle_right = -steering_gain_adjusted * angular_velocity;
+	else
+	{
+		// Calcul de la poussée de base due à la vitesse linéaire seule
+		double base_thrust_left = linear_velocity * scale_factor_;
+		double base_thrust_right = linear_velocity * scale_factor_;
 
-        // Limiter les angles de braquage
-        double max_safe_steering_angle = max_steering_angle_ * steering_angle_limit_factor;
-        steering_angle_left = std::clamp(steering_angle_left, -max_safe_steering_angle, max_safe_steering_angle);
-        steering_angle_right = std::clamp(steering_angle_right, -max_safe_steering_angle, max_safe_steering_angle);
+		// Ajustement asymétrique de la poussée en fonction de la vitesse angulaire
+		if (angular_velocity > 0.0)
+		{
+			// Augmente la poussée d'un côté et réduit de l'autre pour créer un couple de rotation
+			thrust_left = base_thrust_left - (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+			thrust_right = base_thrust_right + (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+		}
+		else if (angular_velocity < 0.0)
+		{
+			// Inverse l'ajustement pour tourner dans l'autre sens
+			thrust_left = base_thrust_left + (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+			thrust_right = base_thrust_right - (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+		}
+		else
+		{
+			// Aucun ajustement angulaire nécessaire
+			thrust_left = base_thrust_left;
+			thrust_right = base_thrust_right;
+		}
 
-        // Lissage des angles de braquage
-        steering_angle_left = prev_steering_angle_left + smoothing_factor * (steering_angle_left - prev_steering_angle_left);
-        steering_angle_right = prev_steering_angle_right + smoothing_factor * (steering_angle_right - prev_steering_angle_right);
+		// Limiter les poussées pour rester dans la plage acceptable
+		thrust_left = std::clamp(thrust_left, -max_thrust_, max_thrust_);
+		thrust_right = std::clamp(thrust_right, -max_thrust_, max_thrust_);
 
-        // Limitation du taux de changement des angles de braquage
-        double max_steering_change = max_steering_rate * delta_time;
-        double steering_change_left = steering_angle_left - prev_steering_angle_left;
-        steering_change_left = std::clamp(steering_change_left, -max_steering_change, max_steering_change);
-        steering_angle_left = prev_steering_angle_left + steering_change_left;
+		// Calcul des angles de braquage pour chaque propulseur
+		steering_angle_left = steering_gain_ * angular_velocity;
+		steering_angle_right = -steering_gain_ * angular_velocity;
 
-        double steering_change_right = steering_angle_right - prev_steering_angle_right;
-        steering_change_right = std::clamp(steering_change_right, -max_steering_change, max_steering_change);
-        steering_angle_right = prev_steering_angle_right + steering_change_right;
-
-        // Mise à jour des angles de braquage précédents
-        prev_steering_angle_left = steering_angle_left;
-        prev_steering_angle_right = steering_angle_right;
-
-        // Calcul de la poussée
-        double base_thrust = linear_velocity * scale_factor_;
-        thrust_left = base_thrust;
-        thrust_right = base_thrust;
-
-        // Calcul d'un facteur pour réduire la composante angulaire en fonction de l'effet de braquage
-        double steering_effect = std::max(std::abs(steering_angle_left), std::abs(steering_angle_right)) / max_steering_angle_;
-        double angular_component = ((distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_) * (1.0 - steering_effect);
-
-        thrust_left -= angular_component;
-        thrust_right += angular_component;
-
-        // Limitation du taux de changement de la poussée
-        double max_thrust_change = max_thrust_rate * delta_time;
-        double thrust_change_left = thrust_left - prev_thrust_left;
-        thrust_change_left = std::clamp(thrust_change_left, -max_thrust_change, max_thrust_change);
-        thrust_left = prev_thrust_left + thrust_change_left;
-
-        double thrust_change_right = thrust_right - prev_thrust_right;
-        thrust_change_right = std::clamp(thrust_change_right, -max_thrust_change, max_thrust_change);
-        thrust_right = prev_thrust_right + thrust_change_right;
-
-        // Mise à jour des poussées précédentes
-        prev_thrust_left = thrust_left;
-        prev_thrust_right = thrust_right;
-
-        // Limitation des poussées
-        thrust_left = std::clamp(thrust_left, -max_thrust_, max_thrust_);
-        thrust_right = std::clamp(thrust_right, -max_thrust_, max_thrust_);
-    }
+		// Limitation des angles de braquage
+		steering_angle_left = std::clamp(steering_angle_left, -max_steering_angle_, max_steering_angle_);
+		steering_angle_right = std::clamp(steering_angle_right, -max_steering_angle_, max_steering_angle_);
+	}
 
     // Préparation et publication des commandes pour les propulseurs
     std_msgs::msg::Float64 left_pos_msg;
