@@ -29,7 +29,7 @@ private:
     rclcpp_action::Server<Navigation>::SharedPtr action_server_;
 
     // Publishers and subscribers
-    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_publisher_;
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmdPublisher_;
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscription_;
 
     // Odometry data
@@ -44,15 +44,15 @@ private:
 		double pos_z;
 		double yaw;
 		double linear_velocity;
-		double distance_to_target;
+		double distanceToTarget;
 	};
 
     // Path and waypoints
     std::vector<geometry_msgs::msg::PoseStamped> path_;
-    size_t target_index_;
+    size_t targetIndex_;
 
     // Control flags
-    bool goal_cancelled_;
+    bool goalCancelled_;
 
     // Action server callbacks
     rclcpp_action::GoalResponse handle_goal(const rclcpp_action::GoalUUID &uuid, std::shared_ptr<const Navigation::Goal> goal);
@@ -68,6 +68,10 @@ private:
     void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
 	OdometryData getOdometryData(const geometry_msgs::msg::PoseStamped & target);
 	double getTgtAngleError(const OdometryData & odometryData, const geometry_msgs::msg::PoseStamped & target);
+	void sendThrustersCommands(double speedOutput, double headingOutput);
+	void adjustPIDSettings(double distanceToTarget, double requestedPrecision);
+	bool isGoalReached(void);
+	bool isPointTGT(const geometry_msgs::msg::PoseStamped & target);
 
 	// PID controllers
 	PIDController headingController_;
