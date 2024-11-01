@@ -172,7 +172,9 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 
 	OdometryData odometryData = getOdometryData(target);
 
-	if (odometryData.distance_to_target < 6.0)
+	double requestedPrecision_ = (target_index_ == path_.size() - 1) ? 6.0 : 20.0;
+
+	if (odometryData.distance_to_target <= requestedPrecision_)
 	{
 		target_index_++;
 		headingController_.reset();
@@ -184,16 +186,15 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 	double targetAngleError = getTgtAngleError(odometryData, target);
 
 
-	if (odometryData.distance_to_target < 80.0)
+	if (odometryData.distance_to_target < 80.0 && requestedPrecision_ == 6.0)
 	{
 		speedController_.setMultipliers(0.4, 0.02, 0.03);
 		headingController_.setMultipliers(1.5, 0.025, 0.04);
-		// speedController_.setMaxOutput(2); // fonctionne
 	}
 	else
 	{
 		speedController_.setMaxOutput(6.17);
-		headingController_.setMultipliers(1.0, 0.02, 0.05);
+		headingController_.setMultipliers(1.5, 0.02, 0.05);
 		speedController_.setMultipliers(0.1, 0.005, 0.02);
 	}
 	
