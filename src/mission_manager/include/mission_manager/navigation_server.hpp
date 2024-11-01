@@ -68,7 +68,6 @@ private:
     void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
 	OdometryData getOdometryData(const geometry_msgs::msg::PoseStamped & target);
 	double getTgtAngleError(const OdometryData & odometryData, const geometry_msgs::msg::PoseStamped & target);
-	double calculatePIDHeadingOutput(double angleError, double distanceError);
 
 	// PID controllers
 	PIDController headingController_;

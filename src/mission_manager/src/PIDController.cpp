@@ -80,7 +80,7 @@ double PIDController::calculate(double error, double dynamic_factor)
 		else if (integral_error_ < -max_integral_) integral_error_ = -max_integral_;
 	}
 
-	double kp_dynamic = (dynamic_factor < 20) ? kp_ * kp_dynamic_factor_ : kp_;
+	double kp_dynamic = (dynamic_factor < 0.1) ? kp_ * kp_dynamic_factor_ : kp_;
 	double proportional = kp_dynamic * error;
 
 	double integral = ki_ * integral_error_;

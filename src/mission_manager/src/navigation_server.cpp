@@ -28,8 +28,8 @@ odom_received_(false)
 		std::bind(&NavigationServer::odomCallback, this, std::placeholders::_1)
 	);
 
-	headingController_ = PIDController(0.7, 0.01, 0.0, 0.5, -0.5, 0.5, 0.017);
-	speedController_ = PIDController(0.3, 0.0, 0.02, 6.17, 0.5, 0.5, 0.1);
+	headingController_ = PIDController(0.7, 0.01, 0.0, 0.78, -0.78, 0.5, 0.017);
+	speedController_ = PIDController(0.1, 0.0, 0.02, 6.17, 0.0, 0.5, 0.1);
 
 	RCLCPP_INFO(this->get_logger(), "Navigation Server has been started.");
 }
@@ -104,7 +104,7 @@ void NavigationServer::execute(const std::shared_ptr<GoalHandleNavigation> goal_
 		{
 			auto cmd_msg = geometry_msgs::msg::Twist();
 			cmd_publisher_->publish(cmd_msg);
-
+			target_index_ = 0;
 			result->success = true;
 			goal_handle->succeed(result);
 			RCLCPP_INFO(this->get_logger(), "Navigation goal succeeded.");
@@ -172,7 +172,7 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 
 	OdometryData odometryData = getOdometryData(target);
 
-	if (odometryData.distance_to_target < 1.0)
+	if (odometryData.distance_to_target < 6.0)
 	{
 		target_index_++;
 		headingController_.reset();
@@ -184,7 +184,6 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 
 	double headingOutput = headingController_.calculate(targetAngleError, odometryData.distance_to_target);
     double speedOutput = speedController_.calculate(odometryData.distance_to_target);
-
     geometry_msgs::msg::Twist cmd_msg;
     cmd_msg.linear.x = speedOutput;
     cmd_msg.angular.z = headingOutput;
