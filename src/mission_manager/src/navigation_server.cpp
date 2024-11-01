@@ -175,7 +175,7 @@ bool NavigationServer::isGoalReached(void)
 
 void NavigationServer::adjustPIDSettings(double distanceToTarget, double requestedPrecision)
 {
-	if (distanceToTarget < 80.0 && requestedPrecision == 6.0)
+	if (distanceToTarget < 80.0 && requestedPrecision == 60.0)
 	{
 		speedController_.setMultipliers(0.4, 0.02, 0.03);
 		headingController_.setMultipliers(1.5, 0.025, 0.04);
@@ -204,7 +204,7 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 
 	OdometryData odometryData = getOdometryData(target);
 
-	double requestedPrecision_ = isPointTGT(target) ? 6.0 : 20.0;
+	double requestedPrecision_ = isPointTGT(target) ? 60.0 : 60.0;
 
 	if (odometryData.distanceToTarget <= requestedPrecision_)
 	{

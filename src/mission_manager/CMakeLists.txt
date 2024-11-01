@@ -56,12 +56,20 @@ ament_target_dependencies(navigation_server
   rosidl_default_runtime
 )
 
-add_executable(inspection_server src/inspection_server.cpp)
+add_executable(inspection_server
+  src/inspection_server.cpp
+  src/PIDController.cpp
+)
 ament_target_dependencies(inspection_server
-  rclcpp
-  rclcpp_action
-  std_msgs
-  rosidl_default_runtime
+rclcpp
+rclcpp_action
+std_msgs
+nav_msgs
+geometry_msgs
+tf2
+tf2_ros
+tf2_geometry_msgs
+rosidl_default_runtime
 )
 
 add_executable(stabilization_server src/stabilization_server.cpp)

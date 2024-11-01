@@ -1,54 +1,69 @@
 // src/inspection_server.cpp
 
 #include "mission_manager/inspection_server.hpp"
-
-#include <memory>
-#include <chrono>
-#include <thread>
+#include <algorithm>
+#include <limits>
+#include <iostream>
+#include <cmath>
 
 using namespace std::chrono_literals;
 
-InspectionServer::InspectionServer() : Node("inspection_server")
+InspectionServer::InspectionServer()
+: Node("inspection_server"),
+odom_received_(false)
 {
 	action_server_ = rclcpp_action::create_server<Inspection>(
 		this,
 		"inspection",
-		[this](const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const Inspection::Goal> goal) {
-		return handle_goal(uuid, goal);
-		},
-		[this](const std::shared_ptr<GoalHandleInspection> goal_handle) {
-		return handle_cancel(goal_handle);
-		},
-		[this](const std::shared_ptr<GoalHandleInspection> goal_handle) {
-		handle_accepted(goal_handle);
-		});
+		std::bind(&InspectionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
+		std::bind(&InspectionServer::handle_cancel, this, std::placeholders::_1),
+		std::bind(&InspectionServer::handle_accepted, this, std::placeholders::_1)
+	);
+
+	cmdPublisher_ = this->create_publisher<geometry_msgs::msg::Twist>(
+		"/propulsion/command", 10);
+
+	odom_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
+		"/mission/odometry", 10,
+		std::bind(&InspectionServer::odomCallback, this, std::placeholders::_1)
+	);
+
+	headingController_ = PIDController(0.7, 0.01, 0.0, 0.78, -0.78, 0.5, 0.017);
+	speedController_ = PIDController(0.1, 0.005, 0.02, 6.17, 0.0, 0.5, 0.1);
 
 	RCLCPP_INFO(this->get_logger(), "Inspection Server has been started.");
 }
 
-rclcpp_action::GoalResponse InspectionServer::handle_goal(
-const rclcpp_action::GoalUUID & uuid,
-std::shared_ptr<const Inspection::Goal> goal)
+void InspectionServer::odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg)
 {
-	RCLCPP_INFO(this->get_logger(), "Received Inspection goal request to count to %d", goal->target_number);
-	// Accepter tous les objectifs
+	current_odometry_ = *msg;
+	odom_received_ = true;
+}
+
+rclcpp_action::GoalResponse InspectionServer::handle_goal(const rclcpp_action::GoalUUID & uuid,	std::shared_ptr<const Inspection::Goal> goal)
+{
+	RCLCPP_INFO(this->get_logger(), "Received Inspection goal request.");
+
+	if (goal->path.poses.empty())
+	{
+		RCLCPP_WARN(this->get_logger(), "Received empty path.");
+		return rclcpp_action::GoalResponse::REJECT;
+	}
+
 	return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
 }
 
-rclcpp_action::CancelResponse InspectionServer::handle_cancel(
-const std::shared_ptr<GoalHandleInspection> goal_handle)
+rclcpp_action::CancelResponse InspectionServer::handle_cancel(const std::shared_ptr<GoalHandleInspection> goal_handle)
 {
 	RCLCPP_INFO(this->get_logger(), "Received request to cancel Inspection goal.");
-	// Accepter toutes les demandes d'annulation
 	return rclcpp_action::CancelResponse::ACCEPT;
 }
 
 void InspectionServer::handle_accepted(const std::shared_ptr<GoalHandleInspection> goal_handle)
 {
-	// Créer un nouveau thread pour exécuter l'objectif
 	std::thread(
 		[this, goal_handle]() {
-		execute(goal_handle);
+			execute(goal_handle);
 		}
 	).detach();
 }
@@ -56,50 +71,141 @@ void InspectionServer::handle_accepted(const std::shared_ptr<GoalHandleInspectio
 void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_handle)
 {
 	RCLCPP_INFO(this->get_logger(), "Executing Inspection goal...");
-	const auto goal = goal_handle->get_goal();
+
+	auto goal = goal_handle->get_goal();
+	path_ = goal->path.poses;
+	goalCancelled_ = false;
+
 	auto feedback = std::make_shared<Inspection::Feedback>();
 	auto result = std::make_shared<Inspection::Result>();
 
-	rclcpp::Rate loop_rate(1); // Fréquence de 1 Hz
-
-	try
+	rclcpp::Rate rate(10);
+	while (rclcpp::ok())
 	{
-		for(int i = 1; i <= goal->target_number; ++i)
+		if (goal_handle->is_canceling())
 		{
-			// Vérifier si l'objectif a été annulé
-			if (goal_handle->is_canceling())
-			{
-				result->final_count = i - 1;
-				goal_handle->canceled(result);
-				RCLCPP_INFO(this->get_logger(), "Inspection goal canceled.");
-				return;
-			}
-
-			// Simuler un travail en cours
-			loop_rate.sleep();
-
-			// Publier le feedback
-			feedback->current_number = i;
-			goal_handle->publish_feedback(feedback);
-			RCLCPP_INFO(this->get_logger(), "Inspection Feedback: %d/%d", i, goal->target_number);
+			goalCancelled_ = true;
+			result->success = false;
+			goal_handle->canceled(result);
+			RCLCPP_INFO(this->get_logger(), "Inspection goal canceled.");
+			return;
 		}
 
-		// Indiquer que l'objectif est réussi
-		result->final_count = goal->target_number;
-		goal_handle->succeed(result);
-		RCLCPP_INFO(this->get_logger(), "Inspection goal succeeded with final count: %d", result->final_count);
-	}
-	catch (const std::exception &e)
-	{
-		RCLCPP_ERROR(this->get_logger(), "Exception in execute: %s", e.what());
-		goal_handle->abort(result);
+		if (!odom_received_)
+		{
+			RCLCPP_WARN(this->get_logger(), "Waiting for odometry...");
+			rate.sleep();
+			continue;
+		}
+
+		controlLoop(goal_handle);
+
+		if (targetIndex_ >= path_.size())
+		{
+			auto cmdMsg = geometry_msgs::msg::Twist();
+			cmdPublisher_->publish(cmdMsg);
+			targetIndex_ = 0;
+			result->success = true;
+			goal_handle->succeed(result);
+			RCLCPP_INFO(this->get_logger(), "Inspection goal succeeded.");
+			return;
+		}
+
+		feedback->progress = static_cast<float>(targetIndex_) / path_.size() * 100.0f;
+		goal_handle->publish_feedback(feedback);
+
+		rate.sleep();
 	}
 }
 
-	int main(int argc, char **argv)
-	{
+InspectionServer::OdometryData InspectionServer::getOdometryData(const geometry_msgs::msg::PoseStamped & target)
+{
+	std::lock_guard<std::mutex> lock(odom_mutex_);
+	nav_msgs::msg::Odometry odom = current_odometry_;
+
+	OdometryData data;
+	data.pos_x = odom.pose.pose.position.x;
+	data.pos_y = odom.pose.pose.position.y;
+
+	tf2::Quaternion q(
+    odom.pose.pose.orientation.x,
+    odom.pose.pose.orientation.y,
+    odom.pose.pose.orientation.z,
+    odom.pose.pose.orientation.w);
+
+	tf2::Matrix3x3 m(q);
+	double roll, pitch, yaw;
+
+	m.getRPY(roll, pitch, yaw);
+	data.yaw = yaw;
+
+	data.linear_velocity = std::sqrt(
+		std::pow(odom.twist.twist.linear.x, 2) +
+		std::pow(odom.twist.twist.linear.y, 2));
+
+	data.distanceToTarget = std::sqrt(
+		std::pow(target.pose.position.x - data.pos_x, 2) +
+		std::pow(target.pose.position.y - data.pos_y, 2));
+
+	return data;
+}
+
+double InspectionServer::getTgtAngleError(const OdometryData & odometryData, const geometry_msgs::msg::PoseStamped & target)
+{
+	double targetAngleError = std::atan2(
+		target.pose.position.y - odometryData.pos_y,
+		target.pose.position.x - odometryData.pos_x);
+
+	double angleError = targetAngleError - odometryData.yaw;
+    while (angleError > M_PI) angleError -= 2 * M_PI;
+    while (angleError < -M_PI) angleError += 2 * M_PI;
+
+	return angleError;
+}
+
+bool InspectionServer::isGoalReached(void)
+{
+	return false;
+}
+
+void InspectionServer::sendThrustersCommands(double speedOutput, double headingOutput)
+{
+	geometry_msgs::msg::Twist cmdMsg;
+	cmdMsg.linear.x = speedOutput;
+	cmdMsg.angular.z = headingOutput;
+	cmdPublisher_->publish(cmdMsg);
+}
+
+void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> goal_handle)
+{
+	if (goalCancelled_ || isGoalReached()) return;
+
+	const geometry_msgs::msg::PoseStamped & target = path_[path_.size() - 1];
+	OdometryData odometryData = getOdometryData(target);
+
+	double orbitDistance = 6.0;
+	double orbitSpeed = 2.0;
+	double angleToTarget = getTgtAngleError(odometryData, target);
+
+	double distanceError = odometryData.distanceToTarget - orbitDistance;
+	double angleAdjustment = atan2(distanceError, orbitDistance);
+
+	double orbitAngleError = angleToTarget + M_PI / 2.0 - angleAdjustment; 
+	if (orbitAngleError > M_PI) orbitAngleError -= 2.0 * M_PI;
+
+	double headingOutput = headingController_.calculate(orbitAngleError, orbitDistance);
+	double speedOutput = orbitSpeed;
+
+	RCLCPP_INFO(this->get_logger(), "INSPECTION : Heading: %f, Speed: %f, Distance Error: %f", headingOutput, speedOutput, distanceError);
+
+	sendThrustersCommands(speedOutput, headingOutput);
+}
+
+int main(int argc, char **argv)
+{
 	rclcpp::init(argc, argv);
-	rclcpp::spin(std::make_shared<InspectionServer>());
+	auto node = std::make_shared<InspectionServer>();
+	rclcpp::spin(node);
 	rclcpp::shutdown();
 	return 0;
 }

@@ -41,21 +41,25 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 
 	// temporaire, a remplacer par le service et son path
 	current_path_.header.frame_id = "map";
-	current_path_.poses.resize(3);
-	current_path_.poses[0].pose.position.x = 600.0;
-	current_path_.poses[0].pose.position.y = -600.0;
+	current_path_.poses.resize(2);
+	current_path_.poses[0].pose.position.x = 150.0;
+	current_path_.poses[0].pose.position.y = -150.0;
 	current_path_.poses[0].pose.orientation.w = 1.0;
 
-	current_path_.poses[1].pose.position.x = 550.0;
-	current_path_.poses[1].pose.position.y = -550.0;
+	// current_path_.poses[1].pose.position.x = 550.0;
+	// current_path_.poses[1].pose.position.y = -550.0;
+	// current_path_.poses[1].pose.orientation.w = 1.0;
+
+	// current_path_.poses[2].pose.position.x = 300.0;
+	// current_path_.poses[2].pose.position.y = -100.0;
+	// current_path_.poses[2].pose.orientation.w = 1.0;
+
+	current_path_.poses[1].pose.position.x = 219.19;
+	current_path_.poses[1].pose.position.y = 290.79;
 	current_path_.poses[1].pose.orientation.w = 1.0;
 
-	current_path_.poses[2].pose.position.x = 300.0;
-	current_path_.poses[2].pose.position.y = -100.0;
-	current_path_.poses[2].pose.orientation.w = 1.0;
-
 	//attendre 20 secondes, fenetre gazebo (a retirer a la fin)
-	std::this_thread::sleep_for(20s);
+	std::this_thread::sleep_for(10s);
 
 	send_navigation_goal(current_path_);
 }
@@ -65,17 +69,21 @@ void MissionManager::send_navigation_goal(const nav_msgs::msg::Path & path)
 	auto goal_msg = Navigation::Goal();
 	goal_msg.path = path;
 
-	// Envoyer le goal comme précédemment, en utilisant le client d'action
 	auto send_goal_options = rclcpp_action::Client<Navigation>::SendGoalOptions();
 	send_goal_options.result_callback = std::bind(&MissionManager::handle_navigation_result, this, std::placeholders::_1);
 
 	navigation_client_->async_send_goal(goal_msg, send_goal_options);
 }
 
-void MissionManager::send_inspection_goal(int target_number)
+void MissionManager::send_inspection_goal(const nav_msgs::msg::Path & path)
 {
-	send_goal<Inspection>(target_number, inspection_client_, "inspection",
-		std::bind(&MissionManager::handle_inspection_result, this, std::placeholders::_1));
+	auto goal_msg = Inspection::Goal();
+	goal_msg.path = path;
+
+	auto send_goal_options = rclcpp_action::Client<Inspection>::SendGoalOptions();
+	send_goal_options.result_callback = std::bind(&MissionManager::handle_inspection_result, this, std::placeholders::_1);
+
+	inspection_client_->async_send_goal(goal_msg, send_goal_options);
 }
 
 void MissionManager::send_stabilization_goal(int target_number)
@@ -97,7 +105,7 @@ void MissionManager::handle_navigation_result(const GoalHandle<Navigation>::Wrap
 	if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
 	{
 		if (current_sequence_ == Sequence::SEQUENCE1)
-			send_inspection_goal(10);
+			send_inspection_goal(current_path_);
 		else if (current_sequence_ == Sequence::SEQUENCE2)
 			send_stabilization_goal(3);
 	}

@@ -34,8 +34,8 @@ void CameraControlNode::boatPoseCallback(const nav_msgs::msg::Odometry::SharedPt
 void CameraControlNode::targetPoseCallback(void)
 {
 	// Calculer le vecteur directionnel vers le point à fixer
-    double dx = 120 - boat_position_.x;
-    double dy = -50 - boat_position_.y;
+    double dx = 219.19 - boat_position_.x;
+    double dy = 290.79 - boat_position_.y;
 
     // Calculer l'angle entre l'axe X global et le point cible
     double theta = atan2(dy, dx);
