@@ -93,22 +93,25 @@ void PropulsionControlNode::cmdCallback(const geometry_msgs::msg::Twist::SharedP
     }
 	else
 	{
+		// Facteur de compensation pour équilibrer la rotation
+		double rotation_compensation = (angular_velocity > 0.0) ? 1.0 : 1.1; // Ajuste ce facteur selon le besoin
+
 		// Calcul de la poussée de base due à la vitesse linéaire seule
 		double base_thrust_left = linear_velocity * scale_factor_;
 		double base_thrust_right = linear_velocity * scale_factor_;
 
-		// Ajustement asymétrique de la poussée en fonction de la vitesse angulaire
+		// Ajustement asymétrique de la poussée en fonction de la vitesse angulaire avec compensation
 		if (angular_velocity > 0.0)
 		{
-			// Augmente la poussée d'un côté et réduit de l'autre pour créer un couple de rotation
-			thrust_left = base_thrust_left - (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+			// Rotation vers la droite, avec ajustement
+			thrust_left = (base_thrust_left - (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_) * rotation_compensation;
 			thrust_right = base_thrust_right + (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
 		}
 		else if (angular_velocity < 0.0)
 		{
-			// Inverse l'ajustement pour tourner dans l'autre sens
+			// Rotation vers la gauche, avec ajustement
 			thrust_left = base_thrust_left + (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
-			thrust_right = base_thrust_right - (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_;
+			thrust_right = (base_thrust_right - (distance_between_thrusters_ / 2.0) * angular_velocity * scale_factor_) * rotation_compensation;
 		}
 		else
 		{
