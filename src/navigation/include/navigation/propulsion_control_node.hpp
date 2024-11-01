@@ -33,6 +33,10 @@ private:
     double scale_factor_;
     double min_linear_speed_;
     double rotation_gain_;
+
+	void computeRotationOnSpot(double angular_velocity, double& thrust_left, double& thrust_right, double& steering_angle_left, double& steering_angle_right);
+	void computeMovingRotation(double linear_velocity, double angular_velocity, double& thrust_left, double& thrust_right, double& steering_angle_left, double& steering_angle_right);
+	void publishCommands(double thrust_left, double thrust_right, double steering_angle_left, double steering_angle_right);
 };
 
 #endif // PROPULSION_CONTROL_NODE_HPP

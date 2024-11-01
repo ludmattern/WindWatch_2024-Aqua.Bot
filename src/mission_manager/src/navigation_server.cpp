@@ -29,7 +29,7 @@ odom_received_(false)
 	);
 
 	headingController_ = PIDController(0.7, 0.01, 0.0, 0.78, -0.78, 0.5, 0.017);
-	speedController_ = PIDController(0.1, 0.0, 0.02, 6.17, 0.0, 0.5, 0.1);
+	speedController_ = PIDController(0.1, 0.005, 0.02, 6.17, 0.0, 0.5, 0.1);
 
 	RCLCPP_INFO(this->get_logger(), "Navigation Server has been started.");
 }
@@ -182,14 +182,28 @@ void NavigationServer::controlLoop(const std::shared_ptr<GoalHandleNavigation> g
 
 	double targetAngleError = getTgtAngleError(odometryData, target);
 
-	double headingOutput = headingController_.calculate(targetAngleError, odometryData.distance_to_target);
-    double speedOutput = speedController_.calculate(odometryData.distance_to_target);
-    geometry_msgs::msg::Twist cmd_msg;
-    cmd_msg.linear.x = speedOutput;
-    cmd_msg.angular.z = headingOutput;
-    cmd_publisher_->publish(cmd_msg);
 
-    RCLCPP_INFO(this->get_logger(), "Control Outputs: Cap: %f, Speed: %f", headingOutput, speedOutput);
+	if (odometryData.distance_to_target < 100.0)
+	{
+		if (std::abs(targetAngleError) > 0.349)
+			speedController_.setMaxOutput(2);
+		headingController_.setMultipliers(0.3, 0.01, 0.05);
+	}
+	else
+	{
+		speedController_.setMaxOutput(6.17);
+		headingController_.setMultipliers(0.7, 0.01, 0.0);
+	}
+	
+	double headingOutput = headingController_.calculate(targetAngleError, odometryData.distance_to_target);
+	double speedOutput = speedController_.calculate(odometryData.distance_to_target);
+
+	geometry_msgs::msg::Twist cmd_msg;
+	cmd_msg.linear.x = speedOutput;
+	cmd_msg.angular.z = headingOutput;
+	cmd_publisher_->publish(cmd_msg);
+
+	RCLCPP_INFO(this->get_logger(), "Control Outputs: Cap: %f, Speed: %f", headingOutput, speedOutput);
 	RCLCPP_INFO(this->get_logger(), "Distance from target: %f", odometryData.distance_to_target);
 
 }

@@ -14,6 +14,7 @@ public:
 	double calculate(double error, double dynamic_factor);
 
     void setMultipliers(double kp, double ki, double kd);
+	void setMaxOutput(double max_output);
 
     void reset();
 

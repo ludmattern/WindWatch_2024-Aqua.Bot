@@ -105,6 +105,11 @@ void PIDController::setMultipliers(double kp, double ki, double kd)
 	kd_ = kd;
 }
 
+void PIDController::setMaxOutput(double max_output)
+{
+	max_output_ = max_output;
+}
+
 void PIDController::reset()
 {
 	integral_error_ = 0.0;
