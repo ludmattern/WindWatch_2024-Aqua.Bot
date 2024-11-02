@@ -8,7 +8,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-
+#include "mission_manager/controlUtils.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "nav_msgs/msg/path.hpp"
@@ -42,16 +42,6 @@ private:
     std::mutex odom_mutex_;
     bool odom_received_;
 
-	struct OdometryData
-	{
-		double pos_x;
-		double pos_y;
-		double pos_z;
-		double yaw;
-		double linear_velocity;
-		double distanceToTarget;
-	};
-
     // Path and waypoints
     std::vector<geometry_msgs::msg::PoseStamped> path_;
     size_t targetIndex_;
@@ -77,9 +67,14 @@ private:
 	PIDController headingController_;
 	PIDController speedController_;
 
-    geometry_msgs::msg::Pose entryPoint_;        // Point d’entrée sur le cercle
+    geometry_msgs::msg::PoseStamped entryPoint_;        // Point d’entrée sur le cercle
     bool entryPointInitialized_ = false;         // Indicateur pour vérifier si `entryPoint` est calculé
     InspectionState state_ = InspectionState::APPROACH;  // État initial
+
+	void processOrbitState(const controlUtils::OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius, double orbitSpeed);
+	void processApproachState(const controlUtils::OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius, double orbitSpeed);
+	void initializeEntryPoint(const controlUtils::OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius);
+
 
 
 };
