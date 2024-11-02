@@ -52,6 +52,7 @@ void sendThrustersCommands(double speedOutput, double headingOutput, rclcpp::Pub
 	geometry_msgs::msg::Twist cmdMsg;
 	cmdMsg.linear.x = speedOutput;
 	cmdMsg.angular.z = headingOutput;
+	cmdMsg.linear.z = SIMPLE_CMD;
 	cmdPublisher_->publish(cmdMsg);
 }
 
@@ -81,6 +82,15 @@ double calculateDistance(const OdometryData& odometryData, const geometry_msgs::
     double dx = target.pose.position.x - odometryData.pos_x;
     double dy = target.pose.position.y - odometryData.pos_y;
     return std::sqrt(dx * dx + dy * dy);
+}
+
+double normalizeAngle(double angle)
+{
+    while (angle > M_PI)
+        angle -= 2.0 * M_PI;
+    while (angle < -M_PI)
+        angle += 2.0 * M_PI;
+    return angle;
 }
 
 } // namespace controlUtils

@@ -20,9 +20,10 @@ StabilizationServer::StabilizationServer(): Node("stabilization_server"), odom_r
 
 	odom_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>("/mission/odometry", 10,
 		std::bind(&StabilizationServer::odomCallback, this, std::placeholders::_1));
-
-	headingController_ = PIDController(0.7, 0.01, 0.0, 0.78, -0.78, 0.5, 0.017);
-	speedController_ = PIDController(0.1, 0.005, 0.02, 6.17, 0.0, 0.5, 0.1);
+	
+	lateralController_ = PIDController(200.0, 0.0, 0.1, 5000.0, -5000.0, 1.0, 0.1);
+	longitudinalController_ = PIDController(200.0, 0.0, 0.1, 5000.0, -5000.0, 1.0, 0.1);
+	orientationController_ = PIDController(100.0, 0.0, 0.2, 5000.0, -5000.0, 1.0, 0.1);
 
 	RCLCPP_INFO(this->get_logger(), "Stabilization Server has been started.");
 }
@@ -92,8 +93,6 @@ void StabilizationServer::execute(const std::shared_ptr<GoalHandleStabilization>
 
 		if (targetIndex_ >= path_.size())
 		{
-			auto cmdMsg = geometry_msgs::msg::Twist();
-			cmdPublisher_->publish(cmdMsg);
 			targetIndex_ = 0;
 			result->success = true;
 			goal_handle->succeed(result);
@@ -108,22 +107,65 @@ void StabilizationServer::execute(const std::shared_ptr<GoalHandleStabilization>
 	}
 }
 
-void StabilizationServer::controlLoop(const std::shared_ptr<GoalHandleStabilization> goal_handle)
+void StabilizationServer::controlLoop(
+	const std::shared_ptr<GoalHandleStabilization> goal_handle)
 {
 	if (goalCancelled_) return;
 
-	const geometry_msgs::msg::PoseStamped & target = path_[targetIndex_];
+	const geometry_msgs::msg::PoseStamped &target = path_[targetIndex_];
 
 	std::lock_guard<std::mutex> lock(odom_mutex_);
-	controlUtils::OdometryData odometryData = controlUtils::getOdometryData(target, current_odometry_);
+	controlUtils::OdometryData odometryData =
+		controlUtils::getOdometryData(target, current_odometry_);
 
-	double targetAngleError = controlUtils::getTgtAngleError(odometryData, target);
+	double xError = target.pose.position.x - odometryData.pos_x;
+	double yError = target.pose.position.y - odometryData.pos_y;
+	double yawError = controlUtils::getTgtAngleError(odometryData, target);
 
-	double headingOutput = headingController_.calculate(targetAngleError, odometryData.distanceToTarget);
-	double speedOutput = speedController_.calculate(odometryData.distanceToTarget);
+	double xForce = longitudinalController_.calculate(xError);
+	double yForce = lateralController_.calculate(yError);
+	double yawTorque = orientationController_.calculate(yawError);
 
-	controlUtils::sendThrustersCommands(speedOutput, headingOutput, cmdPublisher_);
+	double maxForce = 5000.0;
+	xForce = std::clamp(xForce, -maxForce, maxForce);
+	yForce = std::clamp(yForce, -maxForce, maxForce);
+	yawTorque = std::clamp(yawTorque, -maxForce, maxForce);
+
+	double thrusterOffset = 0.6;
+
+	double leftThrusterForce = (xForce + yawTorque / thrusterOffset) / 2.0;
+	double rightThrusterForce = (xForce - yawTorque / thrusterOffset) / 2.0;
+
+	double leftThrusterAngle = atan2(yForce, leftThrusterForce);
+	double rightThrusterAngle = atan2(yForce, rightThrusterForce);
+
+	leftThrusterAngle = std::clamp(leftThrusterAngle, -0.785, 0.785);
+	rightThrusterAngle = std::clamp(rightThrusterAngle, -0.785, 0.785);
+
+	double leftThrusterMagnitude = std::sqrt(leftThrusterForce * leftThrusterForce + yForce * yForce);
+	double rightThrusterMagnitude = std::sqrt(rightThrusterForce * rightThrusterForce + yForce * yForce);
+
+	double leftThrusterSpeed = (leftThrusterForce >= 0 ? 1 : -1) * leftThrusterMagnitude;
+	double rightThrusterSpeed = (rightThrusterForce >= 0 ? 1 : -1) * rightThrusterMagnitude;
+
+	leftThrusterSpeed = std::clamp(leftThrusterSpeed, -5000.0, 5000.0);
+	rightThrusterSpeed = std::clamp(rightThrusterSpeed, -5000.0, 5000.0);
+
+	geometry_msgs::msg::Twist cmd;
+	cmd.linear.x = leftThrusterSpeed;
+	cmd.linear.y = rightThrusterSpeed;
+	cmd.angular.x = leftThrusterAngle;
+	cmd.angular.y = rightThrusterAngle;
+	cmd.linear.z = PRECISE_CMD;
+
+	RCLCPP_INFO(this->get_logger(), "Sending command: Left Speed=%f, Right Speed=%f, Left Angle=%f, Right Angle=%f",
+				cmd.linear.x, cmd.linear.y, cmd.angular.x, cmd.angular.y);
+
+	cmdPublisher_->publish(cmd);
 }
+
+
+
 
 int main(int argc, char **argv)
 {

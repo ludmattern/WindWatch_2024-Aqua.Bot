@@ -6,6 +6,9 @@
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 
+#define SIMPLE_CMD 99.99
+#define PRECISE_CMD 100.100
+
 namespace controlUtils {
 
 	struct OdometryData
@@ -29,6 +32,8 @@ namespace controlUtils {
 	double OrbitHeadingAdjustment(const OdometryData& odometryData, double angle_to_target, double distanceError, double orbitRadius);
 	
 	double calculateDistance(const OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target);
+
+	double normalizeAngle(double angle);
 
 } // namespace controlUtils
 

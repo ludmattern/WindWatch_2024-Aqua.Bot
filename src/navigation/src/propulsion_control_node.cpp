@@ -10,7 +10,7 @@ PropulsionControlNode::PropulsionControlNode()
 	cmd_subscription_ = this->create_subscription<geometry_msgs::msg::Twist>(
 		"/propulsion/command", 10,
 		std::bind(&PropulsionControlNode::cmdCallback, this, std::placeholders::_1));
-
+	
 	// Publications des commandes de poussée et de braquage
 	left_thruster_pos_pub_ = this->create_publisher<std_msgs::msg::Float64>("/aquabot/thrusters/left/pos", 10);
 	right_thruster_pos_pub_ = this->create_publisher<std_msgs::msg::Float64>("/aquabot/thrusters/right/pos", 10);
@@ -22,19 +22,35 @@ PropulsionControlNode::PropulsionControlNode()
 
 void PropulsionControlNode::cmdCallback(const geometry_msgs::msg::Twist::SharedPtr msg)
 {
-	double linear_velocity = msg->linear.x;
-	double angular_velocity = msg->angular.z;
+	double thrust_left, thrust_right, steering_angle_left, steering_angle_right;
 
-	const double epsilon = 0.1;
-	double thrust_left, thrust_right;
-	double steering_angle_left, steering_angle_right;
+	if (msg->linear.z == SIMPLE_CMD)
+	{
+		double linear_velocity = msg->linear.x;
+		double angular_velocity = msg->angular.z;
 
-	if (std::abs(angular_velocity) > 0.0 && std::abs(linear_velocity) < epsilon)
-		computeRotationOnSpot(angular_velocity, thrust_left, thrust_right, steering_angle_left, steering_angle_right);
+		const double epsilon = 0.1;
+
+		if (std::abs(angular_velocity) > 0.0 && std::abs(linear_velocity) < epsilon)
+			computeRotationOnSpot(angular_velocity, thrust_left, thrust_right, steering_angle_left, steering_angle_right);
+		else
+			computeMovingRotation(linear_velocity, angular_velocity, thrust_left, thrust_right, steering_angle_left, steering_angle_right);
+	}
+	else if (msg->linear.z == PRECISE_CMD)
+	{
+		thrust_left = msg->linear.x;
+		thrust_right = msg->linear.y;
+		steering_angle_left = msg->angular.x;
+		steering_angle_right = msg->angular.y;
+	}
 	else
-		computeMovingRotation(linear_velocity, angular_velocity, thrust_left, thrust_right, steering_angle_left, steering_angle_right);
+	{
+		RCLCPP_WARN(this->get_logger(), "Invalid command type");
+		return;
+	}
 
 	publishCommands(thrust_left, thrust_right, steering_angle_left, steering_angle_right);
+
 }
 
 void PropulsionControlNode::computeRotationOnSpot(double angular_velocity, double& thrust_left, double& thrust_right, 
