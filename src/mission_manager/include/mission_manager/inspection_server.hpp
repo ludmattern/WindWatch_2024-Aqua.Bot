@@ -16,6 +16,11 @@
 #include "mission_manager/action/inspection.hpp"
 #include "mission_manager/PIDController.hpp"
 
+enum class InspectionState {
+    APPROACH,
+    ORBIT
+};
+
 class InspectionServer : public rclcpp::Node
 {
 public:
@@ -71,6 +76,11 @@ private:
 	// PID controllers
 	PIDController headingController_;
 	PIDController speedController_;
+
+    geometry_msgs::msg::Pose entryPoint_;        // Point d’entrée sur le cercle
+    bool entryPointInitialized_ = false;         // Indicateur pour vérifier si `entryPoint` est calculé
+    InspectionState state_ = InspectionState::APPROACH;  // État initial
+
 
 };
 

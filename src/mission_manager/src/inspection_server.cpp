@@ -126,30 +126,74 @@ bool InspectionServer::isGoalReached(void)
 
 void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> goal_handle)
 {
-	if (goalCancelled_ || isGoalReached()) return;
+	if (goalCancelled_ || isGoalReached())
+	{
+		RCLCPP_INFO(this->get_logger(), "Goal cancelled or reached. Exiting control loop.");
+		return;
+	}
 
 	const geometry_msgs::msg::PoseStamped & target = path_[path_.size() - 1];
-
 	std::lock_guard<std::mutex> lock(odom_mutex_);
 	controlUtils::OdometryData odometryData = controlUtils::getOdometryData(target, current_odometry_);
 
-	double orbitDistance = 6.0;
-	double orbitSpeed = 2.0;
-	double angleToTarget = controlUtils::getTgtAngleError(odometryData, target);
+	double orbitRadius = 8.0;
+	double orbitSpeed = 1;
 
-	double distanceError = odometryData.distanceToTarget - orbitDistance;
-	double angleAdjustment = atan2(distanceError, orbitDistance);
+	if (!entryPointInitialized_)
+	{
+		entryPoint_ = controlUtils::ClosestPointOnOrbit(odometryData, target, orbitRadius);
+		entryPointInitialized_ = true;
+		RCLCPP_INFO(this->get_logger(), "Entry point initialized at: (%f, %f)", entryPoint_.position.x, entryPoint_.position.y);
+	}
 
-	double orbitAngleError = angleToTarget + M_PI / 2.0 - angleAdjustment; 
-	if (orbitAngleError > M_PI) orbitAngleError -= 2.0 * M_PI;
+	if (state_ == InspectionState::APPROACH)
+	{
+		geometry_msgs::msg::PoseStamped entryPointStamped;
+		entryPointStamped.pose = entryPoint_;
+		double angleToEntryPoint = controlUtils::getTgtAngleError(odometryData, entryPointStamped);
+		double distanceToEntryPoint = std::sqrt(
+			std::pow(odometryData.pos_x - entryPoint_.position.x, 2) + 
+			std::pow(odometryData.pos_y - entryPoint_.position.y, 2)
+		);
 
-	double headingOutput = headingController_.calculate(orbitAngleError, orbitDistance);
-	double speedOutput = orbitSpeed;
 
-	RCLCPP_INFO(this->get_logger(), "INSPECTION : Heading: %f, Speed: %f, Distance Error: %f", headingOutput, speedOutput, distanceError);
+		double headingOutput = headingController_.calculate(angleToEntryPoint, orbitRadius);
+		double speedOutput = std::min(orbitSpeed, distanceToEntryPoint * 0.5);
 
-	controlUtils::sendThrustersCommands(speedOutput, headingOutput, cmdPublisher_);
+
+		if (distanceToEntryPoint <= orbitRadius + 6.0)
+		{
+			state_ = InspectionState::ORBIT;
+			headingController_.reset();
+			speedController_.reset();
+			headingController_.setMultipliers(2, 0.0, 0.0);
+		}
+
+		controlUtils::sendThrustersCommands(speedOutput, headingOutput, cmdPublisher_);
+
+	}
+	else if (state_ == InspectionState::ORBIT)
+	{
+
+		double angleToTarget = controlUtils::getTgtAngleError(odometryData, target);
+		double distanceError = odometryData.distanceToTarget - orbitRadius;
+
+
+		double orbitAngleError = controlUtils::OrbitHeadingAdjustment(odometryData, angleToTarget, distanceError, orbitRadius);
+
+		RCLCPP_INFO(this->get_logger(), "Orbit Angle Error: %f", orbitAngleError);
+
+		double headingOutput = headingController_.calculate(orbitAngleError, orbitRadius);
+		double speedOutput = std::min(orbitSpeed, distanceError * 0.5);
+
+
+		controlUtils::sendThrustersCommands(speedOutput, headingOutput, cmdPublisher_);
+	}
+	else
+		RCLCPP_WARN(this->get_logger(), "Unknown state encountered in control loop.");
 }
+
+
 
 int main(int argc, char **argv)
 {

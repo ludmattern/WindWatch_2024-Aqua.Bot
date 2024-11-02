@@ -74,9 +74,7 @@ class MissionManager : public rclcpp::Node
 
 	// Envoi de goals
 	template<typename ActionT>
-	void send_goal(int target_number,
-					typename ActionClient<ActionT>::SharedPtr client,
-					const std::string &action_name,
+	void send_goal(int target_number, typename ActionClient<ActionT>::SharedPtr client,	const std::string &action_name,
 					std::function<void(const typename GoalHandle<ActionT>::WrappedResult &)> result_callback)
 	{
 		auto goal_msg = typename ActionT::Goal();
@@ -86,8 +84,8 @@ class MissionManager : public rclcpp::Node
 
 		auto send_goal_options = typename rclcpp_action::Client<ActionT>::SendGoalOptions();
 		send_goal_options.feedback_callback =
-		[this, action_name](typename GoalHandle<ActionT>::SharedPtr,
-				const std::shared_ptr<const typename ActionT::Feedback> feedback) {
+		[this, action_name](typename GoalHandle<ActionT>::SharedPtr, const std::shared_ptr<const typename ActionT::Feedback> feedback)
+		{
 			RCLCPP_INFO(this->get_logger(), "%s Feedback: Current count = %d",
 						action_name.c_str(), feedback->current_number);
 		};

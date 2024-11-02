@@ -24,6 +24,11 @@ namespace controlUtils {
 
 	double getTgtAngleError(const OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target);
 
+	geometry_msgs::msg::Pose ClosestPointOnOrbit(const OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius);
+
+	double OrbitHeadingAdjustment(const OdometryData& odometryData, double angle_to_target, double distanceError, double orbitRadius);
+	
+	double calculateDistance(const OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target);
 
 } // namespace controlUtils
 
