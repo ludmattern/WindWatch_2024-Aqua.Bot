@@ -17,59 +17,59 @@
 #include "mission_manager/PIDController.hpp"
 
 enum class InspectionState {
-    APPROACH,
-    ORBIT
+	APPROACH,
+	ORBIT
 };
 
 class InspectionServer : public rclcpp::Node
 {
 public:
-    using Inspection = mission_manager::action::Inspection;
-    using GoalHandleInspection = rclcpp_action::ServerGoalHandle<Inspection>;
+	using Inspection = mission_manager::action::Inspection;
+	using GoalHandleInspection = rclcpp_action::ServerGoalHandle<Inspection>;
 
-    InspectionServer();
+	InspectionServer();
 
 private:
-    // Action server
-    rclcpp_action::Server<Inspection>::SharedPtr action_server_;
+	// Action server
+	rclcpp_action::Server<Inspection>::SharedPtr action_server_;
 
-    // Publishers and subscribers
-    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmdPublisher_;
-    rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscription_;
+	// Publishers and subscribers
+	rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmdPublisher_;
+	rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscription_;
 
-    // Odometry data
-    nav_msgs::msg::Odometry current_odometry_;
-    std::mutex odom_mutex_;
-    bool odom_received_;
+	// Odometry data
+	nav_msgs::msg::Odometry current_odometry_;
+	std::mutex odom_mutex_;
+	bool odom_received_;
 
-    // Path and waypoints
-    std::vector<geometry_msgs::msg::PoseStamped> path_;
-    size_t targetIndex_;
+	// Path and waypoints
+	std::vector<geometry_msgs::msg::PoseStamped> path_;
+	size_t targetIndex_;
 
-    // Control flags
-    bool goalCancelled_;
+	// Control flags
+	bool goalCancelled_;
 
-    // Action server callbacks
-    rclcpp_action::GoalResponse handle_goal(const rclcpp_action::GoalUUID &uuid, std::shared_ptr<const Inspection::Goal> goal);
-    rclcpp_action::CancelResponse handle_cancel(const std::shared_ptr<GoalHandleInspection> goal_handle);
-    void handle_accepted(const std::shared_ptr<GoalHandleInspection> goal_handle);
+	// Action server callbacks
+	rclcpp_action::GoalResponse handle_goal(const rclcpp_action::GoalUUID &uuid, std::shared_ptr<const Inspection::Goal> goal);
+	rclcpp_action::CancelResponse handle_cancel(const std::shared_ptr<GoalHandleInspection> goal_handle);
+	void handle_accepted(const std::shared_ptr<GoalHandleInspection> goal_handle);
 
 
-    // Execution and control loop
-    void execute(const std::shared_ptr<GoalHandleInspection> goal_handle);
-    void controlLoop(const std::shared_ptr<GoalHandleInspection> goal_handle);
+	// Execution and control loop
+	void execute(const std::shared_ptr<GoalHandleInspection> goal_handle);
+	void controlLoop(const std::shared_ptr<GoalHandleInspection> goal_handle);
 
-    // Odometry callback
-    void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
+	// Odometry callback
+	void odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
 	bool isGoalReached(void);
 
 	// PID controllers
 	PIDController headingController_;
 	PIDController speedController_;
 
-    geometry_msgs::msg::PoseStamped entryPoint_;        // Point d’entrée sur le cercle
-    bool entryPointInitialized_ = false;         // Indicateur pour vérifier si `entryPoint` est calculé
-    InspectionState state_ = InspectionState::APPROACH;  // État initial
+	geometry_msgs::msg::PoseStamped entryPoint_;
+	bool entryPointInitialized_ = false;
+	InspectionState state_ = InspectionState::APPROACH;
 
 	void processOrbitState(const controlUtils::OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius, double orbitSpeed);
 	void processApproachState(const controlUtils::OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius, double orbitSpeed);

@@ -96,7 +96,7 @@ class MissionManager : public rclcpp::Node
 
 	void send_navigation_goal(const nav_msgs::msg::Path & path);
 	void send_inspection_goal(const nav_msgs::msg::Path & path);
-	void send_stabilization_goal(int target_number);
+	void send_stabilization_goal(const nav_msgs::msg::Path & path);
 	void send_rotation_goal(int target_number);
 
 	// Gestion des résultats

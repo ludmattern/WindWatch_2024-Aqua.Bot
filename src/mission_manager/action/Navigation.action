@@ -1,3 +1,5 @@
+# Navigation action
+
 # Goal
 nav_msgs/Path path
 ---

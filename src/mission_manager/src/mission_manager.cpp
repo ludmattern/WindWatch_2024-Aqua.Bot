@@ -40,8 +40,8 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 	// temporaire, a remplacer par le service et son path
 	current_path_.header.frame_id = "map";
 	current_path_.poses.resize(2);
-	current_path_.poses[0].pose.position.x = 150.0;
-	current_path_.poses[0].pose.position.y = -150.0;
+	current_path_.poses[0].pose.position.x = 0.0;
+	current_path_.poses[0].pose.position.y = -0.0;
 	current_path_.poses[0].pose.orientation.w = 1.0;
 
 	// current_path_.poses[1].pose.position.x = 550.0;
@@ -52,8 +52,8 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 	// current_path_.poses[2].pose.position.y = -100.0;
 	// current_path_.poses[2].pose.orientation.w = 1.0;
 
-	current_path_.poses[1].pose.position.x = 219.19;
-	current_path_.poses[1].pose.position.y = 290.79;
+	current_path_.poses[1].pose.position.x = 0.0;
+	current_path_.poses[1].pose.position.y = 0.00;
 	current_path_.poses[1].pose.orientation.w = 1.0;
 
 	//attendre 20 secondes, fenetre gazebo (a retirer a la fin)
@@ -84,10 +84,15 @@ void MissionManager::send_inspection_goal(const nav_msgs::msg::Path & path)
 	inspection_client_->async_send_goal(goal_msg, send_goal_options);
 }
 
-void MissionManager::send_stabilization_goal(int target_number)
+void MissionManager::send_stabilization_goal(const nav_msgs::msg::Path & path)
 {
-	send_goal<Stabilization>(target_number, stabilization_client_, "stabilization",
-		std::bind(&MissionManager::handle_stabilization_result, this, std::placeholders::_1));
+	auto goal_msg = Stabilization::Goal();
+	goal_msg.path = path;
+
+	auto send_goal_options = rclcpp_action::Client<Stabilization>::SendGoalOptions();
+	send_goal_options.result_callback = std::bind(&MissionManager::handle_stabilization_result, this, std::placeholders::_1);
+
+	stabilization_client_->async_send_goal(goal_msg, send_goal_options);
 }
 
 void MissionManager::send_rotation_goal(int target_number)
@@ -102,10 +107,11 @@ void MissionManager::handle_navigation_result(const GoalHandle<Navigation>::Wrap
 
 	if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
 	{
-		if (current_sequence_ == Sequence::SEQUENCE1)
-			send_inspection_goal(current_path_);
-		else if (current_sequence_ == Sequence::SEQUENCE2)
-			send_stabilization_goal(3);
+		//temporaire -- a remettre apres les tests de stabilization
+		// if (current_sequence_ == Sequence::SEQUENCE1)
+		// 	send_inspection_goal(current_path_);
+		// else if (current_sequence_ == Sequence::SEQUENCE2)
+			send_stabilization_goal(current_path_);
 	}
 }
 

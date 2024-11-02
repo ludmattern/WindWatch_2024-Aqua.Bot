@@ -1,105 +1,135 @@
 // src/stabilization_server.cpp
 
 #include "mission_manager/stabilization_server.hpp"
-
-#include <memory>
-#include <chrono>
-#include <thread>
+#include "mission_manager/controlUtils.hpp"
+#include <algorithm>
+#include <limits>
+#include <iostream>
+#include <cmath>
 
 using namespace std::chrono_literals;
 
-StabilizationServer::StabilizationServer() : Node("stabilization_server")
+StabilizationServer::StabilizationServer(): Node("stabilization_server"), odom_received_(false)
 {
-	action_server_ = rclcpp_action::create_server<Stabilization>(
-		this,
-		"stabilization",
-		[this](const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const Stabilization::Goal> goal) {
-		return handle_goal(uuid, goal);
-		},
-		[this](const std::shared_ptr<GoalHandleStabilization> goal_handle) {
-		return handle_cancel(goal_handle);
-		},
-		[this](const std::shared_ptr<GoalHandleStabilization> goal_handle) {
-		handle_accepted(goal_handle);
-		});
+	action_server_ = rclcpp_action::create_server<Stabilization>(this, "stabilization",
+		std::bind(&StabilizationServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
+		std::bind(&StabilizationServer::handle_cancel, this, std::placeholders::_1),
+		std::bind(&StabilizationServer::handle_accepted, this, std::placeholders::_1));
+
+	cmdPublisher_ = this->create_publisher<geometry_msgs::msg::Twist>("/propulsion/command", 10);
+
+	odom_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>("/mission/odometry", 10,
+		std::bind(&StabilizationServer::odomCallback, this, std::placeholders::_1));
+
+	headingController_ = PIDController(0.7, 0.01, 0.0, 0.78, -0.78, 0.5, 0.017);
+	speedController_ = PIDController(0.1, 0.005, 0.02, 6.17, 0.0, 0.5, 0.1);
 
 	RCLCPP_INFO(this->get_logger(), "Stabilization Server has been started.");
 }
 
-rclcpp_action::GoalResponse StabilizationServer::handle_goal(
-const rclcpp_action::GoalUUID & uuid,
-std::shared_ptr<const Stabilization::Goal> goal)
+void StabilizationServer::odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg)
 {
-	RCLCPP_INFO(this->get_logger(), "Received Stabilization goal request to count to %d", goal->target_number);
-	// Accepter tous les objectifs
+	current_odometry_ = *msg;
+	odom_received_ = true;
+}
+
+rclcpp_action::GoalResponse StabilizationServer::handle_goal(const rclcpp_action::GoalUUID & uuid,	std::shared_ptr<const Stabilization::Goal> goal)
+{
+	RCLCPP_INFO(this->get_logger(), "Received Stabilization goal request.");
+
+	if (goal->path.poses.empty())
+	{
+		RCLCPP_WARN(this->get_logger(), "Received empty path.");
+		return rclcpp_action::GoalResponse::REJECT;
+	}
+
 	return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
 }
 
-rclcpp_action::CancelResponse StabilizationServer::handle_cancel(
-const std::shared_ptr<GoalHandleStabilization> goal_handle)
+rclcpp_action::CancelResponse StabilizationServer::handle_cancel(const std::shared_ptr<GoalHandleStabilization> goal_handle)
 {
-	RCLCPP_INFO(this->get_logger(), "Received request to cancel Stabilization goal.");
-	// Accepter toutes les demandes d'annulation
+	RCLCPP_INFO(this->get_logger(), "Received request to cancel Stabilization");
 	return rclcpp_action::CancelResponse::ACCEPT;
 }
 
 void StabilizationServer::handle_accepted(const std::shared_ptr<GoalHandleStabilization> goal_handle)
 {
-	// Créer un nouveau thread pour exécuter l'objectif
-	std::thread(
-		[this, goal_handle]() {
-		execute(goal_handle);
-		}
-	).detach();
+	std::thread([this, goal_handle](){ execute(goal_handle); }).detach();
 }
 
 void StabilizationServer::execute(const std::shared_ptr<GoalHandleStabilization> goal_handle)
 {
-	RCLCPP_INFO(this->get_logger(), "Executing Stabilization goal...");
-	const auto goal = goal_handle->get_goal();
+	RCLCPP_INFO(this->get_logger(), "Executing Stabilization goal.");
+
+
+	auto goal = goal_handle->get_goal();
+	path_ = goal->path.poses;
+	goalCancelled_ = false;
+
 	auto feedback = std::make_shared<Stabilization::Feedback>();
 	auto result = std::make_shared<Stabilization::Result>();
 
-	rclcpp::Rate loop_rate(1); // Fréquence de 1 Hz
-
-	try
+	rclcpp::Rate rate(10);
+	while (rclcpp::ok())
 	{
-		for(int i = 1; i <= goal->target_number; ++i)
-		{
-		// Vérifier si l'objectif a été annulé
 		if (goal_handle->is_canceling())
 		{
-			result->final_count = i - 1;
+			goalCancelled_ = true;
+			result->success = false;
 			goal_handle->canceled(result);
-			RCLCPP_INFO(this->get_logger(), "Stabilization goal canceled.");
+			RCLCPP_INFO(this->get_logger(), "Stabilization canceled");
 			return;
 		}
 
-		// Simuler un travail en cours
-		loop_rate.sleep();
-
-		// Publier le feedback
-		feedback->current_number = i;
-		goal_handle->publish_feedback(feedback);
-		RCLCPP_INFO(this->get_logger(), "Stabilization Feedback: %d/%d", i, goal->target_number);
+		if (!odom_received_)
+		{
+			RCLCPP_WARN(this->get_logger(), "Waiting for odometry...");
+			rate.sleep();
+			continue;
 		}
 
-		// Indiquer que l'objectif est réussi
-		result->final_count = goal->target_number;
-		goal_handle->succeed(result);
-		RCLCPP_INFO(this->get_logger(), "Stabilization goal succeeded with final count: %d", result->final_count);
-	}
-	catch (const std::exception &e)
-	{
-		RCLCPP_ERROR(this->get_logger(), "Exception in execute: %s", e.what());
-		goal_handle->abort(result);
-	}
-	}
+		controlLoop(goal_handle);
 
-	int main(int argc, char **argv)
-	{
+		if (targetIndex_ >= path_.size())
+		{
+			auto cmdMsg = geometry_msgs::msg::Twist();
+			cmdPublisher_->publish(cmdMsg);
+			targetIndex_ = 0;
+			result->success = true;
+			goal_handle->succeed(result);
+			RCLCPP_INFO(this->get_logger(), "Stabilization succeeded");
+			return;
+		}
+
+		feedback->progress = static_cast<float>(targetIndex_) / path_.size() * 100.0f;
+		goal_handle->publish_feedback(feedback);
+
+		rate.sleep();
+	}
+}
+
+void StabilizationServer::controlLoop(const std::shared_ptr<GoalHandleStabilization> goal_handle)
+{
+	if (goalCancelled_) return;
+
+	const geometry_msgs::msg::PoseStamped & target = path_[targetIndex_];
+
+	std::lock_guard<std::mutex> lock(odom_mutex_);
+	controlUtils::OdometryData odometryData = controlUtils::getOdometryData(target, current_odometry_);
+
+	double targetAngleError = controlUtils::getTgtAngleError(odometryData, target);
+
+	double headingOutput = headingController_.calculate(targetAngleError, odometryData.distanceToTarget);
+	double speedOutput = speedController_.calculate(odometryData.distanceToTarget);
+
+	controlUtils::sendThrustersCommands(speedOutput, headingOutput, cmdPublisher_);
+}
+
+int main(int argc, char **argv)
+{
 	rclcpp::init(argc, argv);
-	rclcpp::spin(std::make_shared<StabilizationServer>());
+	auto node = std::make_shared<StabilizationServer>();
+	rclcpp::spin(node);
 	rclcpp::shutdown();
 	return 0;
 }
