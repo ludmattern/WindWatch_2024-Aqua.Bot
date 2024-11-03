@@ -15,7 +15,6 @@ TgtPosUpdateNode::TgtPosUpdateNode() : Node("tgt_pos_update_node")
 	//Create Service
 	tgtPos_Service_ = this->create_service<sensors::srv::TargetPositions>(
 		"mission/target_positions", std::bind(&TgtPosUpdateNode::ServerCallback, this, std::placeholders::_1, std::placeholders::_2));
-
 }
 
 void TgtPosUpdateNode::tgtPosCallBack(geometry_msgs::msg::PoseArray msg)
@@ -26,12 +25,10 @@ void TgtPosUpdateNode::tgtPosCallBack(geometry_msgs::msg::PoseArray msg)
 		double x,y,z;
 		latLonToENU(msg.poses[i].position.x ,msg.poses[i].position.y, msg.poses[i].position.z, x, y, z); //convert coordinates
 
-		//Set position to target position
 		current_positions_.poses[i].position.x = x;
 		current_positions_.poses[i].position.y = y;
 		current_positions_.poses[i].position.z = z;
 
-		//Set rotation to 0
 		current_positions_.poses[i].orientation.w = 0;
 		current_positions_.poses[i].orientation.x = 0;
 		current_positions_.poses[i].orientation.y = 0;
@@ -43,7 +40,6 @@ void TgtPosUpdateNode::tgtPosCallBack(geometry_msgs::msg::PoseArray msg)
 void TgtPosUpdateNode::ServerCallback(const std::shared_ptr<sensors::srv::TargetPositions::Request> request,
 	const std::shared_ptr<sensors::srv::TargetPositions::Response> response)
 {
-	//Set response to the target positions.
 	response->poses = current_positions_;
 }
 
