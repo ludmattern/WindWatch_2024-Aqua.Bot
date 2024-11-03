@@ -68,7 +68,7 @@ void CameraProcessingNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr m
     }
 
     cv::imshow("Image with QR code", img);
-    cv::waitKey(1);  // Changez à 1 pour une mise à jour continue
+    cv::waitKey(100);  // Changez à 1 pour une mise à jour continue
 }
 
 int main(int argc, char * argv[])

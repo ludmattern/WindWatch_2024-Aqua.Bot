@@ -23,8 +23,7 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(ZBar REQUIRED zbar)
 
 # Include directories
-include_directories(include)  # Add your project's include directory
-include_directories(${OpenCV_INCLUDE_DIRS} ${ZBar_INCLUDE_DIRS})  # Make sure to use ZBar_INCLUDE_DIRS
+include_directories(include ${OpenCV_INCLUDE_DIRS} ${ZBar_INCLUDE_DIRS})  # Make sure to use ZBar_INCLUDE_DIRS
 
 # Add executables
 add_executable(sensor_fusion_node src/sensor_fusion_node.cpp src/ConvertCoordinates.cpp)
