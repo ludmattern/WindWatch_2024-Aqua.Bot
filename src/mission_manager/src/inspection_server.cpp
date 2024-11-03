@@ -97,7 +97,12 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 			continue;
 		}
 
-		controlLoop(goal_handle);
+		// controlLoop(goal_handle); --> UNCOMMENT THIS LINE TO MAKE IT OPERATIONAL
+		// -->> DEBUG TEST, REMOVE THESES LINES
+		RCLCPP_INFO(this->get_logger(), "Executing Inspection goal...");
+		result->success = true;
+		goal_handle->succeed(result);
+		// -->> DEBUG TEST, REMOVE THESES LINES
 
 		if (targetIndex_ >= path_.size())
 		{

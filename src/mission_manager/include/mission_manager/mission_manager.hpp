@@ -12,6 +12,8 @@
 #include "mission_manager/action/navigation.hpp"
 #include "mission_manager/action/rotation.hpp"
 #include "mission_manager/action/stabilization.hpp"
+#include "mission_manager/srv/target_manager_serv.hpp"
+
 
 
 class MissionManager : public rclcpp::Node
@@ -34,6 +36,8 @@ class MissionManager : public rclcpp::Node
 
 	private:
 	// Énumération des séquences
+	void launch();
+
 	enum class Sequence
 	{
 		SEQUENCE1,
@@ -48,7 +52,7 @@ class MissionManager : public rclcpp::Node
 	ActionClient<Rotation>::SharedPtr rotation_client_;
 
 	int sequence1_iteration_count_;        ///< Nombre d'itérations de la Séquence 1
-	const int sequence1_max_iterations_;   ///< Nombre maximal d'itérations pour la Séquence 1
+	int sequence1_max_iterations_;   ///< Nombre maximal d'itérations pour la Séquence 1
 	Sequence current_sequence_;            ///< Séquence actuelle
 	nav_msgs::msg::Path current_path_;	   ///< current path
 
@@ -124,6 +128,11 @@ class MissionManager : public rclcpp::Node
 	void handle_inspection_result(const GoalHandle<Inspection>::WrappedResult & result);
 	void handle_stabilization_result(const GoalHandle<Stabilization>::WrappedResult & result);
 	void handle_rotation_result(const GoalHandle<Rotation>::WrappedResult & result);
+
+	// Services clients
+	void service_response_callback(rclcpp::Client<mission_manager::srv::TargetManagerServ>::SharedFuture future);
+	rclcpp::Client<mission_manager::srv::TargetManagerServ>::SharedPtr targetManagerClient_;
+	rclcpp::TimerBase::SharedPtr timer_;
 };
 
 #endif  // MISSION_MANAGER_DEMO__MISSION_MANAGER_HPP_

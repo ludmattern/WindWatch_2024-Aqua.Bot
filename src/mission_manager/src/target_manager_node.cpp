@@ -1,8 +1,14 @@
 #include "mission_manager/target_manager_node.hpp"
+#include "std_msgs/msg/int32.hpp"
 
 TargetManagerNode::TargetManagerNode() : Node("target_manager_node"), timer_(nullptr)
 {
 	RCLCPP_INFO(this->get_logger(), "Target Manager Node has started");
+	callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+
+	TargetManagerService_ = this->create_service<mission_manager::srv::TargetManagerServ>(
+		"/mission/mission_goal", std::bind(&TargetManagerNode::ServerCallback, this, std::placeholders::_1, std::placeholders::_2), 
+		rmw_qos_profile_services_default, callback_group_);
 
 	// Create the client for the service
 	// TmaPos_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
@@ -81,6 +87,34 @@ void TargetManagerNode::TmaPosRegister(geometry_msgs::msg::PoseArray msg)
 
 	wind_data_.nb_wind = static_cast<int>(msg.poses.size());
 	RCLCPP_INFO(this->get_logger(), "Total number of winds recorded: %d", wind_data_.nb_wind);
+}
+
+void TargetManagerNode::ServerCallback(const std::shared_ptr<mission_manager::srv::TargetManagerServ::Request> request,
+	const std::shared_ptr<mission_manager::srv::TargetManagerServ::Response> response)
+{
+	nav_msgs::msg::Path temp = nav_msgs::msg::Path();
+	std_msgs::msg::Int32 targetcount = std_msgs::msg::Int32();
+	targetcount.data = 3;
+
+	temp.header.frame_id = "map";
+	temp.poses.resize(1);
+
+	temp.poses[0].pose.position.x = 0.0;
+	temp.poses[0].pose.position.y = 0.0;
+	temp.poses[0].pose.orientation.w = 1.0;
+
+	// temp.poses[1].pose.position.x = 550.0;
+	// temp.poses[1].pose.position.y = -550.0;
+	// temp.poses[1].pose.orientation.w = 1.0;
+
+	// temp.poses[2].pose.position.x = 219.0;
+	// temp.poses[2].pose.position.y = 290.0;
+	// temp.poses[2].pose.orientation.w = 1.0;
+
+	response->path = temp;
+	response->targetcount = targetcount;
+
+	RCLCPP_INFO(this->get_logger(), "Réponse envoyée.");
 }
 
 int main(int argc, char * argv[])

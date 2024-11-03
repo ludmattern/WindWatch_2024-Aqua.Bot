@@ -20,12 +20,12 @@ public:
 
 private:
 	//Service
-	rclcpp::Service<mission_manager::srv::TargetManagerServ>::SharedPtr _TmaPos_Service;
+	rclcpp::Service<mission_manager::srv::TargetManagerServ>::SharedPtr TargetManagerService_;
 	// Structure pour stocker les données des vents
 	
-	/* void ServerCallback(const std::shared_ptr<mission_manager::srv::TargetManagerNodes::Request> request,
-		const std::shared_ptr<mission_manager::srv::TargetManagerNodes::Response> response);
-*/
+	void ServerCallback(const std::shared_ptr<mission_manager::srv::TargetManagerServ::Request> request,
+		const std::shared_ptr<mission_manager::srv::TargetManagerServ::Response> response);
+
 	// geometry_msgs::msg::PoseArray MakeRequest(sensors::srv::TargetPositions::Request::SharedPtr request);
 	// void service_response_callback(rclcpp::Client<sensors::srv::TargetPositions>::SharedFuture future);
 
@@ -38,6 +38,7 @@ private:
 
 	s_wind wind_data_;
 	rclcpp::TimerBase::SharedPtr timer_;
+	rclcpp::CallbackGroup::SharedPtr callback_group_;
 	//int _nb_wind_to_;
 };
 

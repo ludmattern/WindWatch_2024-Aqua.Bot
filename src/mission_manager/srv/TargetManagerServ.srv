@@ -1,3 +1,4 @@
 
 ---
-geometry_msgs/PoseArray poses # Poses of the targets (ENU coordinates)
+nav_msgs/Path path # Path of the targets (ENU coordinates)
+std_msgs/Int32 targetcount # Number of targets to reach

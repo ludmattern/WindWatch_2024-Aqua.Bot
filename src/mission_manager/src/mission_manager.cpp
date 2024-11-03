@@ -4,7 +4,7 @@
 
 using namespace std::chrono_literals;
 
-MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_count_(0),  sequence1_max_iterations_(3),  current_sequence_(Sequence::SEQUENCE1)
+MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_count_(0),  sequence1_max_iterations_(0), timer_(nullptr),  current_sequence_(Sequence::SEQUENCE1)
 {
 	current_path_ = nav_msgs::msg::Path();
 
@@ -12,6 +12,7 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 	inspection_client_ = create_action_client<Inspection>("inspection");
 	stabilization_client_ = create_action_client<Stabilization>("stabilization");
 	rotation_client_ = create_action_client<Rotation>("rotation");
+	targetManagerClient_ = this->create_client<mission_manager::srv::TargetManagerServ>("mission/mission_goal");
 
 	RCLCPP_INFO(this->get_logger(), "Action Manager has been started.");
 
@@ -26,39 +27,51 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 	}
 
 	RCLCPP_INFO(this->get_logger(), "All action servers are available.");
+	timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&MissionManager::launch, this));
+}
 
-	// Attendre que tout le monde soit prêt
-		//boucle branchee sur un topic
+void MissionManager::launch()
+{
+	timer_->cancel();
 
-	// Demander le nombre d'objectifs à atteindre
-		//service pour demander le nombre d'objectifs et le prochain itinéraire
-			//attendre la réponse et changer sequence1_max_iterations_
-			//attendre la reponse et stocker le prochain itinéraire (path_)
+	while (!this->targetManagerClient_->wait_for_service(std::chrono::seconds(1)))
+		RCLCPP_ERROR(this->get_logger(), "Service 'mission/mission_goal' not available");
 
-	// Commencer la Séquence 1 en envoyant Navigation avec le prochain objectif (current_path_)
+	RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
 
-	// temporaire, a remplacer par le service et son path
-	current_path_.header.frame_id = "map";
-	current_path_.poses.resize(3);
-	// current_path_.poses[0].pose.position.x = 0.0;
-	// current_path_.poses[0].pose.position.y = -0.0;
-	// current_path_.poses[0].pose.orientation.w = 1.0;
 
-	current_path_.poses[0].pose.position.x = 600.0;
-	current_path_.poses[0].pose.position.y = -600.0;
-	current_path_.poses[0].pose.orientation.w = 1.0;
+	auto request = std::make_shared<mission_manager::srv::TargetManagerServ::Request>();
+	auto future = this->targetManagerClient_->async_send_request(
+		request,
+		std::bind(&MissionManager::service_response_callback, this, std::placeholders::_1)
+	);
+}
 
-	current_path_.poses[1].pose.position.x = 550.0;
-	current_path_.poses[1].pose.position.y = -550.0;
-	current_path_.poses[1].pose.orientation.w = 1.0;
+void MissionManager::service_response_callback(rclcpp::Client<mission_manager::srv::TargetManagerServ>::SharedFuture future)
+{
+	RCLCPP_INFO(this->get_logger(), "Received Path from TargetManagerService");
 
-	current_path_.poses[2].pose.position.x = 219.0;
-	current_path_.poses[2].pose.position.y = 290.0;
-	current_path_.poses[2].pose.orientation.w = 1.0;
+	auto response = future.get();
+	// si le path est vide ou si le nombre de cibles est nul
+	if (response->path.poses.empty() || response->targetcount.data == 0)
+	{
+		RCLCPP_WARN(this->get_logger(), "Received empty path from TargetManagerService. Retrying...");
 
-	//attendre 20 secondes, fenetre gazebo (a retirer a la fin)
-	std::this_thread::sleep_for(10s);
+		auto retry_timer = this->create_wall_timer(
+			std::chrono::seconds(5),
+			[this]() {
+				this->launch();
+			}
+		);
+		return ;
+	}
 
+	RCLCPP_INFO(this->get_logger(), "Processing received path");
+	// changer max iteration
+	sequence1_max_iterations_ = response->targetcount.data;
+	if (!current_path_.poses.empty())
+		current_path_.poses.clear();
+	current_path_ = response->path;
 	send_navigation_goal(current_path_);
 }
 
@@ -105,15 +118,17 @@ void MissionManager::handle_navigation_result(const GoalHandle<Navigation>::Wrap
 {
 	handle_result<Navigation>(result, "Navigation");
 
-	if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
+	if (result.code != rclcpp_action::ResultCode::SUCCEEDED)
+		return;
+	if (current_sequence_ == Sequence::SEQUENCE1)
 	{
-		if (current_sequence_ == Sequence::SEQUENCE1)
-		{
-			//client current_path_ = service pour demander le prochain itinéraire
-			send_inspection_goal(current_path_);
-		}
-		else if (current_sequence_ == Sequence::SEQUENCE2)
-			send_stabilization_goal(current_path_);
+		RCLCPP_INFO(this->get_logger(), "Transitioning to next point INSPECTION in SEQUENCE1");
+		send_inspection_goal(current_path_);
+	}
+	else if (current_sequence_ == Sequence::SEQUENCE2)
+	{
+		RCLCPP_INFO(this->get_logger(), "Transitioning to stabilization in SEQUENCE2");
+		send_stabilization_goal(current_path_);
 	}
 }
 
@@ -123,23 +138,25 @@ void MissionManager::handle_inspection_result(const GoalHandle<Inspection>::Wrap
 
 	if (result.code != rclcpp_action::ResultCode::SUCCEEDED)
 		return;
-	if (current_sequence_ == Sequence::SEQUENCE1)
+	sequence1_iteration_count_++;
+	if (sequence1_iteration_count_ < sequence1_max_iterations_)
 	{
-		sequence1_iteration_count_++;
-		if (sequence1_iteration_count_ < sequence1_max_iterations_)
-		{
-			// recuperer le futur itinéraire
-			// current_path_ = //service pour demander le prochain itinéraire
-			send_navigation_goal(current_path_);
-		}
-		else
-		{
-			// Transition vers la Séquence 2
-			current_sequence_ = Sequence::SEQUENCE2;
-			RCLCPP_INFO(this->get_logger(), "Transitioning to SEQUENCE2");
-			// Commencer la Séquence 2 en envoyant Navigation
-			send_navigation_goal(current_path_);
-		}
+		RCLCPP_INFO(this->get_logger(), "Transitioning to next point NAVIGATION in SEQUENCE1");
+		auto request = std::make_shared<mission_manager::srv::TargetManagerServ::Request>();
+		auto future = this->targetManagerClient_->async_send_request(
+			request,
+			std::bind(&MissionManager::service_response_callback, this, std::placeholders::_1)
+		);
+	}
+	else
+	{
+		current_sequence_ = Sequence::SEQUENCE2;
+		RCLCPP_INFO(this->get_logger(), "Transitioning to SEQUENCE2 first point NAVIGATION");
+		auto request = std::make_shared<mission_manager::srv::TargetManagerServ::Request>();
+		auto future = this->targetManagerClient_->async_send_request(
+			request,
+			std::bind(&MissionManager::service_response_callback, this, std::placeholders::_1)
+		);
 	}
 }
 

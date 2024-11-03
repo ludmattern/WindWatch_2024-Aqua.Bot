@@ -21,24 +21,23 @@ TgtPosUpdateNode::TgtPosUpdateNode() : Node("tgt_pos_update_node")
 void TgtPosUpdateNode::tgtPosCallBack(geometry_msgs::msg::PoseArray msg)
 {
 	if (current_positions_.poses.empty())
+		return ;
+	current_positions_.poses.resize(msg.poses.size()); //resize the vector
+	for (int i = 0; i < msg.poses.size(); ++i)
 	{
-		current_positions_.poses.resize(msg.poses.size()); //resize the vector
-		for (int i = 0; i < msg.poses.size(); ++i)
-		{
-			double x,y,z;
-			latLonToENU(msg.poses[i].position.x ,msg.poses[i].position.y, msg.poses[i].position.z, x, y, z); //convert coordinates
+		double x,y,z;
+		latLonToENU(msg.poses[i].position.x ,msg.poses[i].position.y, msg.poses[i].position.z, x, y, z); //convert coordinates
 
-			//Set position to target position
-			current_positions_.poses[i].position.x = x;
-			current_positions_.poses[i].position.y = y;
-			current_positions_.poses[i].position.z = z;
+		//Set position to target position
+		current_positions_.poses[i].position.x = x;
+		current_positions_.poses[i].position.y = y;
+		current_positions_.poses[i].position.z = z;
 
-			//Set rotation to 0
-			current_positions_.poses[i].orientation.w = 0;
-			current_positions_.poses[i].orientation.x = 0;
-			current_positions_.poses[i].orientation.y = 0;
-			current_positions_.poses[i].orientation.z = 0;
-		}
+		//Set rotation to 0
+		current_positions_.poses[i].orientation.w = 0;
+		current_positions_.poses[i].orientation.x = 0;
+		current_positions_.poses[i].orientation.y = 0;
+		current_positions_.poses[i].orientation.z = 0;
 	}
 }
 

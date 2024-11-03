@@ -89,7 +89,12 @@ void StabilizationServer::execute(const std::shared_ptr<GoalHandleStabilization>
 			continue;
 		}
 
-		controlLoop(goal_handle);
+		// controlLoop(goal_handle); --> UNCOMMENT THIS LINE TO MAKE IT OPERATIONAL
+		// -->> DEBUG TEST, REMOVE THESES LINES
+		RCLCPP_INFO(this->get_logger(), "Executing stabilisation goal...");
+		result->success = true;
+		goal_handle->succeed(result);
+		// -->> DEBUG TEST, REMOVE THESES LINES
 
 		if (targetIndex_ >= path_.size())
 		{
