@@ -29,14 +29,23 @@ void CameraProcessingNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr m
         return;
     }
 
-    if (img.cols < 100 || img.rows < 100) {
-        RCLCPP_WARN(this->get_logger(), "Image size too small for QR code detection");
-        return;
-    }
+     // Calculer les dimensions de la région rognée (1/3 de l'image)
+    int croppedWidth = img.cols / 3;
+    int croppedHeight = img.rows / 3;
+
+    // Calculer les coordonnées du coin supérieur gauche pour centrer le rectangle
+    int x = (img.cols - croppedWidth) / 2;
+    int y = (img.rows - croppedHeight) / 2;
+
+    // Définir la région d'intérêt (ROI) centrée
+    cv::Rect roi(x, y, croppedWidth, croppedHeight);
+
+    // Rogner l'image en utilisant la ROI
+    cv::Mat croppedImage = img(roi);
 
     // Convertir en niveaux de gris, car ZBar fonctionne mieux avec les images en noir et blanc
     cv::Mat gray;
-    cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(croppedImage, gray, cv::COLOR_BGR2GRAY);
 
     // Initialiser le scanner ZBar
     zbar::ImageScanner scanner;
@@ -48,27 +57,25 @@ void CameraProcessingNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr m
     // Scanner l'image pour détecter les QR codes
     int n = scanner.scan(zbarImage);
 
-    if (n > 0) {
-        for (auto symbol = zbarImage.symbol_begin(); symbol != zbarImage.symbol_end(); ++symbol) {
-            std::string decodedText = symbol->get_data();
-            RCLCPP_INFO(this->get_logger(), "QR code text : %s", decodedText.c_str());
+	if (n > 0) {
+	auto symbol = zbarImage.symbol_begin();
+	std::string decodedText = symbol->get_data();
+	RCLCPP_INFO(this->get_logger(), "QR code text : %s", decodedText.c_str());
+	}
+    // if (n > 0) {
+    //     for (auto symbol = zbarImage.symbol_begin(); symbol != zbarImage.symbol_end(); ++symbol) {
+    //         RCLCPP_INFO(this->get_logger(), "QR code text : %s", decodedText.c_str());
 
-            // Dessiner le contour du QR code sur l'image
-            for (int i = 0; i < symbol->get_location_size(); i++) {
-                cv::line(
-                    img,
-                    cv::Point(symbol->get_location_x(i), symbol->get_location_y(i)),
-                    cv::Point(symbol->get_location_x((i + 1) % symbol->get_location_size()), symbol->get_location_y((i + 1) % symbol->get_location_size())),
-                    cv::Scalar(255, 0, 0), 2
-                );
-            }
-        }
-    } else {
-        RCLCPP_INFO(this->get_logger(), "No QR code detected");
-    }
-
-    cv::imshow("Image with QR code", img);
-    cv::waitKey(100);  // Changez à 1 pour une mise à jour continue
+    //         // Dessiner le contour du QR code sur l'image
+    //         for (int i = 0; i < symbol->get_location_size(); i++) {
+    //             cv::line(
+    //                 croppedImage,
+    //                 cv::Point(symbol->get_location_x(i), symbol->get_location_y(i)),
+    //                 cv::Point(symbol->get_location_x((i + 1) % symbol->get_location_size()), symbol->get_location_y((i + 1) % symbol->get_location_size())),
+    //                 cv::Scalar(255, 0, 0), 2
+    //             );
+    //         }
+    //     }
 }
 
 int main(int argc, char * argv[])
