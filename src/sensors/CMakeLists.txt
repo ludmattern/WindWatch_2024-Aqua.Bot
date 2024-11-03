@@ -7,6 +7,7 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(cv_bridge REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
@@ -14,6 +15,12 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(rosidl_typesupport_c REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+find_package(PkgConfig REQUIRED)
+
+# Use pkg-config to find the ZBar library
+pkg_check_modules(ZBar REQUIRED zbar)
 
 # Generate ROS2 interfaces (services / actions)
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -22,13 +29,16 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 
 # Include directories
-include_directories(include)
+include_directories(include ${OpenCV_INCLUDE_DIRS} ${ZBar_INCLUDE_DIRS})  # Make sure to use ZBar_INCLUDE_DIRS
 
 # Add executables
 add_executable(sensor_fusion_node src/sensor_fusion_node.cpp src/ConvertCoordinates.cpp)
 add_executable(camera_control_node src/camera_control_node.cpp)
 add_executable(tgt_pos_update_node src/tgt_pos_update_node.cpp src/ConvertCoordinates.cpp)
 add_executable(camera_processing_node src/camera_processing_node.cpp)
+
+# Link libraries for executables
+target_link_libraries(camera_processing_node ${OpenCV_LIBS} ${ZBar_LIBRARIES})  # Link against ZBar
 
 # Specify dependencies for executables
 ament_target_dependencies(sensor_fusion_node 
@@ -44,7 +54,7 @@ ament_target_dependencies(camera_control_node
   rclcpp 
   image_transport 
   OpenCV 
-  sensor_msgs 
+  sensor_msgs
   rosidl_typesupport_c 
   std_msgs 
   tf2 
@@ -57,7 +67,11 @@ ament_target_dependencies(tgt_pos_update_node
   rosidl_typesupport_c 
   geometry_msgs
 )
-ament_target_dependencies(camera_processing_node rclcpp)
+ament_target_dependencies(camera_processing_node 
+  rclcpp
+  sensor_msgs
+  cv_bridge
+)
 
 # Link typesupport libraries to executables
 rosidl_get_typesupport_target(ts_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
@@ -65,16 +79,16 @@ target_link_libraries(tgt_pos_update_node ${ts_target})
 
 # Install targets
 install(TARGETS
-  sensor_fusion_node
-  camera_control_node
-  tgt_pos_update_node
-  camera_processing_node
-  DESTINATION lib/${PROJECT_NAME}
+    sensor_fusion_node
+    camera_control_node
+    tgt_pos_update_node
+    camera_processing_node
+    DESTINATION lib/${PROJECT_NAME}
 )
 
 # Install other necessary folders
 install(DIRECTORY launch config
-  DESTINATION share/${PROJECT_NAME}
+    DESTINATION share/${PROJECT_NAME}
 )
 
 # Export dependencies for other packages

@@ -107,7 +107,33 @@ dependencies:
 	apt update
 	apt install -y \
 		ros-humble-rosidl-typesupport-c \
-		libeigen3-dev
+		libeigen3-dev \
+		libzbar-dev
+
+.PHONY: zsh
+zsh:
+	@echo "\e[32m[INFO] Installing zsh...\e[0m"
+	apt update
+	apt install -y zsh
+	@echo "\e[32m[INFO] Downloading Oh My Zsh install script...\e[0m"
+	curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -o /tmp/install.sh
+	@echo "\e[32m[INFO] Running Oh My Zsh install script...\e[0m"
+	yes | sh /tmp/install.sh || true
+	zsh
+	
+
+TARGET_DIRS := ./src/mission_manager ./src/navigation ./src/sensors ./src/visualization
+
+.PHONY: create-config-dirs
+create-config-dirs:
+	@for dir in $(TARGET_DIRS); do \
+		if [ ! -d "$$dir/config" ]; then \
+			echo "Creating $$dir/config"; \
+			mkdir -p "$$dir/config"; \
+		else \
+			echo "$$dir/config already exists"; \
+		fi \
+	done
 
 .PHONY: zsh
 zsh:
