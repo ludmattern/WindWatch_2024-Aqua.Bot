@@ -9,9 +9,7 @@
 
 using namespace std::chrono_literals;
 
-InspectionServer::InspectionServer()
-: Node("inspection_server"),
-odom_received_(false)
+InspectionServer::InspectionServer(): Node("inspection_server"), odom_received_(false)
 {
 	action_server_ = rclcpp_action::create_server<Inspection>(
 		this,
@@ -134,11 +132,8 @@ void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> g
 
 	const geometry_msgs::msg::PoseStamped &target = path_.back();
 
-	controlUtils::OdometryData odometryData;
-	{
-		std::lock_guard<std::mutex> lock(odom_mutex_);
-		odometryData = controlUtils::getOdometryData(target, current_odometry_);
-	}
+	std::lock_guard<std::mutex> lock(odom_mutex_);
+	controlUtils::OdometryData odometryData = controlUtils::getOdometryData(target, current_odometry_);
 
 	const double orbitRadius = 8.0;
 	const double orbitSpeed = 1.0;

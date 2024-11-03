@@ -39,22 +39,22 @@ MissionManager::MissionManager(): Node("mission_manager"),  sequence1_iteration_
 
 	// temporaire, a remplacer par le service et son path
 	current_path_.header.frame_id = "map";
-	current_path_.poses.resize(2);
-	current_path_.poses[0].pose.position.x = 0.0;
-	current_path_.poses[0].pose.position.y = -0.0;
+	current_path_.poses.resize(3);
+	// current_path_.poses[0].pose.position.x = 0.0;
+	// current_path_.poses[0].pose.position.y = -0.0;
+	// current_path_.poses[0].pose.orientation.w = 1.0;
+
+	current_path_.poses[0].pose.position.x = 600.0;
+	current_path_.poses[0].pose.position.y = -600.0;
 	current_path_.poses[0].pose.orientation.w = 1.0;
 
-	// current_path_.poses[1].pose.position.x = 550.0;
-	// current_path_.poses[1].pose.position.y = -550.0;
-	// current_path_.poses[1].pose.orientation.w = 1.0;
-
-	// current_path_.poses[2].pose.position.x = 300.0;
-	// current_path_.poses[2].pose.position.y = -100.0;
-	// current_path_.poses[2].pose.orientation.w = 1.0;
-
-	current_path_.poses[1].pose.position.x = 0.0;
-	current_path_.poses[1].pose.position.y = 0.00;
+	current_path_.poses[1].pose.position.x = 550.0;
+	current_path_.poses[1].pose.position.y = -550.0;
 	current_path_.poses[1].pose.orientation.w = 1.0;
+
+	current_path_.poses[2].pose.position.x = 219.0;
+	current_path_.poses[2].pose.position.y = 290.0;
+	current_path_.poses[2].pose.orientation.w = 1.0;
 
 	//attendre 20 secondes, fenetre gazebo (a retirer a la fin)
 	std::this_thread::sleep_for(10s);
@@ -107,10 +107,12 @@ void MissionManager::handle_navigation_result(const GoalHandle<Navigation>::Wrap
 
 	if (result.code == rclcpp_action::ResultCode::SUCCEEDED)
 	{
-		//temporaire -- a remettre apres les tests de stabilization
-		// if (current_sequence_ == Sequence::SEQUENCE1)
-		// 	send_inspection_goal(current_path_);
-		// else if (current_sequence_ == Sequence::SEQUENCE2)
+		if (current_sequence_ == Sequence::SEQUENCE1)
+		{
+			//client current_path_ = service pour demander le prochain itinéraire
+			send_inspection_goal(current_path_);
+		}
+		else if (current_sequence_ == Sequence::SEQUENCE2)
 			send_stabilization_goal(current_path_);
 	}
 }
