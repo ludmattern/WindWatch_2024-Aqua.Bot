@@ -1,13 +1,15 @@
 #include "sensors/camera_processing_node.hpp"
+#include <zbar.h>
 
 CameraProcessingNode::CameraProcessingNode() : Node("camera_processing_node")
 {
-	
-	RCLCPP_INFO(this->get_logger(), "Camera Processing Node has started");
+    RCLCPP_INFO(this->get_logger(), "Camera Processing Node has started");
 
-	image_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
-		"/aquabot/sensors/cameras/main_camera_sensor/optical/image_raw" \
-		, 10, std::bind(&CameraProcessingNode::scanQRCode, this, std::placeholders::_1));
+    image_sub_ = this->create_subscription<sensor_msgs::msg::Image>(
+        "/aquabot/sensors/cameras/main_camera_sensor/optical/image_raw", 
+        10, 
+        std::bind(&CameraProcessingNode::scanQRCode, this, std::placeholders::_1)
+    );
 }
 
 void CameraProcessingNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
@@ -32,23 +34,34 @@ void CameraProcessingNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr m
         return;
     }
 
-    // Convertir en niveaux de gris
+    // Convertir en niveaux de gris, car ZBar fonctionne mieux avec les images en noir et blanc
     cv::Mat gray;
     cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
 
-    cv::QRCodeDetector qrDecoder;
-    cv::Mat bbox, rectifiedImage;
-    std::string decodedText = qrDecoder.detectAndDecode(gray, bbox, rectifiedImage);
+    // Initialiser le scanner ZBar
+    zbar::ImageScanner scanner;
+    scanner.set_config(zbar::ZBAR_QRCODE, zbar::ZBAR_CFG_ENABLE, 1);
 
-    if (!decodedText.empty()) {
-        RCLCPP_INFO(this->get_logger(), "QR code text : %s", decodedText.c_str());
-        for (int i = 0; i < bbox.rows; i++) {
-            cv::line(img, cv::Point2i(bbox.at<float>(i, 0), bbox.at<float>(i, 1)),
-                     cv::Point2i(bbox.at<float>((i + 1) % bbox.rows, 0), bbox.at<float>((i + 1) % bbox.rows, 1)),
-                     cv::Scalar(255, 0, 0), 2);
-        }
-        if (!rectifiedImage.empty()) {
-            cv::imshow("Rectified QR code", rectifiedImage);
+    // Convertir l'image OpenCV en image ZBar
+    zbar::Image zbarImage(gray.cols, gray.rows, "Y800", gray.data, gray.cols * gray.rows);
+
+    // Scanner l'image pour détecter les QR codes
+    int n = scanner.scan(zbarImage);
+
+    if (n > 0) {
+        for (auto symbol = zbarImage.symbol_begin(); symbol != zbarImage.symbol_end(); ++symbol) {
+            std::string decodedText = symbol->get_data();
+            RCLCPP_INFO(this->get_logger(), "QR code text : %s", decodedText.c_str());
+
+            // Dessiner le contour du QR code sur l'image
+            for (int i = 0; i < symbol->get_location_size(); i++) {
+                cv::line(
+                    img,
+                    cv::Point(symbol->get_location_x(i), symbol->get_location_y(i)),
+                    cv::Point(symbol->get_location_x((i + 1) % symbol->get_location_size()), symbol->get_location_y((i + 1) % symbol->get_location_size())),
+                    cv::Scalar(255, 0, 0), 2
+                );
+            }
         }
     } else {
         RCLCPP_INFO(this->get_logger(), "No QR code detected");
@@ -60,9 +73,9 @@ void CameraProcessingNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr m
 
 int main(int argc, char * argv[])
 {
-	rclcpp::init(argc, argv);
-	auto node = std::make_shared<CameraProcessingNode>();
-	rclcpp::spin(node);
-	rclcpp::shutdown();
-	return 0;
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<CameraProcessingNode>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
 }

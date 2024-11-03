@@ -17,9 +17,14 @@ find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(ament_cmake_python REQUIRED)
+find_package(PkgConfig REQUIRED)
+
+# Use pkg-config to find the ZBar library
+pkg_check_modules(ZBar REQUIRED zbar)
 
 # Include directories
-include_directories(include)
+include_directories(include)  # Add your project's include directory
+include_directories(${OpenCV_INCLUDE_DIRS} ${ZBar_INCLUDE_DIRS})  # Make sure to use ZBar_INCLUDE_DIRS
 
 # Add executables
 add_executable(sensor_fusion_node src/sensor_fusion_node.cpp src/ConvertCoordinates.cpp)
@@ -27,38 +32,27 @@ add_executable(camera_control_node src/camera_control_node.cpp)
 add_executable(tgt_pos_update_node src/tgt_pos_update_node.cpp src/ConvertCoordinates.cpp)
 add_executable(camera_processing_node src/camera_processing_node.cpp)
 
-# Specify libraries for executables
-include_directories(${OpenCV_INCLUDE_DIRS})
-target_link_libraries(camera_processing_node ${OpenCV_LIBS})
+# Link libraries for executables
+target_link_libraries(camera_processing_node ${OpenCV_LIBS} ${ZBar_LIBRARIES})  # Link against ZBar
 
 # Specify dependencies for executables
 ament_target_dependencies(sensor_fusion_node rclcpp sensor_msgs nav_msgs tf2 tf2_geometry_msgs rosidl_typesupport_c)
 ament_target_dependencies(camera_control_node rclcpp image_transport OpenCV sensor_msgs rosidl_typesupport_c std_msgs tf2 tf2_geometry_msgs nav_msgs)
 ament_target_dependencies(tgt_pos_update_node rclcpp sensor_msgs rosidl_typesupport_c)
-ament_target_dependencies(camera_processing_node rclcpp sensor_msgs cv_bridge)
+ament_target_dependencies(camera_processing_node rclcpp sensor_msgs cv_bridge)  # Include rclcpp and cv_bridge dependencies
 
 # Install targets
 install(TARGETS
-  sensor_fusion_node
-  camera_control_node
-  tgt_pos_update_node
-  camera_processing_node
-  DESTINATION lib/${PROJECT_NAME}
+    sensor_fusion_node
+    camera_control_node
+    tgt_pos_update_node
+    camera_processing_node
+    DESTINATION lib/${PROJECT_NAME}
 )
 
 # Install other necessary folders
 install(DIRECTORY launch config
-  DESTINATION share/${PROJECT_NAME}
-)
-
-# Installer les scripts Python
-ament_python_install_package(src)
-
-# Cette section copie les scripts Python dans le répertoire d'installation
-install(
-  PROGRAMS
-    src/camera_processing_py_node.py  # Le chemin vers votre node Python
-  DESTINATION lib/${PROJECT_NAME}
+    DESTINATION share/${PROJECT_NAME}
 )
 
 # ament package macro

@@ -28,7 +28,7 @@ all: build run
 .PHONY: build
 build:
 	@echo "\e[32m[INFO] Compiling ROS2 project with colcon...\e[0m"
-	colcon build --base-paths $(SRC_PATH) --merge-install
+	colcon build --merge-install
 	@echo "\e[32m[INFO] Please execute '. $(BASH_VRX_SOURCE)' to set up the environment\e[0m"
 
 .PHONY: run
@@ -64,42 +64,10 @@ fclean:
 .PHONY: re
 re: fclean build run
 
-.PHONY: perception
-perception:
-	@echo "\e[32m[INFO] Launching the perception node...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run sensors camera_processing_node
-
-.PHONY: navigation
-navigation:
-	@echo "\e[32m[INFO] Launching the navigation node...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run navigation navigation_node
-
-.PHONY: obstacle_avoidance
-obstacle_avoidance:
-	@echo "\e[32m[INFO] Launching the obstacle avoidance node...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run navigation obstacle_avoidance_node
-
-.PHONY: mission_coordinator
-mission_coordinator:
-	@echo "\e[32m[INFO] Launching the mission coordinator node...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run mission_manager mission_coordinator_node
-
 .PHONY: rviz
 rviz:
 	@echo "\e[32m[INFO] Launching RViz for visualization...\e[0m"
 	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 launch visualization rviz.launch.py > /dev/null &
-
-.PHONY: teleop
-teleop:
-	@echo "\e[32m[INFO] Manual control via teleoperation...\e[0m"
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && ros2 run aquabot_python teleop_keyboard.py
-
-.PHONY: debug
-debug:
-	@echo "\e[32m[INFO] Launching in Debug mode (Run, RViz, and RQT)...\e[0m"
-	$(MAKE) run
-	$(MAKE) rviz
-	. $(BASH_ROS_SOURCE) && . $(BASH_VRX_SOURCE) && rqt &
 
 .PHONY: add_shell_source
 add_shell_source:
@@ -139,7 +107,33 @@ dependencies:
 	apt update
 	apt install -y \
 		ros-humble-rosidl-typesupport-c \
-		libeigen3-dev 
+		libeigen3-dev \
+		libzbar-dev
+
+.PHONY: zsh
+zsh:
+	@echo "\e[32m[INFO] Installing zsh...\e[0m"
+	apt update
+	apt install -y zsh
+	@echo "\e[32m[INFO] Downloading Oh My Zsh install script...\e[0m"
+	curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -o /tmp/install.sh
+	@echo "\e[32m[INFO] Running Oh My Zsh install script...\e[0m"
+	yes | sh /tmp/install.sh || true
+	zsh
+	
+
+TARGET_DIRS := ./src/mission_manager ./src/navigation ./src/sensors ./src/visualization
+
+.PHONY: create-config-dirs
+create-config-dirs:
+	@for dir in $(TARGET_DIRS); do \
+		if [ ! -d "$$dir/config" ]; then \
+			echo "Creating $$dir/config"; \
+			mkdir -p "$$dir/config"; \
+		else \
+			echo "$$dir/config already exists"; \
+		fi \
+	done
 
 # ==============================
 # Usage Instructions
