@@ -5,54 +5,54 @@ TargetManagerNode::TargetManagerNode() : Node("target_manager_node"), timer_(nul
 	RCLCPP_INFO(this->get_logger(), "Target Manager Node has started");
 
 	// Create the client for the service
-	TmaPos_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
+	// TmaPos_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
 
 	// Define a Timer to launch the connection after initialization
-	timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&TargetManagerNode::launch, this));
+	// timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&TargetManagerNode::launch, this));
 }
 
-void TargetManagerNode::launch()
-{
-	timer_->cancel();
+// void TargetManagerNode::launch()
+// {
+// 	timer_->cancel();
 
-	while (!this->TmaPos_Client_->wait_for_service(std::chrono::seconds(1)))
-		RCLCPP_ERROR(this->get_logger(), "Service 'mission/target_positions' not available");
+// 	while (!this->TmaPos_Client_->wait_for_service(std::chrono::seconds(1)))
+// 		RCLCPP_ERROR(this->get_logger(), "Service 'mission/target_positions' not available");
 
-	RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
+// 	RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
 
-	auto request = std::make_shared<sensors::srv::TargetPositions::Request>();
-	auto future = this->TmaPos_Client_->async_send_request(
-		request,
-		std::bind(&TargetManagerNode::service_response_callback, this, std::placeholders::_1)
-	);
-}
+// 	auto request = std::make_shared<sensors::srv::TargetPositions::Request>();
+// 	auto future = this->TmaPos_Client_->async_send_request(
+// 		request,
+// 		std::bind(&TargetManagerNode::service_response_callback, this, std::placeholders::_1)
+// 	);
+// }
 
-void TargetManagerNode::service_response_callback(
-	rclcpp::Client<sensors::srv::TargetPositions>::SharedFuture future)
-{
-	RCLCPP_INFO(this->get_logger(), "Received response from service");
+// void TargetManagerNode::service_response_callback(
+// 	rclcpp::Client<sensors::srv::TargetPositions>::SharedFuture future)
+// {
+// 	RCLCPP_INFO(this->get_logger(), "Received response from service");
 
-	auto response = future.get();
+// 	auto response = future.get();
 
-	if (response->poses.poses.empty())
-	{
-		RCLCPP_WARN(this->get_logger(), "Received empty poses from service. Retrying...");
+// 	if (response->poses.poses.empty())
+// 	{
+// 		RCLCPP_WARN(this->get_logger(), "Received empty poses from service. Retrying...");
 
-		// Optionally, you can retry the request after some delay
-		// For example, using a one-shot timer:
-		auto retry_timer = this->create_wall_timer(
-			std::chrono::seconds(5),
-			[this]() {
-				this->launch();
-			}
-		);
-	}
-	else
-	{
-		RCLCPP_INFO(this->get_logger(), "Processing received poses");
-		this->TmaPosRegister(response->poses);
-	}
-}
+// 		// Optionally, you can retry the request after some delay
+// 		// For example, using a one-shot timer:
+// 		auto retry_timer = this->create_wall_timer(
+// 			std::chrono::seconds(5),
+// 			[this]() {
+// 				this->launch();
+// 			}
+// 		);
+// 	}
+// 	else
+// 	{
+// 		RCLCPP_INFO(this->get_logger(), "Processing received poses");
+// 		this->TmaPosRegister(response->poses);
+// 	}
+// }
 
 void TargetManagerNode::TmaPosRegister(geometry_msgs::msg::PoseArray msg)
 {

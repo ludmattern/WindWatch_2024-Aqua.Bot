@@ -24,6 +24,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "action/Inspection.action"
   "action/Stabilization.action"
   "action/Rotation.action"
+  "srv/TargetManagerServ.srv"
   DEPENDENCIES std_msgs nav_msgs geometry_msgs
 )
 

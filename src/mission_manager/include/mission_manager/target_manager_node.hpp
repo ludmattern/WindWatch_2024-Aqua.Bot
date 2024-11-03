@@ -5,29 +5,29 @@
 #include <vector>
 #include <iostream>
 #include "geometry_msgs/msg/pose_array.hpp"
-#include "sensors/srv/target_positions.hpp"
-//#include "mission_manager/srv/target_manager_nodes.hpp"
+// #include "sensors/srv/target_positions.hpp"
+#include "mission_manager/srv/target_manager_serv.hpp"
 
 class TargetManagerNode : public rclcpp::Node
 {
 public:
 	TargetManagerNode();
 	//Client for target position
-	rclcpp::Client<sensors::srv::TargetPositions>::SharedPtr TmaPos_Client_;
+	// rclcpp::Client<sensors::srv::TargetPositions>::SharedPtr TmaPos_Client_;
 	void TmaPosRegister(geometry_msgs::msg::PoseArray msg);
-	void launch();
+	// void launch();
 
 
 private:
 	//Service
-	//rclcpp::Service<mission_manager::srv::TargetManagerNodes>::SharedPtr _TmaPos_Service;
+	rclcpp::Service<mission_manager::srv::TargetManagerServ>::SharedPtr _TmaPos_Service;
 	// Structure pour stocker les données des vents
 	
 	/* void ServerCallback(const std::shared_ptr<mission_manager::srv::TargetManagerNodes::Request> request,
 		const std::shared_ptr<mission_manager::srv::TargetManagerNodes::Response> response);
 */
-	geometry_msgs::msg::PoseArray MakeRequest(sensors::srv::TargetPositions::Request::SharedPtr request);
-	void service_response_callback(rclcpp::Client<sensors::srv::TargetPositions>::SharedFuture future);
+	// geometry_msgs::msg::PoseArray MakeRequest(sensors::srv::TargetPositions::Request::SharedPtr request);
+	// void service_response_callback(rclcpp::Client<sensors::srv::TargetPositions>::SharedFuture future);
 
 	struct s_wind
 	{
