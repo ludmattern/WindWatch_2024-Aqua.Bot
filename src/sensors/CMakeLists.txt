@@ -22,6 +22,12 @@ find_package(PkgConfig REQUIRED)
 # Use pkg-config to find the ZBar library
 pkg_check_modules(ZBar REQUIRED zbar)
 
+# Generate ROS2 interfaces (services / actions)
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "srv/TargetPositions.srv"
+  DEPENDENCIES geometry_msgs
+)
+
 # Include directories
 include_directories(include ${OpenCV_INCLUDE_DIRS} ${ZBar_INCLUDE_DIRS})  # Make sure to use ZBar_INCLUDE_DIRS
 
@@ -35,10 +41,41 @@ add_executable(camera_processing_node src/camera_processing_node.cpp)
 target_link_libraries(camera_processing_node ${OpenCV_LIBS} ${ZBar_LIBRARIES})  # Link against ZBar
 
 # Specify dependencies for executables
-ament_target_dependencies(sensor_fusion_node rclcpp sensor_msgs nav_msgs tf2 tf2_geometry_msgs rosidl_typesupport_c)
-ament_target_dependencies(camera_control_node rclcpp image_transport OpenCV sensor_msgs rosidl_typesupport_c std_msgs tf2 tf2_geometry_msgs nav_msgs)
-ament_target_dependencies(tgt_pos_update_node rclcpp sensor_msgs rosidl_typesupport_c)
-ament_target_dependencies(camera_processing_node rclcpp sensor_msgs cv_bridge)  # Include rclcpp and cv_bridge dependencies
+ament_target_dependencies(sensor_fusion_node 
+  rclcpp 
+  sensor_msgs 
+  nav_msgs 
+  tf2 
+  tf2_geometry_msgs 
+  rosidl_typesupport_c 
+  geometry_msgs
+)
+ament_target_dependencies(camera_control_node 
+  rclcpp 
+  image_transport 
+  OpenCV 
+  sensor_msgs
+  rosidl_typesupport_c 
+  std_msgs 
+  tf2 
+  tf2_geometry_msgs 
+  nav_msgs
+)
+ament_target_dependencies(tgt_pos_update_node 
+  rclcpp 
+  sensor_msgs 
+  rosidl_typesupport_c 
+  geometry_msgs
+)
+ament_target_dependencies(camera_processing_node 
+  rclcpp
+  sensor_msgs
+  cv_bridge
+)
+
+# Link typesupport libraries to executables
+rosidl_get_typesupport_target(ts_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+target_link_libraries(tgt_pos_update_node ${ts_target})
 
 # Install targets
 install(TARGETS
@@ -53,6 +90,9 @@ install(TARGETS
 install(DIRECTORY launch config
     DESTINATION share/${PROJECT_NAME}
 )
+
+# Export dependencies for other packages
+ament_export_dependencies(rosidl_default_runtime)
 
 # ament package macro
 ament_package()

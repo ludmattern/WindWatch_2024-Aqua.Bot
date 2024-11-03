@@ -1,0 +1,10 @@
+# Stabilization.action
+
+# Goal
+nav_msgs/Path path
+---
+# Result
+bool success
+---
+# Feedback
+float32 progress  # Pourcentage d'achèvement

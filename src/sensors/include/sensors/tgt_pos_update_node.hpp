@@ -4,6 +4,7 @@
 #include <vector>
 #include <rclcpp/rclcpp.hpp>
 #include "geometry_msgs/msg/pose_array.hpp"
+#include "sensors/srv/target_positions.hpp"
 
 class TgtPosUpdateNode : public rclcpp::Node
 {
@@ -15,10 +16,15 @@ class TgtPosUpdateNode : public rclcpp::Node
 		//Subscription
 		rclcpp::Subscription<geometry_msgs::msg::PoseArray>::SharedPtr tgtPos_subscription_;
 
-		//Publisher
-		rclcpp::Publisher<geometry_msgs::msg::PoseArray>::SharedPtr tgtPos_Publisher_;
+		//Service
+		rclcpp::Service<sensors::srv::TargetPositions>::SharedPtr tgtPos_Service_;
 
 		void tgtPosCallBack(geometry_msgs::msg::PoseArray msg);
+
+		void ServerCallback(const std::shared_ptr<sensors::srv::TargetPositions::Request> request,
+			const std::shared_ptr<sensors::srv::TargetPositions::Response> response);
+
+		geometry_msgs::msg::PoseArray current_positions_; //Save current pos
 };
 
 #endif // TGT_POS_UPDATE_NODE_HPP

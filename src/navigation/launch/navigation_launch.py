@@ -23,14 +23,6 @@ def generate_launch_description():
         ),
 		Node(
 			package='navigation',
-			executable='control_node',
-			name='control_node',
-			output='screen',
-			parameters=[],
-			on_exit=[launch.actions.LogInfo(msg="Control node shut down")],
-		),
-		Node(
-			package='navigation',
 			executable='propulsion_control_node',
 			name='propulsion_control_node',
 			output='screen',

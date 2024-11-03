@@ -97,7 +97,7 @@ This package manages **mission planning**, **mission objectives**, and mission *
   - **Published Topics**:
     - `/mission/avoidance_course`: Proposed avoidance trajectory.
 
-- **Node `mission_coordinator_node`**
+- **Node `mission_manager_node`**
   - **Role**: Coordinates **mission phases**, issues mission commands.
   - **Subscribed Topics**:
     - `/mission/target_status`: Status of the targets (wind turbines).
@@ -139,7 +139,7 @@ To ensure effective communication between nodes, several **custom topics** are u
 4. **Topic `/mission/target_status`**
    - **Description**: Status of the wind turbines (functional or defective).
    - **Published By**: `camera_processing_node`.
-   - **Subscribed By**: `mission_coordinator_node`.
+   - **Subscribed By**: `mission_manager_node`.
 
 5. **Topic `/mission/avoidance_course`**
    - **Description**: Trajectory modifications to avoid obstacles.
@@ -148,7 +148,7 @@ To ensure effective communication between nodes, several **custom topics** are u
 
 6. **Topic `/mission/mission_goal`**
    - **Description**: Tactical objectives to achieve.
-   - **Published By**: `mission_coordinator_node`.
+   - **Published By**: `mission_manager_node`.
    - **Subscribed By**: `navigation_node`.
 
 7. **Topic `/aqua_bot/ais_sensor/vessel_positions`**
