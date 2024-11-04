@@ -118,6 +118,7 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 			goal_handle->succeed(result);
 			RCLCPP_INFO(this->get_logger(), "Inspection goal succeeded.");
 			dataReceived_ = false;
+			state_ = InspectionState::APPROACH;
 			return;
 		}
 
@@ -130,8 +131,7 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 
 bool InspectionServer::isGoalReached(void)
 {
-	// Implement your logic to determine if the goal is reached
-	return false;
+	return dataReceived_;
 }
 
 void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> goal_handle)
