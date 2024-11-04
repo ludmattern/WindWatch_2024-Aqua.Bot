@@ -223,70 +223,54 @@ double PathPlanningNode::tsp(int pos, int mask, std::vector<std::vector<double>>
 	return (Answer);
 }
 
-void PathPlanningNode::CreatePath(void)
+std::vector<sPoint> PathPlanningNode::GetPath(std::vector<std::vector<int>> &next)
+{
+	std::vector<int> ObjectivesOrder;
+	std::vector<sPoint> Path;
+	int pos = 0;
+	int mask = 1 << 0;
+
+	//Recreate the path made by the TSP in ObjectivesOrder
+	while (mask != ((1 << NbObjectives) - 1))
+	{
+		ObjectivesOrder.push_back(pos);
+		const int next_pos = next[mask][pos];
+		mask |= (1 << next_pos);
+		pos = next_pos;
+	}
+	ObjectivesOrder.push_back(pos);
+
+	//Fill path with all the point where the ship need to pass to pass through all the objectives
+	for (int i = 1; i < ObjectivesOrder.size(); ++i)
+	{
+		for (int j = 0; j < GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second.size(); ++j)
+		{
+			sPoint NextPoint;
+			NextPoint.x = PointList[GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second[j]].x;
+			NextPoint.y = PointList[GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second[j]].y;
+			Path.push_back(NextPoint);
+		}
+	}
+	return (Path);
+}
+
+std::vector<sPoint> PathPlanningNode::CreatePath(void)
 {
 	//Fill GraphObjectives
-	RCLCPP_INFO(this->get_logger(), "Create Objectives Graph");
 	CreateObjectivesGraph();
 
 	//Init dp vector for the tsp
-	std::vector<std::vector<double>> dp(1 << NbObjectives, 
+	std::vector<std::vector<double>> dp(1 << NbObjectives,
 		std::vector<double>(NbObjectives, std::numeric_limits<double>::infinity()));
 	
 	//Init next vector for the tsp
 	std::vector<std::vector<int>> next(1 << NbObjectives, std::vector<int>(NbObjectives, -1));
 
-	RCLCPP_INFO(this->get_logger(), "TSP %ld %d", next.size(), NbObjectives);
-	int mask = 1 << 0;
-	int pos = 0;
-	double minDist = tsp(0, mask, dp, next);
+	//Find the shortest path with a TSP algorithm
+	tsp(0, 1 << 0, dp, next);
 
-	std::vector<int> Path;
-
-
-	std::ostringstream str2;
-
-	str2 << next.size() << " " << minDist << ": ";
-	for (int i = 0; i < next.size(); ++i)
-	{
-		for (int j = 0; j < next[i].size(); ++j)
-			str2 << next[i][j] << " ";
-		str2 << "\n";
-	}
-	
-	RCLCPP_INFO(this->get_logger(), "%s", str2.str().c_str());
-
-	RCLCPP_INFO(this->get_logger(), "End TSP %ld", next.size());
-	while (mask != ((1 << NbObjectives) - 1))
-	{
-		RCLCPP_INFO(this->get_logger(), "End TSP %d", pos);
-		Path.push_back(pos);
-		pos = next[mask][pos];
-		mask |= (1 << pos);
-	}
-
-	Path.push_back(pos);
-	
-	std::ostringstream str;
-
-	str << minDist << ": ";
-	for (int i = 1; i < Path.size(); ++i)
-	{
-		for (int j = 0; j < GraphObjectives[Path[i - 1]][Path[i]].second.size(); ++j)
-		{
-			RCLCPP_INFO(this->get_logger(), "%d %d", i, j);
-			str << PointList[GraphObjectives[Path[i - 1]][Path[i]].second[j]].x << "," << PointList[GraphObjectives[Path[i - 1]][Path[i]].second[j]].y << " ";
-		}
-		str << "\n";
-	}
-	
-	RCLCPP_INFO(this->get_logger(), "%s", str.str().c_str());
+	return(GetPath(next));
 }
-
-
-
-
-
 
 int main(int argc, char * argv[])
 {
@@ -318,9 +302,10 @@ int main(int argc, char * argv[])
 		return (1);
 	}
 
-	RCLCPP_INFO(node->get_logger(), "Creating Graph");
+	//Create the graph
 	node->CreateGraph();
 
+	//Find the path
 	node->CreatePath();
 
 	rclcpp::shutdown();
