@@ -17,6 +17,7 @@ find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rosidl_default_runtime REQUIRED)
+find_package(sensors REQUIRED)
 
 # Generate action interfaces
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -73,6 +74,7 @@ ament_target_dependencies(inspection_server
   tf2_ros
   tf2_geometry_msgs
   rosidl_default_runtime
+  sensors
 )
 
 add_executable(stabilization_server

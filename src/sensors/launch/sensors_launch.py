@@ -29,12 +29,4 @@ def generate_launch_description():
 			parameters=[],
 			on_exit=[launch.actions.LogInfo(msg="Target Position Update node shut down")],
 		),
-		Node(
-			package='sensors',
-			executable='camera_processing_node',
-			name='camera_processing_node',
-			output='screen',
-			parameters=[],
-			on_exit=[launch.actions.LogInfo(msg="Camera Processing node shut down")],
-		),
 	])

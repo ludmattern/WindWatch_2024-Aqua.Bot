@@ -15,6 +15,7 @@
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 #include "mission_manager/action/inspection.hpp"
 #include "mission_manager/PIDController.hpp"
+#include "sensors/srv/camera_control_serv.hpp"
 
 enum class InspectionState {
 	APPROACH,
@@ -34,6 +35,7 @@ private:
 
 	rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmdPublisher_;
 	rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscription_;
+	rclcpp::Client<sensors::srv::CameraControlServ>::SharedPtr CameraControlServClient_;
 
 	nav_msgs::msg::Odometry current_odometry_;
 	std::mutex odom_mutex_;
@@ -41,6 +43,7 @@ private:
 
 	std::vector<geometry_msgs::msg::PoseStamped> path_;
 	size_t targetIndex_;
+	bool dataReceived_;
 
 	bool goalCancelled_;
 
@@ -65,6 +68,7 @@ private:
 	void processOrbitState(const controlUtils::OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius, double orbitSpeed);
 	void processApproachState(const controlUtils::OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius, double orbitSpeed);
 	void initializeEntryPoint(const controlUtils::OdometryData& odometryData, const geometry_msgs::msg::PoseStamped& target, double orbitRadius);
+	void serviceResponseCallback(rclcpp::Client<sensors::srv::CameraControlServ>::SharedFuture future);
 
 
 

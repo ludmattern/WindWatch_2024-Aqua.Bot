@@ -34,7 +34,7 @@ void TgtPosUpdateNode::tgtPosCallBack(geometry_msgs::msg::PoseArray msg)
 		current_positions_.poses[i].orientation.y = 0;
 		current_positions_.poses[i].orientation.z = 0;
 	}
-	tgtPos_subscription_->unsubscribe();
+	tgtPos_subscription_.reset();
 }
 
 void TgtPosUpdateNode::ServerCallback(const std::shared_ptr<sensors::srv::TargetPositions::Request> request,

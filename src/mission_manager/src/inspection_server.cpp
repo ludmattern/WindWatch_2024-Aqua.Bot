@@ -9,7 +9,7 @@
 
 using namespace std::chrono_literals;
 
-InspectionServer::InspectionServer(): Node("inspection_server"), odom_received_(false)
+InspectionServer::InspectionServer(): Node("inspection_server"), odom_received_(false), dataReceived_(false)
 {
 	action_server_ = rclcpp_action::create_server<Inspection>(
 		this,
@@ -18,6 +18,8 @@ InspectionServer::InspectionServer(): Node("inspection_server"), odom_received_(
 		std::bind(&InspectionServer::handle_cancel, this, std::placeholders::_1),
 		std::bind(&InspectionServer::handle_accepted, this, std::placeholders::_1)
 	);
+
+	CameraControlServClient_ = this->create_client<sensors::srv::CameraControlServ>("mission/camera_control");
 
 	cmdPublisher_ = this->create_publisher<geometry_msgs::msg::Twist>(
 		"/propulsion/command", 10);
@@ -97,14 +99,9 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 			continue;
 		}
 
-		// controlLoop(goal_handle); --> UNCOMMENT THIS LINE TO MAKE IT OPERATIONAL
-		// -->> DEBUG TEST, REMOVE THESES LINES
-		RCLCPP_INFO(this->get_logger(), "Executing Inspection goal...");
-		result->success = true;
-		goal_handle->succeed(result);
-		// -->> DEBUG TEST, REMOVE THESES LINES
+		controlLoop(goal_handle);
 
-		if (targetIndex_ >= path_.size())
+		if (dataReceived_)
 		{
 			auto cmdMsg = geometry_msgs::msg::Twist();
 			cmdPublisher_->publish(cmdMsg);
@@ -112,6 +109,7 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 			result->success = true;
 			goal_handle->succeed(result);
 			RCLCPP_INFO(this->get_logger(), "Inspection goal succeeded.");
+			dataReceived_ = false;
 			return;
 		}
 
@@ -169,6 +167,11 @@ void InspectionServer::initializeEntryPoint(const controlUtils::OdometryData &od
 	entryPointInitialized_ = true;
 }
 
+void InspectionServer::serviceResponseCallback(rclcpp::Client<sensors::srv::CameraControlServ>::SharedFuture future)
+{
+	dataReceived_ = true;
+}
+
 void InspectionServer::processApproachState(const controlUtils::OdometryData &odometryData, const geometry_msgs::msg::PoseStamped &target, double orbitRadius, double orbitSpeed)
 {
 	double angleToEntryPoint = controlUtils::getTgtAngleError(odometryData, entryPoint_);
@@ -180,6 +183,22 @@ void InspectionServer::processApproachState(const controlUtils::OdometryData &od
 	if (distanceToEntryPoint <= orbitRadius + 6.0)
 	{
 		state_ = InspectionState::ORBIT;
+
+		while (!this->CameraControlServClient_->wait_for_service(std::chrono::seconds(1)))
+			RCLCPP_ERROR(this->get_logger(), "Service 'mission/mission_goal' not available");
+
+		RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
+
+		auto request = std::make_shared<sensors::srv::CameraControlServ::Request>();
+
+		//posestamp;
+		request->target.x = target.pose.position.x;
+		request->target.y = target.pose.position.y;
+
+		auto future = this->CameraControlServClient_->async_send_request(
+			request,
+			std::bind(&InspectionServer::serviceResponseCallback, this, std::placeholders::_1)
+		);
 
 		headingController_.reset();
 		speedController_.reset();

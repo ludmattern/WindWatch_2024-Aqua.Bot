@@ -15,21 +15,21 @@ def generate_launch_description():
     )
 
     # Path to the launch files for each package
-    navigation_launch_path = os.path.join(get_package_share_directory('navigation'), 'launch', 'navigation_launch.py')
     sensors_launch_path = os.path.join(get_package_share_directory('sensors'), 'launch', 'sensors_launch.py')
+    navigation_launch_path = os.path.join(get_package_share_directory('navigation'), 'launch', 'navigation_launch.py')
     mission_manager_launch_path = os.path.join(get_package_share_directory('mission_manager'), 'launch', 'mission_manager_launch.py')
     visualization_launch_path = os.path.join(get_package_share_directory('visualization'), 'launch', 'visualization_launch.py')
     aquabot_gz_launch_path = os.path.join(get_package_share_directory('aquabot_gz'), 'launch', 'competition.launch.py')
 
     # Include launch descriptions
-    navigation_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(navigation_launch_path),
-        launch_arguments={'debug_message': 'Launching Navigation Package'}.items(),
-    )
-
     sensors_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(sensors_launch_path),
         launch_arguments={'debug_message': 'Launching Sensors Package'}.items(),
+    )
+
+    navigation_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(navigation_launch_path),
+        launch_arguments={'debug_message': 'Launching Navigation Package'}.items(),
     )
 
     mission_manager_launch = IncludeLaunchDescription(
@@ -52,8 +52,8 @@ def generate_launch_description():
     return LaunchDescription([
         world_arg,                   # Argument for world name
         gazebo_launch,               # Launch Gazebo with specified world
-        navigation_launch,           # Launch Navigation Package
         sensors_launch,              # Launch Sensors Package
+        navigation_launch,           # Launch Navigation Package
         mission_manager_launch,      # Launch Mission Manager Package
         visualization_launch         # Launch Visualization Package
     ])
