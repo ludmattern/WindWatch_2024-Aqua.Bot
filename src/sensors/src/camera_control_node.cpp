@@ -1,76 +1,147 @@
 #include "sensors/camera_control_node.hpp"
 
-CameraControlNode::CameraControlNode() : Node("camera_control_node"), targetProcessed_(false), previous_theta_(0)
+CameraControlNode::CameraControlNode()
+	: Node("camera_control_node"),
+	targetProcessed_(false),
+	previous_theta_(0),
+	inspecting_(false)
 {
+	action_server_ = rclcpp_action::create_server<CameraControl>(
+		this,
+		"camera_control",
+		std::bind(&CameraControlNode::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
+		std::bind(&CameraControlNode::handle_cancel, this, std::placeholders::_1),
+		std::bind(&CameraControlNode::handle_accepted, this, std::placeholders::_1));
+
+	RCLCPP_INFO(this->get_logger(), "Camera Control Action Server has started");
+
 	camera_pub_ = this->create_publisher<std_msgs::msg::Float64>("/aquabot/thrusters/main_camera_sensor/pos", 10);
-	
-	// Subscriber pour la position et orientation du bateau via nav_msgs::msg::Odometry
-	
-	// Subscriber pour la position du point à suivre (cela reste un PoseStamped)
-	// point_sub_ = this->create_subscription<geometry_msgs::msg::PoseStamped>(
-	// "/target/pose", 10, std::bind(&CameraControlNode::targetPoseCallback, this, std::placeholders::_1));
-
-	CameraControlService_ = this->create_service<sensors::srv::CameraControlServ>(
-		"mission/camera_control", std::bind(&CameraControlNode::ServerCallback, this, std::placeholders::_1, std::placeholders::_2));
-	
-	RCLCPP_INFO(this->get_logger(), "Camera Control Node has started");
-}
-
-void CameraControlNode::ServerCallback(const std::shared_ptr<sensors::srv::CameraControlServ::Request> request,
-	const std::shared_ptr<sensors::srv::CameraControlServ::Response> response)
-{
-	currentTarget_ = request->target;
-
-	RCLCPP_INFO(this->get_logger(), "Received target: x=%f, y=%f", currentTarget_.x, currentTarget_.y);
 
 	odometrySub_ = this->create_subscription<nav_msgs::msg::Odometry>(
 		"/mission/odometry", 10, std::bind(&CameraControlNode::boatPoseCallback, this, std::placeholders::_1));
 
-	ImageFeedSub_ = this->create_subscription<sensor_msgs::msg::Image>(
-		"/aquabot/sensors/cameras/main_camera_sensor/optical/image_raw", 10, 
+	imageFeedSub_ = this->create_subscription<sensor_msgs::msg::Image>(
+		"/aquabot/sensors/cameras/main_camera_sensor/optical/image_raw", 10,
 		std::bind(&CameraControlNode::scanQRCode, this, std::placeholders::_1));
 
-	// mutex on target processed
-    std::unique_lock<std::mutex> lock(targetMutex_);
-    targetCondition_.wait(lock, [this] { return targetProcessed_; });
+	RCLCPP_INFO(this->get_logger(), "Camera Control Node has started");
+}
 
-	odometrySub_.reset();
-	ImageFeedSub_.reset();
+rclcpp_action::GoalResponse CameraControlNode::handle_goal(
+	const rclcpp_action::GoalUUID &uuid,
+	std::shared_ptr<const CameraControl::Goal> goal)
+{
+	RCLCPP_INFO(this->get_logger(), "Received goal request with target x: %f, y: %f", goal->target.x, goal->target.y);
+	(void)uuid;
 
-	// Publish the QR code data
-	response->orientation = orientation_;
-	response->qrcodedata = QRCodeData_;
-	response->id = id_;
-	response->state = state_;
+	return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+}
 
-	// Reset the target processed flag
-	targetProcessed_ = false;
-	previous_theta_ = 0;
+rclcpp_action::CancelResponse CameraControlNode::handle_cancel(
+	const std::shared_ptr<GoalHandleCameraControl> goal_handle)
+{
+	RCLCPP_INFO(this->get_logger(), "Received request to cancel goal");
+	(void)goal_handle;
+
+	return rclcpp_action::CancelResponse::ACCEPT;
+}
+
+void CameraControlNode::handle_accepted(const std::shared_ptr<GoalHandleCameraControl> goal_handle)
+{
+	std::thread{std::bind(&CameraControlNode::execute, this, std::placeholders::_1), goal_handle}.detach();
+}
+
+void CameraControlNode::execute(const std::shared_ptr<GoalHandleCameraControl> goal_handle)
+{
+	RCLCPP_INFO(this->get_logger(), "Executing goal");
+
+	const auto goal = goal_handle->get_goal();
+	auto feedback = std::make_shared<CameraControl::Feedback>();
+	auto result = std::make_shared<CameraControl::Result>();
+
+	// Initialize inspection
+	{
+		std::lock_guard<std::mutex> lock(mutex_);
+		currentTarget_ = goal->target;
+		inspecting_ = true;
+		targetProcessed_ = false;
+		previous_theta_ = 0.0;
+	}
+
+	feedback->feedback = "Starting inspection";
+	goal_handle->publish_feedback(feedback);
+
+	while (rclcpp::ok())
+	{
+		{
+			std::lock_guard<std::mutex> lock(mutex_);
+			if (targetProcessed_)
+				break;
+		}
+
+		if (goal_handle->is_canceling())
+		{
+			result->id = 0; // Set appropriate values
+			result->state.data = false;
+			result->qrcodedata.data = "";
+			result->orientation.data = 0.0;
+			goal_handle->canceled(result);
+			RCLCPP_INFO(this->get_logger(), "Goal canceled");
+			{
+				std::lock_guard<std::mutex> lock(mutex_);
+				inspecting_ = false;
+				targetProcessed_ = false;
+			}
+			controlCamera(0.0);
+			return;
+		}
+
+		// Provide feedbak
+		feedback->feedback = "Scanning for QR code...";
+		goal_handle->publish_feedback(feedback);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
+
+	{
+		std::lock_guard<std::mutex> lock(mutex_);
+		result->id = id_.data;
+		result->state = state_;
+		result->qrcodedata = QRCodeData_;
+		result->orientation = orientation_;
+
+		inspecting_ = false;
+		targetProcessed_ = false;
+		previous_theta_ = 0.0;
+	}
 	controlCamera(0.0);
+
+	goal_handle->succeed(result);
+	RCLCPP_INFO(this->get_logger(), "Goal succeeded");
 }
 
 void CameraControlNode::boatPoseCallback(const nav_msgs::msg::Odometry::SharedPtr msg)
 {
+	std::lock_guard<std::mutex> lock(mutex_);
+	if (!inspecting_)
+		return;
+
 	boat_position_ = msg->pose.pose.position;
 	auto orientation = msg->pose.pose.orientation;
 
-	// Convertir le quaternion en angles de roulis, tangage, lacet (RPY)
 	tf2::Quaternion q(orientation.x, orientation.y, orientation.z, orientation.w);
-	tf2::Matrix3x3(q).getRPY(roll_, pitch_, yaw_);  // Ici, on récupère surtout le yaw (lacet)
+	tf2::Matrix3x3(q).getRPY(roll_, pitch_, yaw_); // We mainly use yaw here
 
 	targetPoseCallback();
 }
 
 void CameraControlNode::targetPoseCallback(void)
 {
-	// Calculer le vecteur directionnel vers le point à fixer
 	double dx = currentTarget_.x - boat_position_.x;
 	double dy = currentTarget_.y - boat_position_.y;
 
-	// Calculer l'angle entre l'axe X global et le point cible
 	double theta = atan2(dy, dx);
 
-	// Calculer l'angle relatif à l'avant du bateau
 	double theta_relative = theta - yaw_;
 
 	if (theta_relative - this->previous_theta_ > M_PI)
@@ -78,10 +149,8 @@ void CameraControlNode::targetPoseCallback(void)
 	else if (this->previous_theta_ - theta_relative > M_PI)
 		theta_relative += 2 * M_PI;
 
-	// Mettre à jour la valeur précédente de l'angle
 	previous_theta_ = theta_relative;
 
-	// Ici, orienter la caméra en fonction de theta_relative
 	controlCamera(theta_relative);
 }
 
@@ -94,15 +163,16 @@ void CameraControlNode::controlCamera(double angle_in_radians)
 
 void CameraControlNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
 {
-	if (targetProcessed_)
+	std::lock_guard<std::mutex> lock(mutex_);
+	if (targetProcessed_ || !inspecting_)
 		return;
 
 	cv_bridge::CvImagePtr cv_ptr;
-	try 
+	try
 	{
 		cv_ptr = cv_bridge::toCvCopy(msg, "bgr8");
 	}
-	catch (cv_bridge::Exception& e)
+	catch (cv_bridge::Exception &e)
 	{
 		RCLCPP_ERROR(this->get_logger(), "cv_bridge exception: %s", e.what());
 		return;
@@ -110,74 +180,52 @@ void CameraControlNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
 
 	cv::Mat img = cv_ptr->image;
 
-	if (img.empty()) {
+	if (img.empty())
+	{
 		RCLCPP_ERROR(this->get_logger(), "Empty image received");
 		return;
 	}
 
-	// Calculer les dimensions de la région rognée (1/3 de l'image)
 	int croppedWidth = img.cols / 3;
 	int croppedHeight = img.rows / 3;
 
-	// Calculer les coordonnées du coin supérieur gauche pour centrer le rectangle
 	int x = (img.cols - croppedWidth) / 2;
 	int y = (img.rows - croppedHeight) / 2;
 
-	// Définir la région d'intérêt (ROI) centrée
 	cv::Rect roi(x, y, croppedWidth, croppedHeight);
 
-	// Rogner l'image en utilisant la ROI
 	cv::Mat croppedImage = img(roi);
 
-	// Convertir en niveaux de gris, car ZBar fonctionne mieux avec les images en noir et blanc
 	cv::Mat gray;
 	cv::cvtColor(croppedImage, gray, cv::COLOR_BGR2GRAY);
 
-	// Initialiser le scanner ZBar
 	zbar::ImageScanner scanner;
 	scanner.set_config(zbar::ZBAR_QRCODE, zbar::ZBAR_CFG_ENABLE, 1);
 
-	// Convertir l'image OpenCV en image ZBar
 	zbar::Image zbarImage(gray.cols, gray.rows, "Y800", gray.data, gray.cols * gray.rows);
 
-	// Scanner l'image pour détecter les QR codes
 	int n = scanner.scan(zbarImage);
 
 	if (n > 0)
 	{
 		auto symbol = zbarImage.symbol_begin();
 		std::string decodedText = symbol->get_data();
-		RCLCPP_INFO(this->get_logger(), "QR code text : %s", decodedText.c_str());
+		RCLCPP_INFO(this->get_logger(), "QR code text: %s", decodedText.c_str());
 
 		QRCodeData_.data = decodedText;
-		orientation_.data = 0; //temporaire
+		orientation_.data = 0.0; // Temporary
 		id_.data = std::stoi(QRCodeData_.data.substr(QRCodeData_.data.find_first_of(DIGITS)));
 		state_.data = (QRCodeData_.data.find("KO") == std::string::npos);
 
-		{
-			std::lock_guard<std::mutex> lock(targetMutex_);
-			targetProcessed_ = true;
-		}
-
-		targetCondition_.notify_one();
+		targetProcessed_ = true;
 	}
-	// if (n > 0) {
-	//     for (auto symbol = zbarImage.symbol_begin(); symbol != zbarImage.symbol_end(); ++symbol) {
-	//         RCLCPP_INFO(this->get_logger(), "QR code text : %s", decodedText.c_str());
-
-	//         // Dessiner le contour du QR code sur l'image
-	//         for (int i = 0; i < symbol->get_location_size(); i++) {
-	//             cv::line(
-	//                 croppedImage,
-	//                 cv::Point(symbol->get_location_x(i), symbol->get_location_y(i)),
-	//                 cv::Point(symbol->get_location_x((i + 1) % symbol->get_location_size()), symbol->get_location_y((i + 1) % symbol->get_location_size())),
-	//                 cv::Scalar(255, 0, 0), 2
-	//             );
-	//         }
-	//     }
+	else
+	{
+		RCLCPP_WARN(this->get_logger(), "No QR code detected in the image.");
+	}
 }
 
-int main(int argc, char * argv[])
+int main(int argc, char *argv[])
 {
 	rclcpp::init(argc, argv);
 	auto node = std::make_shared<CameraControlNode>();

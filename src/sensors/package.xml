@@ -20,6 +20,7 @@
   <depend>cv_bridge</depend>
   <depend>geometry_msgs</depend>
   <depend>Zbar</depend>
+  <depend>action_msgs</depend>
 
   <!-- Runtime dependencies for ROSIDL -->
   <exec_depend>rosidl_default_runtime</exec_depend>

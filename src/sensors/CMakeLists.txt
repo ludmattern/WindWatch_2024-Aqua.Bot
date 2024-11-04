@@ -24,6 +24,8 @@ find_package(std_msgs REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(ament_cmake_python REQUIRED)
 find_package(PkgConfig REQUIRED)
+find_package(action_msgs REQUIRED)
+
 
 # Use pkg-config to find the ZBar library
 pkg_check_modules(ZBar REQUIRED zbar)
@@ -31,8 +33,8 @@ pkg_check_modules(ZBar REQUIRED zbar)
 # Generate ROS2 interfaces (services)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/TargetPositions.srv"
-  "srv/CameraControlServ.srv"
-  DEPENDENCIES std_msgs nav_msgs geometry_msgs
+  "action/CameraControl.action"
+  DEPENDENCIES std_msgs nav_msgs geometry_msgs action_msgs
 )
 
 # Export dependencies

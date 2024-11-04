@@ -6,28 +6,35 @@
 #include <limits>
 #include <iostream>
 #include <cmath>
+#include <chrono>
+#include <functional>
+#include <memory>
+#include <thread>
+
+// Include action headers
+#include "rclcpp_action/rclcpp_action.hpp"
+#include "sensors/action/camera_control.hpp"
 
 using namespace std::chrono_literals;
 
-InspectionServer::InspectionServer(): Node("inspection_server"), odom_received_(false), dataReceived_(false)
+InspectionServer::InspectionServer() : Node("inspection_server"), odom_received_(false), dataReceived_(false)
 {
 	action_server_ = rclcpp_action::create_server<Inspection>(
 		this,
 		"inspection",
 		std::bind(&InspectionServer::handle_goal, this, std::placeholders::_1, std::placeholders::_2),
 		std::bind(&InspectionServer::handle_cancel, this, std::placeholders::_1),
-		std::bind(&InspectionServer::handle_accepted, this, std::placeholders::_1)
-	);
+		std::bind(&InspectionServer::handle_accepted, this, std::placeholders::_1));
 
-	CameraControlServClient_ = this->create_client<sensors::srv::CameraControlServ>("mission/camera_control");
+	// Initialize the camera control action client
+	camera_control_client_ = rclcpp_action::create_client<CameraControl>(this, "camera_control");
 
 	cmdPublisher_ = this->create_publisher<geometry_msgs::msg::Twist>(
 		"/propulsion/command", 10);
 
 	odom_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
 		"/mission/odometry", 10,
-		std::bind(&InspectionServer::odomCallback, this, std::placeholders::_1)
-	);
+		std::bind(&InspectionServer::odomCallback, this, std::placeholders::_1));
 
 	headingController_ = PIDController(0.7, 0.01, 0.0, 0.78, -0.78, 0.5, 0.017);
 	speedController_ = PIDController(0.1, 0.005, 0.02, 6.17, 0.0, 0.5, 0.1);
@@ -41,7 +48,7 @@ void InspectionServer::odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg
 	odom_received_ = true;
 }
 
-rclcpp_action::GoalResponse InspectionServer::handle_goal(const rclcpp_action::GoalUUID & uuid,	std::shared_ptr<const Inspection::Goal> goal)
+rclcpp_action::GoalResponse InspectionServer::handle_goal(const rclcpp_action::GoalUUID &uuid, std::shared_ptr<const Inspection::Goal> goal)
 {
 	RCLCPP_INFO(this->get_logger(), "Received Inspection goal request.");
 
@@ -63,10 +70,11 @@ rclcpp_action::CancelResponse InspectionServer::handle_cancel(const std::shared_
 void InspectionServer::handle_accepted(const std::shared_ptr<GoalHandleInspection> goal_handle)
 {
 	std::thread(
-		[this, goal_handle]() {
+		[this, goal_handle]()
+		{
 			execute(goal_handle);
-		}
-	).detach();
+		})
+		.detach();
 }
 
 void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_handle)
@@ -122,6 +130,7 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 
 bool InspectionServer::isGoalReached(void)
 {
+	// Implement your logic to determine if the goal is reached
 	return false;
 }
 
@@ -146,17 +155,17 @@ void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> g
 
 	switch (state_)
 	{
-		case InspectionState::APPROACH:
-			processApproachState(odometryData, target, orbitRadius, orbitSpeed);
-			break;
+	case InspectionState::APPROACH:
+		processApproachState(odometryData, target, orbitRadius, orbitSpeed);
+		break;
 
-		case InspectionState::ORBIT:
-			processOrbitState(odometryData, target, orbitRadius, orbitSpeed);
-			break;
+	case InspectionState::ORBIT:
+		processOrbitState(odometryData, target, orbitRadius, orbitSpeed);
+		break;
 
-		default:
-			RCLCPP_WARN(this->get_logger(), "Unknown state.");
-			break;
+	default:
+		RCLCPP_WARN(this->get_logger(), "Unknown state.");
+		break;
 	}
 }
 
@@ -165,11 +174,6 @@ void InspectionServer::initializeEntryPoint(const controlUtils::OdometryData &od
 	geometry_msgs::msg::Pose entryPoint = controlUtils::ClosestPointOnOrbit(odometryData, target, orbitRadius);
 	entryPoint_.pose = entryPoint;
 	entryPointInitialized_ = true;
-}
-
-void InspectionServer::serviceResponseCallback(rclcpp::Client<sensors::srv::CameraControlServ>::SharedFuture future)
-{
-	dataReceived_ = true;
 }
 
 void InspectionServer::processApproachState(const controlUtils::OdometryData &odometryData, const geometry_msgs::msg::PoseStamped &target, double orbitRadius, double orbitSpeed)
@@ -184,21 +188,28 @@ void InspectionServer::processApproachState(const controlUtils::OdometryData &od
 	{
 		state_ = InspectionState::ORBIT;
 
-		while (!this->CameraControlServClient_->wait_for_service(std::chrono::seconds(1)))
-			RCLCPP_ERROR(this->get_logger(), "Service 'mission/mission_goal' not available");
+		if (!camera_control_client_->wait_for_action_server(std::chrono::seconds(10)))
+		{
+			RCLCPP_ERROR(this->get_logger(), "Camera control action server not available after waiting");
+			// Handle error appropriately, e.g., abort mission
+			return;
+		}
 
-		RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
+		RCLCPP_INFO(this->get_logger(), "Camera control action server is available. Sending goal...");
 
-		auto request = std::make_shared<sensors::srv::CameraControlServ::Request>();
+		auto goal_msg = CameraControl::Goal();
+		goal_msg.target.x = target.pose.position.x;
+		goal_msg.target.y = target.pose.position.y;
 
-		//posestamp;
-		request->target.x = target.pose.position.x;
-		request->target.y = target.pose.position.y;
+		auto send_goal_options = rclcpp_action::Client<CameraControl>::SendGoalOptions();
+		send_goal_options.goal_response_callback =
+			std::bind(&InspectionServer::camera_control_goal_response_callback, this, std::placeholders::_1);
+		send_goal_options.feedback_callback =
+			std::bind(&InspectionServer::camera_control_feedback_callback, this, std::placeholders::_1, std::placeholders::_2);
+		send_goal_options.result_callback =
+			std::bind(&InspectionServer::camera_control_result_callback, this, std::placeholders::_1);
 
-		auto future = this->CameraControlServClient_->async_send_request(
-			request,
-			std::bind(&InspectionServer::serviceResponseCallback, this, std::placeholders::_1)
-		);
+		camera_control_client_->async_send_goal(goal_msg, send_goal_options);
 
 		headingController_.reset();
 		speedController_.reset();
@@ -220,6 +231,56 @@ void InspectionServer::processOrbitState(const controlUtils::OdometryData &odome
 	controlUtils::sendThrustersCommands(speedOutput, headingOutput, cmdPublisher_);
 }
 
+// Action client callbacks
+
+void InspectionServer::camera_control_goal_response_callback(
+	std::shared_ptr<GoalHandleCameraControl> goal_handle)
+{
+	if (!goal_handle)
+	{
+		RCLCPP_ERROR(this->get_logger(), "Camera control goal was rejected by the action server");
+		// Handle the error appropriately
+		return;
+	}
+	else
+	{
+		RCLCPP_INFO(this->get_logger(), "Camera control goal accepted by the action server");
+	}
+}
+
+
+void InspectionServer::camera_control_feedback_callback(GoalHandleCameraControl::SharedPtr,
+														const std::shared_ptr<const CameraControl::Feedback> feedback)
+{
+	RCLCPP_INFO(this->get_logger(), "Camera control feedback: %s", feedback->feedback.c_str());
+}
+
+void InspectionServer::camera_control_result_callback(const GoalHandleCameraControl::WrappedResult &result)
+{
+	switch (result.code)
+	{
+	case rclcpp_action::ResultCode::SUCCEEDED:
+		RCLCPP_INFO(this->get_logger(), "Camera control action succeeded");
+		// Process the result
+		dataReceived_ = true;
+		// Optionally, handle the result data
+		// result.result->id
+		// result.result->state
+		// result.result->qrcodedata
+		// result.result->orientation
+		break;
+	case rclcpp_action::ResultCode::ABORTED:
+		RCLCPP_ERROR(this->get_logger(), "Camera control action was aborted");
+		break;
+	case rclcpp_action::ResultCode::CANCELED:
+		RCLCPP_INFO(this->get_logger(), "Camera control action was canceled");
+		break;
+	default:
+		RCLCPP_ERROR(this->get_logger(), "Unknown result code");
+		break;
+	}
+}
+
 int main(int argc, char **argv)
 {
 	rclcpp::init(argc, argv);
@@ -228,4 +289,3 @@ int main(int argc, char **argv)
 	rclcpp::shutdown();
 	return 0;
 }
-

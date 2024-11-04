@@ -1,6 +1,0 @@
-geometry_msgs/Point target # Target to look at
----
-std_msgs/Float32 orientation # Orientation of the target (in radians)
-std_msgs/String qrcodedata # QR code data
-std_msgs/Int32 id # ID of the target
-std_msgs/Bool state # State of the target (true = OK, false = KO)

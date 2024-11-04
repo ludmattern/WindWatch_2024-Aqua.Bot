@@ -97,19 +97,15 @@ void TargetManagerNode::ServerCallback(const std::shared_ptr<mission_manager::sr
 	targetcount.data = 3;
 
 	temp.header.frame_id = "map";
-	temp.poses.resize(3);
+	temp.poses.resize(2);
 
-	temp.poses[0].pose.position.x = 0.0;
-	temp.poses[0].pose.position.y = 0.0;
+	temp.poses[0].pose.position.x = 127.0;
+	temp.poses[0].pose.position.y = 33.0;
 	temp.poses[0].pose.orientation.w = 1.0;
 
-	temp.poses[1].pose.position.x = 550.0;
-	temp.poses[1].pose.position.y = -550.0;
+	temp.poses[1].pose.position.x = 219.0;
+	temp.poses[1].pose.position.y = 290.0;
 	temp.poses[1].pose.orientation.w = 1.0;
-
-	temp.poses[2].pose.position.x = 219.0;
-	temp.poses[2].pose.position.y = 290.0;
-	temp.poses[2].pose.orientation.w = 1.0;
 
 	response->path = temp;
 	response->targetcount = targetcount;
