@@ -18,7 +18,8 @@ include_directories(include)
 
 # Add executables
 add_executable(path_planning_node src/path_planning_node/path_planning_node.cpp src/path_planning_node/path_planning_node_create_graph.cpp 
-              src/path_planning_node/check_inter_poly.cpp src/path_planning_node/check_inter_line.cpp)
+              src/path_planning_node/check_inter_poly.cpp src/path_planning_node/check_inter_line.cpp src/path_planning_node/dijkstra.cpp
+              src/path_planning_node/tsp.cpp src/path_planning_node/create_path.cpp)
 add_executable(obstacle_avoidance_node src/obstacle_avoidance_node.cpp)
 add_executable(control_node src/control_node.cpp)
 add_executable(propulsion_control_node src/propulsion_control_node.cpp)
