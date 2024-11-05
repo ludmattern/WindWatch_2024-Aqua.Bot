@@ -1,7 +1,7 @@
 #include <queue>
 #include "navigation/path_planning_node.hpp"
 
-std::pair<double, std::vector<int>> PathPlanningNode::Dijkstra(int start, int end)
+std::pair<double, std::vector<int>> PathPlanningNode::Dijkstra(int start, const int end) const
 {
 	//Distance from the starting point
 	std::vector<double> dist(Graph.size(), std::numeric_limits<double>::infinity());
@@ -19,8 +19,8 @@ std::pair<double, std::vector<int>> PathPlanningNode::Dijkstra(int start, int en
 
 	while (PriorityQueue.empty() == false)
 	{
-		int Point = PriorityQueue.top().second;
-		double CurrentDistance = PriorityQueue.top().first;
+		const int Point = PriorityQueue.top().second;
+		const double CurrentDistance = PriorityQueue.top().first;
 		PriorityQueue.pop();
 
 		if (Point == end) //If reach the end
@@ -32,7 +32,7 @@ std::pair<double, std::vector<int>> PathPlanningNode::Dijkstra(int start, int en
 		for (int i = 0; i < Graph[Point].size(); ++i)
 		{
 			//Distance vers le point voisin i
-			double WeightNeighbour = Graph[Point][i];
+			const double WeightNeighbour = Graph[Point][i];
 
 			//If shortest path is found
 			if (WeightNeighbour != std::numeric_limits<double>::infinity() &&

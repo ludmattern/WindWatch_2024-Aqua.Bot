@@ -17,7 +17,7 @@ Published Topics:
 #include <fstream>
 #include "navigation/path_planning_node.hpp"
 
-PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), ShipAdded(false), NbObjectives(0)
+PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), ShipAdded(false), NbObjectives(0), timer_(nullptr)
 {
 	RCLCPP_INFO(this->get_logger(), "Path Planning Node has started");
 
@@ -28,11 +28,61 @@ PathPlanningNode::PathPlanningNode() : Node("path_planning_node"), ShipAdded(fal
 
 	//Initialise client for targets positions
 	TgtPos_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
+	timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&PathPlanningNode::launch, this));
 }
 
-void PathPlanningNode::AddTgtToPtsList(geometry_msgs::msg::PoseArray TgtPos)
+void PathPlanningNode::launch(void)
 {
-	for (int i = 0; i < TgtPos.poses.size(); ++i)
+	timer_->cancel();
+
+	while (this->TgtPos_Client_->wait_for_service(std::chrono::seconds(1)) == false)
+		RCLCPP_ERROR(this->get_logger(), "Service 'mission/target_positions' not available");
+
+	RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
+	const auto request = std::make_shared<sensors::srv::TargetPositions::Request>();
+	auto future = this->TgtPos_Client_->async_send_request(request,
+		std::bind(&PathPlanningNode::serviceResponseCallback, this, std::placeholders::_1));
+}
+
+void PathPlanningNode::serviceResponseCallback(rclcpp::Client<sensors::srv::TargetPositions>::SharedFuture future)
+{
+	RCLCPP_INFO(this->get_logger(), "Received response from service");
+
+	auto response = future.get();
+
+	if (response->poses.poses.empty() == true)
+	{
+		RCLCPP_WARN(this->get_logger(), "Received empty poses from service. Retrying...");
+		auto retry_timer = this->create_wall_timer(std::chrono::seconds(2),
+			[this]() {
+				this->launch();
+			});
+	}
+	else
+	{
+		RCLCPP_INFO(this->get_logger(), "Processing received poses");
+		this->AddTgtToPtsList(response->poses);
+		if (this->AddObstaclePtsList() == 1)
+		{
+			RCLCPP_ERROR(this->get_logger(), "Can't open obstacles file");
+			return;
+		}
+
+		//Create the graph
+		this->CreateGraph();
+
+		//Find the path
+		const std::vector<sPoint> path = this->CreatePath();
+
+		for (int i = 0; i < path.size(); ++i)
+			RCLCPP_INFO(this->get_logger(), "%d : %f , %f", i, path[i].x, path[i].y);
+	}
+}
+
+
+void PathPlanningNode::AddTgtToPtsList(const geometry_msgs::msg::PoseArray &TgtPos)
+{
+	for (size_t i = 0; i < TgtPos.poses.size(); ++i)
 	{
 		sPoint point;
 
@@ -47,7 +97,7 @@ void PathPlanningNode::AddTgtToPtsList(geometry_msgs::msg::PoseArray TgtPos)
 	}
 }
 
-void PathPlanningNode::AddShipToPtsList(nav_msgs::msg::Odometry ShipPos)
+void PathPlanningNode::AddShipToPtsList(const nav_msgs::msg::Odometry &ShipPos)
 {
 	if (ShipAdded == false) //If ship not already added
 	{
@@ -65,7 +115,7 @@ void PathPlanningNode::AddShipToPtsList(nav_msgs::msg::Odometry ShipPos)
 	}
 }
 
-static void AddPointToPolygon(sPolygon *polygon, std::vector<sPoint> *PointList, std::string PointString, int PolygonId)
+static void AddPointToPolygon(sPolygon *polygon, std::vector<sPoint> *PointList, const std::string &PointString, const int PolygonId)
 {
 	std::stringstream PointStream(PointString);
 	sPoint point;
@@ -101,56 +151,12 @@ int PathPlanningNode::AddObstaclePtsList(void)
 	return (0);	
 }
 
-geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<PathPlanningNode> node, 
-	sensors::srv::TargetPositions::Request::SharedPtr request)
-{
-	//Send request to the service 
-	rclcpp::Client<sensors::srv::TargetPositions>::FutureAndRequestId future = node->TgtPos_Client_->async_send_request(request);
-
-	//Wait until a response
-	if (rclcpp::spin_until_future_complete(node, future) == rclcpp::FutureReturnCode::SUCCESS) //If success
-		return(future.get()->poses);
-	else
-		RCLCPP_ERROR(node->get_logger(), "Failed to call service target_positions");
-	
-	return (future.get()->poses);
-}
-
 int main(int argc, char * argv[])
 {
 	rclcpp::init(argc, argv);
-	auto node = std::make_shared<PathPlanningNode>();
+	const auto node = std::make_shared<PathPlanningNode>();
 
-	//Create the request
-	sensors::srv::TargetPositions::Request::SharedPtr request = std::make_shared<sensors::srv::TargetPositions::Request>();
-
-	//Wait until the service is available
-	while (node->TgtPos_Client_->wait_for_service(std::chrono::seconds(1)) == false)
-	{
-		if (rclcpp::ok() == false)
-		{
-			RCLCPP_ERROR(node->get_logger(), "Interrupted while waiting for the service. Exiting.");
-			rclcpp::shutdown();
-			return (1);
-		}
-	}
-
-	geometry_msgs::msg::PoseArray TgtPos;
-	while (TgtPos.poses.empty())
-		TgtPos = MakeRequest(node, request);
-
-	node->AddTgtToPtsList(TgtPos);
-	if (node->AddObstaclePtsList() == 1)
-	{
-		rclcpp::shutdown();
-		return (1);
-	}
-
-	//Create the graph
-	node->CreateGraph();
-
-	//Find the path
-	node->CreatePath();
+	rclcpp::spin(node);
 
 	rclcpp::shutdown();
 	return (0);

@@ -31,10 +31,10 @@ void PathPlanningNode::InitGraphSize(const int size)
 		GraphObjectives[i].resize(NbObjectives);
 }
 
-bool PathPlanningNode::IsPointsAdjacent(const sPoint &FirstPoint, const sPoint &SecondPoint)
+bool PathPlanningNode::IsPointsAdjacent(const sPoint &FirstPoint, const sPoint &SecondPoint) const
 {
 	const sPolygon Polygon = ObstacleList[FirstPoint.PolygonId];
-	std::vector<sPoint>::const_iterator it = std::find(Polygon.Points.begin(), Polygon.Points.end(), FirstPoint);
+	const std::vector<sPoint>::const_iterator it = std::find(Polygon.Points.begin(), Polygon.Points.end(), FirstPoint);
 	std::vector<sPoint>::const_iterator NextPoint = it + 1;
 	std::vector<sPoint>::const_iterator PreviousPoint;
 
@@ -87,19 +87,4 @@ void PathPlanningNode::CreateGraph(void)
 			}
 		}
 	}
-	/*std::ostringstream oss;
-    for (const auto& row : Graph)
-    {
-        oss << "[";
-        for (size_t i = 0; i < row.size(); ++i)
-        {
-            oss << row[i];
-            if (i < row.size() - 1)
-            {
-                oss << ", ";
-            }
-        }
-        oss << "]\n";
-    }
-    RCLCPP_INFO(rclcpp::get_logger("VectorLogger"), "Vecteur de vecteurs de double :\n%s", oss.str().c_str());*/
 }

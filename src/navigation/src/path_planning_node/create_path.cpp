@@ -2,9 +2,9 @@
 
 void PathPlanningNode::CreateObjectivesGraph(void)
 {
-	for (int i = 0; i < NbObjectives; ++i)
+	for (size_t i = 0; i < NbObjectives; ++i)
 	{
-		for (int j = i; j < NbObjectives; ++j)
+		for (size_t j = i; j < NbObjectives; ++j)
 		{
 			if (i == j)
 				GraphObjectives[i][j].first = std::numeric_limits<double>::infinity();
@@ -22,7 +22,7 @@ void PathPlanningNode::CreateObjectivesGraph(void)
 	}
 }
 
-std::vector<sPoint> PathPlanningNode::GetPath(std::vector<std::vector<int>> &next)
+std::vector<sPoint> PathPlanningNode::GetPath(const std::vector<std::vector<int>> &next) const
 {
 	std::vector<int> ObjectivesOrder;
 	std::vector<sPoint> Path;
@@ -40,14 +40,19 @@ std::vector<sPoint> PathPlanningNode::GetPath(std::vector<std::vector<int>> &nex
 	ObjectivesOrder.push_back(pos);
 
 	//Fill path with all the point where the ship need to pass to pass through all the objectives
-	for (int i = 1; i < ObjectivesOrder.size(); ++i)
+	for (size_t i = 1; i < ObjectivesOrder.size(); ++i)
 	{
-		for (int j = 0; j < GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second.size(); ++j)
+		const size_t size = GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second.size();
+		size_t j = 0;
+		if (size > 1)
+			j = 1;
+		while (j < size)
 		{
 			sPoint NextPoint;
 			NextPoint.x = PointList[GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second[j]].x;
 			NextPoint.y = PointList[GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second[j]].y;
 			Path.push_back(NextPoint);
+			++j;
 		}
 	}
 	return (Path);
@@ -68,5 +73,5 @@ std::vector<sPoint> PathPlanningNode::CreatePath(void)
 	//Find the shortest path with a TSP algorithm
 	tsp(0, 1 << 0, dp, next);
 
-	return(GetPath(next));
+	return (GetPath(next));
 }

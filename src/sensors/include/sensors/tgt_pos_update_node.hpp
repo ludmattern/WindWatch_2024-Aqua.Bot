@@ -16,6 +16,8 @@ class TgtPosUpdateNode : public rclcpp::Node
 		//Subscription
 		rclcpp::Subscription<geometry_msgs::msg::PoseArray>::SharedPtr tgtPos_subscription_;
 
+		rclcpp::CallbackGroup::SharedPtr callback_group_;
+
 		//Service
 		rclcpp::Service<sensors::srv::TargetPositions>::SharedPtr tgtPos_Service_;
 
@@ -25,6 +27,7 @@ class TgtPosUpdateNode : public rclcpp::Node
 			const std::shared_ptr<sensors::srv::TargetPositions::Response> response);
 
 		geometry_msgs::msg::PoseArray current_positions_; //Save current pos
+		bool positionsInitialized_;
 };
 
 #endif // TGT_POS_UPDATE_NODE_HPP

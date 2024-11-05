@@ -14,9 +14,9 @@ static bool CheckIfValidLine(const sPoint &p1, const sPoint &p2, const sPoint &p
 	return (true);
 }
 
-bool PathPlanningNode::CheckInterPoly(const sPoint &FirstPoint, const sPoint &SecondPoint)
+bool PathPlanningNode::CheckInterPoly(const sPoint &FirstPoint, const sPoint &SecondPoint) const
 {
-	int i = 0;
+	size_t i = 0;
 	const size_t NbObstacle = ObstacleList.size();
 
 	//Points adjacent in a polygon
@@ -27,7 +27,7 @@ bool PathPlanningNode::CheckInterPoly(const sPoint &FirstPoint, const sPoint &Se
 	while (i < NbObstacle)
 	{
 		const size_t NbPoint = ObstacleList[i].Points.size();
-		for (int j = 0; j < NbPoint; ++j)
+		for (size_t j = 0; j < NbPoint; ++j)
 		{
 			const int nextPoint = (j + 1) % NbPoint; //If j = end check with point 0
 
