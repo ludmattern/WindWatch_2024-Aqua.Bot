@@ -66,6 +66,8 @@ void CameraControlNode::execute(const std::shared_ptr<GoalHandleCameraControl> g
 		inspecting_ = true;
 		targetProcessed_ = false;
 		previous_theta_ = 0.0;
+		QrCodeVisible_ = 2;
+		QrCodeDecoded_ = false;
 	}
 
 	feedback->feedback = "Starting inspection";
@@ -129,16 +131,21 @@ void CameraControlNode::boatPoseCallback(const nav_msgs::msg::Odometry::SharedPt
 	boat_position_ = msg->pose.pose.position;
 	auto orientation = msg->pose.pose.orientation;
 
+	// Calculating the yaw_
 	tf2::Quaternion q(orientation.x, orientation.y, orientation.z, orientation.w);
-	tf2::Matrix3x3(q).getRPY(roll_, pitch_, yaw_); // We mainly use yaw here
+	tf2::Matrix3x3(q).getRPY(roll_, pitch_, yaw_);
 
 	targetPoseCallback();
 }
 
 void CameraControlNode::targetPoseCallback(void)
 {
-	double dx = currentTarget_.x - boat_position_.x;
-	double dy = currentTarget_.y - boat_position_.y;
+	// Find the camera pos using te boat pos
+	camera_position_.x = boat_position_.x + 1.45 * cos(yaw_);
+	camera_position_.y = boat_position_.y + 1.45 * sin(yaw_);
+
+	double dx = currentTarget_.x - camera_position_.x;
+	double dy = currentTarget_.y - camera_position_.y;
 
 	double theta = atan2(dy, dx);
 
@@ -206,22 +213,66 @@ void CameraControlNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
 
 	int n = scanner.scan(zbarImage);
 
-	if (n > 0)
+	QRcodePose(croppedImage);
+
+	if (n > 0 && !QrCodeDecoded_)
 	{
 		auto symbol = zbarImage.symbol_begin();
 		std::string decodedText = symbol->get_data();
 		RCLCPP_INFO(this->get_logger(), "QR code text: %s", decodedText.c_str());
 
 		QRCodeData_.data = decodedText;
-		orientation_.data = 0.0; // Temporary
+		
 		id_.data = std::stoi(QRCodeData_.data.substr(QRCodeData_.data.find_first_of(DIGITS)));
 		state_.data = (QRCodeData_.data.find("KO") == std::string::npos);
 
+		QrCodeDecoded_ = true;
+	}
+	
+	if (QrCodeVisible_ == 4)
+	{
+		double temp_angle;
+		temp_angle = (FirstOrientationQrCode_ + LastOrientationQrCode_) / 2;
+		if (temp_angle <= 0)
+			temp_angle += M_PI;
+		else
+			temp_angle -= M_PI;
+		orientation_.data = temp_angle;
+	}
+
+	if (QrCodeVisible_ == 4 && QrCodeDecoded_)
 		targetProcessed_ = true;
+}
+
+void CameraControlNode::QRcodePose(cv::Mat image)
+{
+	cv::Mat hsvImage;
+    cv::cvtColor(image, hsvImage, cv::COLOR_BGR2HSV);
+
+	cv::Scalar lowerBound(0, 0, 0);
+    cv::Scalar upperBound(180, 255, 50);
+
+    cv::Mat mask;
+    cv::inRange(hsvImage, lowerBound, upperBound, mask);
+
+	int nonZeroCount = cv::countNonZero(mask);
+
+	if (nonZeroCount > 0)
+	{
+		if (QrCodeVisible_ == 0)
+		{
+			QrCodeVisible_ = 1;
+			FirstOrientationQrCode_ = atan2(sin(yaw_+previous_theta_),cos(yaw_+previous_theta_));
+		}
+		else if (QrCodeVisible_ == 1)
+			LastOrientationQrCode_ = atan2(sin(yaw_+previous_theta_),cos(yaw_+previous_theta_));
 	}
 	else
 	{
-		RCLCPP_WARN(this->get_logger(), "No QR code detected in the image.");
+		if (QrCodeVisible_ == 2)
+			QrCodeVisible_ = 0;
+		else if (QrCodeVisible_ == 1)
+			QrCodeVisible_ = 4;
 	}
 }
 

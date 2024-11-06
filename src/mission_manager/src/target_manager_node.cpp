@@ -103,8 +103,8 @@ void TargetManagerNode::ServerCallback(const std::shared_ptr<mission_manager::sr
 	temp.poses[0].pose.position.y = 33.0;
 	temp.poses[0].pose.orientation.w = 1.0;
 
-	temp.poses[1].pose.position.x = 219.0;
-	temp.poses[1].pose.position.y = 290.0;
+	temp.poses[1].pose.position.x = 219.19;
+	temp.poses[1].pose.position.y = 290.79;
 	temp.poses[1].pose.orientation.w = 1.0;
 
 	response->path = temp;
