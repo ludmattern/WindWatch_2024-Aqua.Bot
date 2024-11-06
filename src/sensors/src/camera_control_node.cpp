@@ -174,6 +174,7 @@ void CameraControlNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
 	if (targetProcessed_ || !inspecting_)
 		return;
 
+	// Create an openCV image
 	cv_bridge::CvImagePtr cv_ptr;
 	try
 	{
@@ -193,6 +194,7 @@ void CameraControlNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
 		return;
 	}
 
+	// Crop the image to keep only the center
 	int croppedWidth = img.cols / 3;
 	int croppedHeight = img.rows / 3;
 
@@ -200,21 +202,25 @@ void CameraControlNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
 	int y = (img.rows - croppedHeight) / 2;
 
 	cv::Rect roi(x, y, croppedWidth, croppedHeight);
-
 	cv::Mat croppedImage = img(roi);
 
+	// Collect data to find the QRcode orientation
+	QRcodePose(croppedImage);
+	
+	// Convert image to grayscale (easier to find qrcode)
 	cv::Mat gray;
 	cv::cvtColor(croppedImage, gray, cv::COLOR_BGR2GRAY);
 
+	// Convert openCV image to Zbar image
 	zbar::ImageScanner scanner;
 	scanner.set_config(zbar::ZBAR_QRCODE, zbar::ZBAR_CFG_ENABLE, 1);
 
 	zbar::Image zbarImage(gray.cols, gray.rows, "Y800", gray.data, gray.cols * gray.rows);
 
+	// Scan the QRcode
 	int n = scanner.scan(zbarImage);
 
-	QRcodePose(croppedImage);
-
+	// if a QRcode has been scanned and not registered, save the data
 	if (n > 0 && !QrCodeDecoded_)
 	{
 		auto symbol = zbarImage.symbol_begin();
@@ -229,6 +235,7 @@ void CameraControlNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
 		QrCodeDecoded_ = true;
 	}
 	
+	// if all data for the QRcode orientation has been collected, calculate the QRcode orientation
 	if (QrCodeVisible_ == 4)
 	{
 		double temp_angle;
@@ -249,14 +256,16 @@ void CameraControlNode::QRcodePose(cv::Mat image)
 	cv::Mat hsvImage;
     cv::cvtColor(image, hsvImage, cv::COLOR_BGR2HSV);
 
+	// Defines an HSV color range for filtering black pixel
 	cv::Scalar lowerBound(0, 0, 0);
     cv::Scalar upperBound(180, 255, 50);
 
+	// Supress all non-black pixel
     cv::Mat mask;
     cv::inRange(hsvImage, lowerBound, upperBound, mask);
 
+	// Search if there a black pixel on the image
 	int nonZeroCount = cv::countNonZero(mask);
-
 	if (nonZeroCount > 0)
 	{
 		if (QrCodeVisible_ == 0)
