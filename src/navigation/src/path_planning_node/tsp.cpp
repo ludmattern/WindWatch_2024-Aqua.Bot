@@ -1,6 +1,6 @@
 #include "navigation/path_planning_node.hpp"
 
-double PathPlanningNode::tsp(int pos, int mask, std::vector<std::vector<double>> &dp, std::vector<std::vector<int>> &next)
+double PathPlanningNode::tsp(const int pos, const int mask, std::vector<std::vector<double>> &dp, std::vector<std::vector<int>> &next)
 {
 	//All objectives are visited
 	if (mask == (1 << NbObjectives) - 1)

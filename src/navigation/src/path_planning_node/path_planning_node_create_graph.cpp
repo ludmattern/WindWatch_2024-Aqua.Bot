@@ -18,7 +18,7 @@ static double FindDistancePoints(const sPoint &point1, const sPoint &point2)
 	return (sqrt((x * x) + (y * y)));
 }
 
-void PathPlanningNode::InitGraphSize(const int size)
+void PathPlanningNode::InitGraphSize(const size_t size)
 {
 	//Resize the full graph
 	Graph.resize(size);

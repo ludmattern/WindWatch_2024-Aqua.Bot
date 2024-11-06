@@ -29,7 +29,7 @@ bool PathPlanningNode::CheckInterPoly(const sPoint &FirstPoint, const sPoint &Se
 		const size_t NbPoint = ObstacleList[i].Points.size();
 		for (size_t j = 0; j < NbPoint; ++j)
 		{
-			const int nextPoint = (j + 1) % NbPoint; //If j = end check with point 0
+			const size_t nextPoint = (j + 1) % NbPoint; //If j = end check with point 0
 
 			//Dont check with sides of the point
 			if (CheckIfValidLine(FirstPoint, SecondPoint, ObstacleList[i].Points[j], 

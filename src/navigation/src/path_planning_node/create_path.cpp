@@ -2,9 +2,9 @@
 
 void PathPlanningNode::CreateObjectivesGraph(void)
 {
-	for (size_t i = 0; i < NbObjectives; ++i)
+	for (int i = 0; i < NbObjectives; ++i)
 	{
-		for (size_t j = i; j < NbObjectives; ++j)
+		for (int j = i; j < NbObjectives; ++j)
 		{
 			if (i == j)
 				GraphObjectives[i][j].first = std::numeric_limits<double>::infinity();
@@ -22,10 +22,10 @@ void PathPlanningNode::CreateObjectivesGraph(void)
 	}
 }
 
-std::vector<sPoint> PathPlanningNode::GetPath(const std::vector<std::vector<int>> &next) const
+nav_msgs::msg::Path PathPlanningNode::GetPath(const std::vector<std::vector<int>> &next)
 {
 	std::vector<int> ObjectivesOrder;
-	std::vector<sPoint> Path;
+	nav_msgs::msg::Path Path;
 	int pos = 0;
 	int mask = 1 << 0;
 
@@ -33,11 +33,27 @@ std::vector<sPoint> PathPlanningNode::GetPath(const std::vector<std::vector<int>
 	while (mask != ((1 << NbObjectives) - 1))
 	{
 		ObjectivesOrder.push_back(pos);
+
+		if (pos != 0)
+		{
+			//Add the target positions in order in targets list
+			geometry_msgs::msg::Pose TargetPos;
+			TargetPos.position.x = PointList[pos].x;
+			TargetPos.position.y = PointList[pos].y;
+			Targets.poses.push_back(TargetPos);
+		}
+
 		const int next_pos = next[mask][pos];
 		mask |= (1 << next_pos);
 		pos = next_pos;
 	}
+
 	ObjectivesOrder.push_back(pos);
+
+	geometry_msgs::msg::Pose TargetPos;
+	TargetPos.position.x = PointList[pos].x;
+	TargetPos.position.y = PointList[pos].y;
+	Targets.poses.push_back(TargetPos);
 
 	//Fill path with all the point where the ship need to pass to pass through all the objectives
 	for (size_t i = 1; i < ObjectivesOrder.size(); ++i)
@@ -46,19 +62,21 @@ std::vector<sPoint> PathPlanningNode::GetPath(const std::vector<std::vector<int>
 		size_t j = 0;
 		if (size > 1)
 			j = 1;
+
 		while (j < size)
 		{
-			sPoint NextPoint;
-			NextPoint.x = PointList[GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second[j]].x;
-			NextPoint.y = PointList[GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second[j]].y;
-			Path.push_back(NextPoint);
+			//sPoint NextPoint;
+			geometry_msgs::msg::PoseStamped NextPoint;
+			NextPoint.pose.position.x = PointList[GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second[j]].x;
+			NextPoint.pose.position.y = PointList[GraphObjectives[ObjectivesOrder[i - 1]][ObjectivesOrder[i]].second[j]].y;
+			Path.poses.push_back(NextPoint);
 			++j;
 		}
 	}
 	return (Path);
 }
 
-std::vector<sPoint> PathPlanningNode::CreatePath(void)
+nav_msgs::msg::Path PathPlanningNode::CreatePath(void)
 {
 	//Fill GraphObjectives
 	CreateObjectivesGraph();

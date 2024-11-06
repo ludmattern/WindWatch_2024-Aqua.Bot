@@ -1,0 +1,4 @@
+
+---
+nav_msgs/Path path # Path to get to all the targets
+geometry_msgs/PoseArray pose_array # Coordinates of the targets

@@ -7,6 +7,7 @@
 #include "Point.hpp"
 #include "sensors/srv/target_positions.hpp"
 #include "Polygon.hpp"
+#include "navigation/srv/path.hpp"
 
 #define OBSTACLE_FILE "src/navigation/ObstaclePos"
 
@@ -14,15 +15,6 @@ class PathPlanningNode : public rclcpp::Node
 {
     public:
         PathPlanningNode();
-
-        //Client for target position
-        rclcpp::Client<sensors::srv::TargetPositions>::SharedPtr TgtPos_Client_;
-
-        void AddTgtToPtsList(const geometry_msgs::msg::PoseArray &TgtPos);
-        int AddObstaclePtsList(void);
-        void CreateGraph(void);
-        
-        std::vector<sPoint> CreatePath(void);
 
         void launch(void);
 
@@ -46,18 +38,39 @@ class PathPlanningNode : public rclcpp::Node
         //Subscription of targets positions and ship pos
         rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_Subscription_;
 
+        //Service
+        rclcpp::Service<navigation::srv::Path>::SharedPtr PathService_;
+        rclcpp::CallbackGroup::SharedPtr callback_group_;
+
+        void ServerCallback(const std::shared_ptr<navigation::srv::Path::Request> &request,
+            const std::shared_ptr<navigation::srv::Path::Response> &response) const;
+
+        //Client for target position
+        rclcpp::Client<sensors::srv::TargetPositions>::SharedPtr TgtPos_Client_;
+        void CreateGraph(void);
+
+        void AddTgtToPtsList(const geometry_msgs::msg::PoseArray &TgtPos);
+        int AddObstaclePtsList(void);
         void AddShipToPtsList(const nav_msgs::msg::Odometry &ShipPos);
-        void InitGraphSize(int size);
+
+        void InitGraphSize(const size_t size);
         bool CheckInterPoly(const sPoint &FirstPoint, const sPoint &SecondPoint) const;
         bool IsPointsAdjacent(const sPoint &FirstPoint, const sPoint &SecondPoint) const;
 
-        void CreateObjectivesGraph(void); 
-        std::pair<double, std::vector<int>> Dijkstra(int start, int end) const;
+        void CreateObjectivesGraph(void);
+        std::pair<double, std::vector<int>> Dijkstra(int start, const int end) const;
         double tsp(int pos, int mask, std::vector<std::vector<double>> &dp, std::vector<std::vector<int>> &next);
-        std::vector<sPoint> GetPath(const std::vector<std::vector<int>> &next) const;
+        nav_msgs::msg::Path CreatePath(void);
+        nav_msgs::msg::Path GetPath(const std::vector<std::vector<int>> &next);
+
+        nav_msgs::msg::Path Path;
+        geometry_msgs::msg::PoseArray Targets;
 
         bool ShipAdded;
-        size_t NbObjectives;
+        bool TargetsAdded;
+        bool ObstaclesAdded;
+        bool PathFinded;
+        int NbObjectives;
 };
 
 bool CheckInterLines(const sPoint &p1, const sPoint &q1, const sPoint &p2, const sPoint &q2);

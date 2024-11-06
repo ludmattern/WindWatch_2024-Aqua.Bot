@@ -13,6 +13,11 @@ find_package(nav_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(sensors REQUIRED)
 
+rosidl_generate_interfaces(${PROJECT_NAME}
+        "srv/Path.srv"
+        DEPENDENCIES std_msgs geometry_msgs nav_msgs
+)
+
 # Inclure le répertoire des en-têtes
 include_directories(include)
 
@@ -25,10 +30,14 @@ add_executable(control_node src/control_node.cpp)
 add_executable(propulsion_control_node src/propulsion_control_node.cpp)
 
 # Specify dependencies for executables
-ament_target_dependencies(path_planning_node rclcpp std_msgs geometry_msgs sensor_msgs nav_msgs sensors)
+ament_target_dependencies(path_planning_node rclcpp std_msgs geometry_msgs sensor_msgs nav_msgs sensors rosidl_typesupport_c rosidl_default_runtime)
 ament_target_dependencies(obstacle_avoidance_node rclcpp sensor_msgs)
 ament_target_dependencies(control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs nav_msgs)
 ament_target_dependencies(propulsion_control_node rclcpp std_msgs geometry_msgs sensor_msgs tf2 tf2_geometry_msgs)
+
+
+rosidl_get_typesupport_target(ts_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
+target_link_libraries(path_planning_node ${ts_target})
 
 # Install targets
 install(TARGETS
