@@ -18,7 +18,7 @@ static double FindDistancePoints(const sPoint &point1, const sPoint &point2)
 	return (sqrt((x * x) + (y * y)));
 }
 
-void PathPlanningNode::InitGraphSize(const size_t size)
+void PathPlanningNode::InitGraphSize(const size_t size, std::vector<std::vector<double>> &Graph)
 {
 	//Resize the full graph
 	Graph.resize(size);
@@ -49,10 +49,10 @@ bool PathPlanningNode::IsPointsAdjacent(const sPoint &FirstPoint, const sPoint &
 	return (false);
 }
 
-void PathPlanningNode::CreateGraph(void)
+void PathPlanningNode::CreateGraph(std::vector<std::vector<double>> &Graph, std::vector<sPoint> &PointList)
 {
 	const size_t NBPoint = PointList.size();
-	InitGraphSize(NBPoint);
+	InitGraphSize(NBPoint, Graph);
 
 	//Connect all points together
 	for (int i = 0; i < NBPoint; ++i)

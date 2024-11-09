@@ -1,7 +1,7 @@
 #include <queue>
 #include "navigation/path_planning_node.hpp"
 
-std::pair<double, std::vector<int>> PathPlanningNode::Dijkstra(int start, const int end) const
+std::pair<double, std::vector<int>> PathPlanningNode::Dijkstra(int start, const int end, std::vector<std::vector<double>> &Graph) const
 {
 	//Distance from the starting point
 	std::vector<double> dist(Graph.size(), std::numeric_limits<double>::infinity());

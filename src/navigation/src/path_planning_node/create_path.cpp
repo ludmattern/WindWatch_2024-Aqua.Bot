@@ -11,7 +11,7 @@ void PathPlanningNode::CreateObjectivesGraph(void)
 
 			else
 			{
-				std::pair<double, std::vector<int>> Path = Dijkstra(i, j);
+				std::pair<double, std::vector<int>> Path = Dijkstra(i, j, Graph);
 
 				GraphObjectives[i][j] = Path;
 

@@ -15,6 +15,7 @@ find_package(sensors REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
         "srv/Path.srv"
+        "srv/PathLast.srv"
         DEPENDENCIES std_msgs geometry_msgs nav_msgs
 )
 
