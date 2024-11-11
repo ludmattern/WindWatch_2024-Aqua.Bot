@@ -42,7 +42,6 @@ target_link_libraries(path_planning_node ${ts_target})
 install(TARGETS
 path_planning_node
 obstacle_avoidance_node
-control_node
 propulsion_control_node
 DESTINATION lib/${PROJECT_NAME}
 )
