@@ -1,0 +1,4 @@
+int32 target_id # Id of the target
+nav_msgs/Odometry ship_pos # Pos of the ship
+---
+nav_msgs/Path path # Path to get to go to the target
