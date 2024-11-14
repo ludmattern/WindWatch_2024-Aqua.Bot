@@ -1,4 +1,6 @@
-
+std_msgs/String cam
+float64 poswind #a changer par un double
 ---
 nav_msgs/Path path # Path of the targets (ENU coordinates)
 std_msgs/Int32 targetcount # Number of targets to reach
+float64 qr_orientation

@@ -5,41 +5,74 @@
 #include <vector>
 #include <iostream>
 #include "geometry_msgs/msg/pose_array.hpp"
-// #include "sensors/srv/target_positions.hpp"
-#include "mission_manager/srv/target_manager_serv.hpp"
+#include "std_msgs/msg/string.hpp"
+#include "nav_msgs/msg/path.hpp"
+#include "mission_manager/srv/target_manager_serv.hpp" // Inclusion du service
+#include "navigation/srv/path.hpp" // Si nécessaire
+#include "navigation/srv/path_last.hpp"
+#include "nav_msgs/msg/odometry.hpp"
+
+
 
 class TargetManagerNode : public rclcpp::Node
 {
 public:
-	TargetManagerNode();
-	//Client for target position
-	// rclcpp::Client<sensors::srv::TargetPositions>::SharedPtr TmaPos_Client_;
-	void TmaPosRegister(geometry_msgs::msg::PoseArray msg);
-	// void launch();
-
+    TargetManagerNode();
+    void TmaPosRegister(geometry_msgs::msg::PoseArray msg);
+    void launch();
+    void launch_last();
+    void WindInspection(const nav_msgs::msg::Odometry::SharedPtr msg);
 
 private:
-	//Service
-	rclcpp::Service<mission_manager::srv::TargetManagerServ>::SharedPtr TargetManagerService_;
-	// Structure pour stocker les données des vents
-	
-	void ServerCallback(const std::shared_ptr<mission_manager::srv::TargetManagerServ::Request> request,
-		const std::shared_ptr<mission_manager::srv::TargetManagerServ::Response> response);
+    rclcpp::Service<mission_manager::srv::TargetManagerServ>::SharedPtr TargetManagerService_;
+    rclcpp::Client<navigation::srv::Path>::SharedPtr TargetPath_Client_;
+    //rclcpp::Client<sensors::srv::Status>::SharedPtr TargetStatus_Client_;
+    rclcpp::Subscription<geometry_msgs::msg::PoseArray>::SharedPtr  wind_insp_subscription_;
 
-	// geometry_msgs::msg::PoseArray MakeRequest(sensors::srv::TargetPositions::Request::SharedPtr request);
-	// void service_response_callback(rclcpp::Client<sensors::srv::TargetPositions>::SharedFuture future);
+    void ServerCallback(
+        const std::shared_ptr<mission_manager::srv::TargetManagerServ::Request> request,
+        const std::shared_ptr<mission_manager::srv::TargetManagerServ::Response> response);
 
-	struct s_wind
-	{
-		geometry_msgs::msg::PoseArray wind;
-		int nb_wind;
-		std::vector<bool> status; // Utilisation de std::vector<bool> au lieu de bool*
-	};
+     //void ServerCallback(const std::shared_ptr<sensors::srv::WindInsp::Request> request,
+	   // const std::shared_ptr<sensors::srv::WindInsp::Response> response);
 
-	s_wind wind_data_;
-	rclcpp::TimerBase::SharedPtr timer_;
-	rclcpp::CallbackGroup::SharedPtr callback_group_;
-	//int _nb_wind_to_;
+    void service_response_callback(
+        rclcpp::Client<navigation::srv::Path>::SharedFuture future);
+    void service_response_callback_last(
+        rclcpp::Client<navigation::srv::PathLast>::SharedFuture future);
+    void PathPlan(nav_msgs::msg::Path path);
+
+    struct s_wind
+    {
+        geometry_msgs::msg::PoseArray wind;
+        std::vector<double> pos_wind;
+        int nb_wind;
+        std::vector<bool> status;
+        std::vector<std_msgs::msg::String> qr;
+        //std::vector<std_msgs::msg::String> status_string;
+    };
+    struct s_path
+    {
+        nav_msgs::msg::Path temp_;
+        std::vector<bool> status;
+    };
+    s_path path_data_;
+    s_wind wind_data_;
+    rclcpp::TimerBase::SharedPtr timer_;
+    rclcpp::CallbackGroup::SharedPtr callback_group_;
+
+
+    nav_msgs::msg::Odometry ship;
+    nav_msgs::msg::Path last_path;
+    bool shipAdd = false;
+    bool path_sent = false;
+	rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_Subscription_;
+	rclcpp::Client<navigation::srv::PathLast>::SharedPtr LastPath_Client_;
+	rclcpp::TimerBase::SharedPtr timer_inspec_;
+
+
+
+    int wind_def;
 };
 
 #endif // TARGET_MANAGER_NODE_HPP

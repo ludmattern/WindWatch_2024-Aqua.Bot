@@ -18,6 +18,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rosidl_default_runtime REQUIRED)
 find_package(sensors REQUIRED)
+find_package(navigation REQUIRED)
 
 # Generate action interfaces
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -115,6 +116,9 @@ ament_target_dependencies(target_manager_node
   rclcpp
   rclcpp_action
   std_msgs
+  navigation
+  nav_msgs
+  geometry_msgs
   rosidl_default_runtime
 )
 
