@@ -12,6 +12,7 @@
 #include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
 #include "geometry_msgs/msg/polygon_stamped.hpp"
 #include "sensors/srv/target_positions.hpp"
+#include "navigation/srv/path.hpp"
 #include "std_msgs/msg/float64.hpp"
 #include <opencv2/opencv.hpp>
 #include <cstdarg>
@@ -22,15 +23,27 @@ class VisualizationNode : public rclcpp::Node
 {
 public:
 	VisualizationNode();
-
-    rclcpp::Client<sensors::srv::TargetPositions>::SharedPtr Visual_Client_;
-    void VisualRegister(geometry_msgs::msg::PoseArray msg);
+	
+    void launch();
+    
 
 private:
+
+    rclcpp::Client<navigation::srv::Path>::SharedPtr Visual_Client_;
+
+	rclcpp::TimerBase::SharedPtr timer_;
+
+	void service_response_callback(
+    rclcpp::Client<navigation::srv::Path>::SharedFuture future);
+
+	void VisualRegister(geometry_msgs::msg::PoseArray msg);
+	void PathPlan(nav_msgs::msg::Path path);
 
 	int	_nb_turbines;
 
 	float _camAngle;
+
+	int _center;
 
 	void odometryCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
 	void cameraCallback(const std_msgs::msg::Float64::SharedPtr msg);

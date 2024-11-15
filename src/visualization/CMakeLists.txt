@@ -9,20 +9,30 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(sensors REQUIRED)
+find_package(navigation REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(rosidl_typesupport_c REQUIRED)
+find_package(rosidl_typesupport_cpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(OpenCV REQUIRED)
 
+rosidl_generate_interfaces(${PROJECT_NAME}
+        "../navigation/srv/Path.srv"
+        DEPENDENCIES geometry_msgs nav_msgs
+)
+
 # Définir les exécutables
 add_executable(visualization_node src/visualization_node.cpp)
 
 # Spécifier les dépendances pour les exécutables
-ament_target_dependencies(visualization_node 
+ament_target_dependencies(visualization_node
   rclcpp 
   sensor_msgs 
   sensors
+  navigation
   geometry_msgs 
   visualization_msgs 
   tf2 

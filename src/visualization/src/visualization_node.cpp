@@ -1,13 +1,20 @@
 #include "visualization/visualization_node.hpp"
 
 std::shared_ptr<cv::Mat> background = std::make_shared<cv::Mat>(cv::Mat::zeros(MINIMAP_SIZE, MINIMAP_SIZE, CV_8UC3));
-int center = MINIMAP_SIZE / 2;
 
-VisualizationNode::VisualizationNode() : Node("visualization_node")
+VisualizationNode::VisualizationNode() : Node("visualization_node"), _center(MINIMAP_SIZE / 2), _camAngle(0), _nb_turbines(0)
 {
-	Visual_Client_ = this->create_client<sensors::srv::TargetPositions>("mission/target_positions");
+	Visual_Client_ = this->create_client<navigation::srv::Path>("/navigation/path");
 
-	_camAngle = 0;
+	if (background->empty()) {
+    	RCLCPP_ERROR(this->get_logger(), "Background image is empty.");
+    	return;
+	} else {
+    	RCLCPP_INFO(this->get_logger(), "Background image initialized. Size: %d x %d", background->cols, background->rows);
+	}
+
+	// Request to server to get Turbines and Path
+	timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&VisualizationNode::launch, this));
 
 	// Subscriptions
 	odometry_subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
@@ -17,8 +24,6 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	camera_subscription_ = this->create_subscription<std_msgs::msg::Float64>(
 		"/aquabot/thrusters/main_camera_sensor/pos", 10,
 		std::bind(&VisualizationNode::cameraCallback, this, std::placeholders::_1));
-
-	// Coordinates reference on Discord
 
 	VisualizationNode::createCircle(*background, 120, -50, 35);
 	VisualizationNode::createCircle(*background, -150, 0, 32);
@@ -32,51 +37,41 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	VisualizationNode::createCircle(*background, -48, -92, 32);
 	VisualizationNode::createCircle(*background, -30, -150, 32);
 
-	VisualizationNode::addPolygonPoint(Polygon1, -122, 206);
-	VisualizationNode::addPolygonPoint(Polygon1, -76, 255);
-	VisualizationNode::addPolygonPoint(Polygon1, -32, 260);
-	VisualizationNode::addPolygonPoint(Polygon1, -15, 215);
-	VisualizationNode::addPolygonPoint(Polygon1, -45, 190);
-	VisualizationNode::addPolygonPoint(Polygon1, -62, 146);
-	VisualizationNode::addPolygonPoint(Polygon1, -122, 146);
+	VisualizationNode::createPolygon(*background, 7,
+		-122, 206,
+		-76, 255,
+		-32, 260,
+		-15, 215,	
+		-45, 190,
+		-62, 146,
+		-122, 146);
 
-	VisualizationNode::addPolygonPoint(Polygon2, 100, -30);
-	VisualizationNode::addPolygonPoint(Polygon2, 145, -30);
-	VisualizationNode::addPolygonPoint(Polygon2, 145, -75);
-	VisualizationNode::addPolygonPoint(Polygon2, 100, -75);
+	VisualizationNode::createPolygon(*background, 4,
+		100, -30,
+		145, -30,
+		145, -75,
+		100, -75);
 
-	VisualizationNode::addPolygonPoint(Polygon3, -190, 33);
-	VisualizationNode::addPolygonPoint(Polygon3, -120, 30);
-	VisualizationNode::addPolygonPoint(Polygon3, -127, -50);
-	VisualizationNode::addPolygonPoint(Polygon3, -167, -54);
+	VisualizationNode::createPolygon(*background, 4,
+		-190, 33 + 20,
+		-120, 30 + 20,
+		-127, -50 + 20,
+		-167, -54 + 20);
 
-	VisualizationNode::addPolygonPoint(Polygon4, 42, 165);
-	VisualizationNode::addPolygonPoint(Polygon4, 100, 210);
-	VisualizationNode::addPolygonPoint(Polygon4, 153, 135);
-	VisualizationNode::addPolygonPoint(Polygon4, 105, 90);
+	VisualizationNode::createPolygon(*background, 4,
+		42, 165,
+		100, 210,
+		153, 135,
+		105, 90);
 
-	VisualizationNode::addPolygonPoint(Polygon5, -67, -75);
-	VisualizationNode::addPolygonPoint(Polygon5, -20, -75);
-	VisualizationNode::addPolygonPoint(Polygon5, 23, -75);
-	VisualizationNode::addPolygonPoint(Polygon5, 43, -110);
-	VisualizationNode::addPolygonPoint(Polygon5, -5, -120);
-	VisualizationNode::addPolygonPoint(Polygon5, -7, -170);
-	VisualizationNode::addPolygonPoint(Polygon5, -60, -165);
-
-	sleep(2);
-
-	// Test path
-	VisualizationNode::addPathPoint(FullPath, 0, 0);
-	VisualizationNode::addPathPoint(FullPath, 219, 0);
-	VisualizationNode::addPathPoint(FullPath, 219, 290);
-	VisualizationNode::addPathPoint(FullPath, -233, 290);
-	VisualizationNode::addPathPoint(FullPath, -233, 27);
-	VisualizationNode::addPathPoint(FullPath, -270, -187);
-
-	VisualizationNode::createLine(*background, 0, 0, FullPath.poses[0].pose.position.x, FullPath.poses[0].pose.position.y);
-	for (size_t i = 1; i < this->FullPath.poses.size(); i++)
-		VisualizationNode::createLine(*background, FullPath.poses[i - 1].pose.position.x, FullPath.poses[i - 1].pose.position.y,
-									FullPath.poses[i].pose.position.x, FullPath.poses[i].pose.position.y);
+	VisualizationNode::createPolygon(*background, 7,
+		-67, -75,
+		-20, -75,
+		23, -75,
+		43, -110,	
+		-5, -120,
+		-7, -170,
+		-60, -165);
 	
 	VisualizationNode::addPathPoint(ActualPath, 0, 0);
 	VisualizationNode::addPathPoint(ActualPath, 219, 290);
@@ -86,15 +81,86 @@ VisualizationNode::VisualizationNode() : Node("visualization_node")
 	RCLCPP_INFO(this->get_logger(), "Visualization Node has started");
 }
 
+void VisualizationNode::launch()
+{
+	RCLCPP_INFO(this->get_logger(), "VisualizationNode Launch");
+
+    if (!this->Visual_Client_->wait_for_service(std::chrono::seconds(1)))
+    {
+        RCLCPP_ERROR(this->get_logger(), "Service '/navigation/path' not available");
+        return;
+    }
+	timer_->cancel();
+
+    RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
+
+    auto request = std::make_shared<navigation::srv::Path::Request>();
+    auto future = this->Visual_Client_->async_send_request(
+        request,
+        std::bind(&VisualizationNode::service_response_callback, this, std::placeholders::_1)
+    );
+}
+
+void VisualizationNode::service_response_callback(
+    rclcpp::Client<navigation::srv::Path>::SharedFuture future)
+{
+    RCLCPP_INFO(this->get_logger(), "Received response from service (Visualization)");
+
+    auto response = future.get();
+
+    if (response->path.poses.empty() || response->pose_array.poses.empty())
+    {
+        RCLCPP_WARN(this->get_logger(), "Received empty poses from service. Retrying...");
+        timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&VisualizationNode::launch, this));
+    }
+    else
+    {
+        RCLCPP_INFO(this->get_logger(), "Processing received path");
+        this->PathPlan(response->path);
+        if (_nb_turbines == 0)
+            this->VisualRegister(response->pose_array);
+    }
+}
+
+void VisualizationNode::PathPlan(nav_msgs::msg::Path path)
+{
+    if (path.poses.empty()) {
+        RCLCPP_WARN(this->get_logger(), "Received message without poses.");
+        return;
+    }
+
+    for (size_t i = 0; i < path.poses.size(); ++i)
+		VisualizationNode::addPathPoint(FullPath, path.poses[i].pose.position.x, path.poses[i].pose.position.y);
+
+	VisualizationNode::createLine(*background, 0, 0, FullPath.poses[0].pose.position.x, FullPath.poses[0].pose.position.y);
+	for (size_t i = 1; i < this->FullPath.poses.size(); i++)
+		VisualizationNode::createLine(*background, FullPath.poses[i - 1].pose.position.x, FullPath.poses[i - 1].pose.position.y,
+			FullPath.poses[i].pose.position.x, FullPath.poses[i].pose.position.y);
+}
+
+void VisualizationNode::VisualRegister(geometry_msgs::msg::PoseArray msg)
+{
+	if (msg.poses.empty()) {
+        RCLCPP_WARN(this->get_logger(), "Received message without poses.");
+        return;
+    }
+
+	for (int i = 0; i < msg.poses.size(); ++i)
+		cv::circle((*background), cv::Point(msg.poses[i].position.x + _center, (*background).rows - (msg.poses[i].position.y + _center)),
+			5, cv::Scalar(125, 125, 125), -1);
+
+	_nb_turbines = static_cast<int>(msg.poses.size());
+}
+
 void VisualizationNode::createCircle(cv::Mat &mat, double x, double y, int radius)
 {
-	cv::circle(mat, cv::Point(x + center, mat.rows - (y + center)), radius, cv::Scalar(252, 192, 15), -1);
+	cv::circle(mat, cv::Point(x + _center, mat.rows - (y + _center)), radius - 5, cv::Scalar(252, 192, 15), -1);
 }
 
 void VisualizationNode::createLine(cv::Mat &mat, double x1, double y1, double x2, double y2)
 {
-	cv::Point2f start(x1 + center, mat.rows - (y1 + center));
-	cv::Point2f end(x2 + center, mat.rows - (y2 + center));
+	cv::Point2f start(x1 + _center, mat.rows - (y1 + _center));
+	cv::Point2f end(x2 + _center, mat.rows - (y2 + _center));
 
 	cv::line(mat, start, end, cv::Scalar(50, 50, 50), 2);
 }
@@ -110,8 +176,11 @@ void VisualizationNode::createPolygon(cv::Mat &mat, size_t pointsNumber, ...)
 	{
 		int x = va_arg(args, int);
 		int y = va_arg(args, int);
-		points.emplace_back();
+
+		RCLCPP_INFO(this->get_logger(), "Push x=%d, y=%d", x, y);
+		points.push_back(cv::Point(x + _center, (*background).rows - (y + _center)));
 	}
+	cv::polylines((*background), points, true, cv::Scalar(255, 255, 255));
 }
 
 void VisualizationNode::addPolygonPoint(geometry_msgs::msg::PolygonStamped &Polygon, double x, double y)
@@ -141,6 +210,13 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
 {
 	cv::Mat minimap = (*background).clone();
 
+	if (minimap.empty()) {
+    	RCLCPP_ERROR(this->get_logger(), "Minimap image is empty after cloning background.");
+    	return;
+	}
+	else {
+		RCLCPP_INFO(this->get_logger(), "Minimap dimensions: cols=%d, rows=%d", minimap.cols, minimap.rows);
+	}
 	// Calcul de l'angle (yaw) du bateau
 	double siny_cosp = 2 * (msg->pose.pose.orientation.w * msg->pose.pose.orientation.z +
 							msg->pose.pose.orientation.x * msg->pose.pose.orientation.y);
@@ -150,8 +226,8 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
 	double boatAngle = std::atan2(siny_cosp, cosy_cosp); // Yaw en radians
 
 	// Position du bateau sur la minimap
-	int dx = static_cast<int>(msg->pose.pose.position.x + center);
-	int dy = static_cast<int>(minimap.rows - (msg->pose.pose.position.y + center));
+	int dx = static_cast<int>(msg->pose.pose.position.x + _center);
+	int dy = static_cast<int>(minimap.rows - (msg->pose.pose.position.y + _center));
 
 	int arrowLength = 18;
 	cv::Point2f boatCenter(dx, dy);
@@ -165,24 +241,46 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
 	cv::arrowedLine(minimap, boatBack, boatFront, cv::Scalar(0, 255, 0), 2, cv::LINE_4, 0, 0.25);
 
 	// Ajouter la rotation du bateau à l'angle de la caméra
-	double effectiveCamAngle = _camAngle + boatAngle;
+	    double effectiveCamAngle = _camAngle + boatAngle;
 
-	// Calcul des sommets du triangle représentant la caméra
-	int triangleLength = 18;
-	cv::Point2f cameraPoint1(boatCenter.x + triangleLength * cos(effectiveCamAngle),
-							 boatCenter.y - triangleLength * sin(effectiveCamAngle));
-	cv::Point2f cameraPoint2(boatCenter.x + (triangleLength / 2) * cos(effectiveCamAngle + CV_PI * 2 / 3),
-							 boatCenter.y - (triangleLength / 2) * sin(effectiveCamAngle + CV_PI * 2 / 3));
-	cv::Point2f cameraPoint3(boatCenter.x + (triangleLength / 2) * cos(effectiveCamAngle - CV_PI * 2 / 3),
-							 boatCenter.y - (triangleLength / 2) * sin(effectiveCamAngle - CV_PI * 2 / 3));
+    // Longueur du triangle (distance entre le bateau et la base du FOV)
+    double triangleLength = 20.0; // Ajustez cette valeur selon vos besoins
 
-	// Dessiner le triangle pour représenter la caméra
-	std::vector<cv::Point> cameraTrianglePoints = {cameraPoint1, cameraPoint2, cameraPoint3};
-	cv::fillConvexPoly(minimap, cameraTrianglePoints, cv::Scalar(0, 0, 255));
+    // Angle du demi-champ de vision (par exemple, 30 degrés)
+    double halfFOV = CV_PI / 10; // 30 degrés en radians
 
-	// Afficher la minimap
-	cv::imshow("Minimap", minimap);
-	cv::waitKey(1);
+    // Pointe du triangle (au niveau du bateau)
+    cv::Point2f tipPoint = boatFront;
+
+    // Calcul des points de la base en décalant l'angle de `+halfFOV` et `-halfFOV`
+    cv::Point2f basePoint1(
+        boatCenter.x + triangleLength * cos(effectiveCamAngle + halfFOV),
+        boatCenter.y - triangleLength * sin(effectiveCamAngle + halfFOV)
+    );
+
+    cv::Point2f basePoint2(
+        boatCenter.x + triangleLength * cos(effectiveCamAngle - halfFOV),
+        boatCenter.y - triangleLength * sin(effectiveCamAngle - halfFOV)
+    );
+
+    // Dessiner le triangle sur un calque transparent
+    cv::Mat overlay;
+    minimap.copyTo(overlay);
+
+    // Couleur du triangle (BGR)
+    cv::Scalar triangleColor(0, 0, 255); // Rouge
+
+    // Dessiner le triangle sur le calque
+    std::vector<cv::Point> cameraTrianglePoints = {tipPoint, basePoint1, basePoint2};
+    cv::fillConvexPoly(overlay, cameraTrianglePoints, triangleColor);
+
+    // Fusionner le calque avec l'image de base en utilisant la transparence
+    double alpha = 0.5; // Facteur de transparence (0.0 - transparent, 1.0 - opaque)
+    cv::addWeighted(overlay, alpha, minimap, 1 - alpha, 0, minimap);
+
+    // Afficher la minimap
+    cv::imshow("Minimap", minimap);
+    cv::waitKey(1);
 }
 
 void VisualizationNode::cameraCallback(const std_msgs::msg::Float64::SharedPtr msg)
@@ -202,47 +300,11 @@ void VisualizationNode::setCoordinates(geometry_msgs::msg::PointStamped *Point, 
 	Point->point.set__z(0);
 }
 
-void VisualizationNode::VisualRegister(geometry_msgs::msg::PoseArray msg)
-{
-	for (int i = 0; i < msg.poses.size(); ++i)
-		cv::circle((*background), cv::Point(msg.poses[i].position.x + center, (*background).rows - (msg.poses[i].position.y + center)), 5, cv::Scalar(125, 125, 125), -1);
-}
-
-geometry_msgs::msg::PoseArray MakeRequest(std::shared_ptr<VisualizationNode> node,
-										  sensors::srv::TargetPositions::Request::SharedPtr request)
-{
-	// Send request to the service
-	rclcpp::Client<sensors::srv::TargetPositions>::FutureAndRequestId future = node->Visual_Client_->async_send_request(request);
-	// Wait until a response
-	if (rclcpp::spin_until_future_complete(node, future) == rclcpp::FutureReturnCode::SUCCESS) // If success
-		return (future.get()->poses);
-	else
-		RCLCPP_ERROR(node->get_logger(), "Failed to call service target_positions");
-	return (future.get()->poses);
-}
-
 int main(int argc, char *argv[])
 {
 	rclcpp::init(argc, argv);
 	auto node = std::make_shared<VisualizationNode>();
-
-	// Log on the server
-	sensors::srv::TargetPositions::Request::SharedPtr request = std::make_shared<sensors::srv::TargetPositions::Request>();
-	while (node->Visual_Client_->wait_for_service(std::chrono::seconds(1)) == false)
-	{
-		if (rclcpp::ok() == false)
-		{
-			RCLCPP_ERROR(node->get_logger(), "Interrupted while waiting for the service. Exiting.");
-			return (1);
-		}
-	}
-	geometry_msgs::msg::PoseArray TgtPos;
-	while (TgtPos.poses.empty())
-		TgtPos = MakeRequest(node, request);
-	node->VisualRegister(TgtPos);
-
 	rclcpp::spin(node);
-
 	cv::destroyAllWindows();
 	rclcpp::shutdown();
 	return 0;
