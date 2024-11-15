@@ -70,11 +70,8 @@ VisualizationNode::VisualizationNode() : Node("visualization_node"), _center(MIN
 		-5, -120,
 		-7, -170,
 		-60, -165);
-	
-	VisualizationNode::addPathPoint(ActualPath, 0, 0);
-	VisualizationNode::addPathPoint(ActualPath, 219, 290);
-	VisualizationNode::addPathPoint(ActualPath, 400, 600);
-	VisualizationNode::addPathPoint(ActualPath, -300, 100);
+
+	ActualPath.push_back(cv::Point(0, 0));
 
 	RCLCPP_INFO(this->get_logger(), "Visualization Node has started");
 }
@@ -88,6 +85,7 @@ void VisualizationNode::launch()
         RCLCPP_ERROR(this->get_logger(), "Service '/navigation/path' not available");
         return;
     }
+
 	timer_->cancel();
 
     RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
@@ -128,7 +126,10 @@ void VisualizationNode::PathPlan(nav_msgs::msg::Path path)
     }
 
     for (size_t i = 0; i < path.poses.size(); ++i)
+	{
 		VisualizationNode::addPathPoint(FullPath, path.poses[i].pose.position.x, path.poses[i].pose.position.y);
+		ActualPath.push_back(cv::Point(path.poses[i].pose.position.x + _center, (*background).rows - (path.poses[i].pose.position.y + _center)));
+	}
 
 	VisualizationNode::createLine(*background, 0, 0, FullPath.poses[0].pose.position.x, FullPath.poses[0].pose.position.y);
 	for (size_t i = 1; i < this->FullPath.poses.size(); i++)
@@ -152,7 +153,7 @@ void VisualizationNode::VisualRegister(geometry_msgs::msg::PoseArray msg)
 
 void VisualizationNode::createCircle(cv::Mat &mat, double x, double y, int radius)
 {
-	cv::circle(mat, cv::Point(x + _center, mat.rows - (y + _center)), radius - 5, cv::Scalar(252, 192, 15), -1);
+	cv::circle(mat, cv::Point(x + _center, mat.rows - (y + _center)), std::floor(radius / 2), cv::Scalar(252, 192, 15), -1);
 }
 
 void VisualizationNode::createLine(cv::Mat &mat, double x1, double y1, double x2, double y2)
@@ -179,22 +180,10 @@ void VisualizationNode::createPolygon(cv::Mat &mat, size_t pointsNumber, ...)
 	cv::polylines((*background), points, true, cv::Scalar(255, 255, 255));
 }
 
-void VisualizationNode::addPolygonPoint(geometry_msgs::msg::PolygonStamped &Polygon, double x, double y)
-{
-	geometry_msgs::msg::Point32 Point32;
-
-	Point32.x = x;
-	Point32.y = y;
-	Point32.z = 5;
-
-	Polygon.polygon.points.push_back(Point32);
-}
-
 void VisualizationNode::addPathPoint(nav_msgs::msg::Path &path, double x, double y)
 {
 	geometry_msgs::msg::PoseStamped newPos;
 
-	newPos.header.frame_id = "odom";
 	newPos.pose.position.x = x;
 	newPos.pose.position.y = y;
 	newPos.pose.position.z = 0;
@@ -221,6 +210,12 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
 	// Position du bateau sur la minimap
 	int dx = static_cast<int>(msg->pose.pose.position.x + _center);
 	int dy = static_cast<int>(minimap.rows - (msg->pose.pose.position.y + _center));
+
+	// Update GPS pour l'ActualPath
+	ActualPath[0].x = dx;
+	ActualPath[0].y = dy;
+
+	cv:polylines(minimap, ActualPath, false, cv::Scalar(200, 0, 200));
 
 	int arrowLength = 18;
 	cv::Point2f boatCenter(dx, dy);
@@ -283,14 +278,7 @@ void VisualizationNode::cameraCallback(const std_msgs::msg::Float64::SharedPtr m
 
 void VisualizationNode::wayPointCallback()
 {
-	ActualPath.poses.erase(ActualPath.poses.begin() + 1);
-}
-
-void VisualizationNode::setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z)
-{
-	Point->point.set__x(x);
-	Point->point.set__y(z);
-	Point->point.set__z(0);
+	ActualPath.erase(ActualPath.begin() + 1);
 }
 
 int main(int argc, char *argv[])
