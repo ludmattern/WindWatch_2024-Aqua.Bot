@@ -15,6 +15,13 @@
   <depend>geometry_msgs</depend>
   <depend>visualization_msgs</depend>
   <depend>sensors</depend>
+  <depend>navigation</depend>
+
+  <!-- Runtime dependencies for ROSIDL -->
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <!-- Declaration that this package is part of the rosidl_interface_packages -->
+  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
     <build_type>ament_cmake</build_type>
