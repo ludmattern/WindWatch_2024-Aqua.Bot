@@ -13,6 +13,10 @@
 #include "geometry_msgs/msg/polygon_stamped.hpp"
 #include "sensors/srv/target_positions.hpp"
 #include "std_msgs/msg/float64.hpp"
+#include <opencv2/opencv.hpp>
+#include <cstdarg>
+
+#define MINIMAP_SIZE 900
 
 class VisualizationNode : public rclcpp::Node
 {
@@ -25,39 +29,25 @@ public:
 private:
 
 	int	_nb_turbines;
-	visualization_msgs::msg::Marker _markers[30];
+
+	float _camAngle;
 
 	void odometryCallback(const nav_msgs::msg::Odometry::SharedPtr msg);
 	void cameraCallback(const std_msgs::msg::Float64::SharedPtr msg);
+	void wayPointCallback();
 
 	void pointsPublisher();
 	void addPolygonPoint(geometry_msgs::msg::PolygonStamped& Polygon, double x, double y);
 	void addPathPoint(nav_msgs::msg::Path& path, double x, double y); // Test purpose function
 	void setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z);
 
+	void createCircle(cv::Mat & mat, double x, double y, int radius);
+	void createLine(cv::Mat & mat, double x1, double y1, double x2, double y2);
+	void createPolygon(cv::Mat &mat, size_t pointsNumber, ...);
+
     // Subscribtions
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_subscription_;
 	rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr camera_subscription_;
-
-	// Publishers
-	std::array<rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr, 15> turbines_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr light_house_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr island_1_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr island_2_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_island_0_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_island_1_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_0_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_1_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_2_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr rock_3_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr camera_publisher_;
-	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_1_;
-	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_2_;
-	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_3_;
-	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_4_;
-	rclcpp::Publisher<geometry_msgs::msg::PolygonStamped>::SharedPtr polygon_publisher_5_;
-	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr full_path_publisher_;
-	rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr actual_path_publisher_;
 
 	// Obstacles
 	geometry_msgs::msg::PointStamped LightHouse;
