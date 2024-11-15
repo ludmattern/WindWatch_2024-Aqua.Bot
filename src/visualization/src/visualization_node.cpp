@@ -234,13 +234,13 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
 	cv::arrowedLine(minimap, boatBack, boatFront, cv::Scalar(0, 255, 0), 2, cv::LINE_4, 0, 0.25);
 
 	// Ajouter la rotation du bateau à l'angle de la caméra
-	    double effectiveCamAngle = _camAngle + boatAngle;
+	double effectiveCamAngle = _camAngle + boatAngle;
 
     // Longueur du triangle (distance entre le bateau et la base du FOV)
-    double triangleLength = 20.0; // Ajustez cette valeur selon vos besoins
+    double triangleLength = 20.0;
 
-    // Angle du demi-champ de vision (par exemple, 30 degrés)
-    double halfFOV = CV_PI / 10; // 30 degrés en radians
+    // Angle du demi-champ de vision
+    double halfFOV = CV_PI / 10;
 
     // Pointe du triangle (au niveau du bateau)
     cv::Point2f tipPoint = boatFront;
@@ -268,7 +268,7 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
     cv::fillConvexPoly(overlay, cameraTrianglePoints, triangleColor);
 
     // Fusionner le calque avec l'image de base en utilisant la transparence
-    double alpha = 0.5; // Facteur de transparence (0.0 - transparent, 1.0 - opaque)
+    double alpha = 0.5;
     cv::addWeighted(overlay, alpha, minimap, 1 - alpha, 0, minimap);
 
     // Afficher la minimap
