@@ -16,6 +16,7 @@ CameraControlNode::CameraControlNode()
 	RCLCPP_INFO(this->get_logger(), "Camera Control Action Server has started");
 
 	camera_pub_ = this->create_publisher<std_msgs::msg::Float64>("/aquabot/thrusters/main_camera_sensor/pos", 10);
+	reports_pub_ = this->create_publisher<std_msgs::msg::String>("/vrx/windturbinesinspection/windturbine_checkup", 10);
 
 	odometrySub_ = this->create_subscription<nav_msgs::msg::Odometry>(
 		"/mission/odometry", 10, std::bind(&CameraControlNode::boatPoseCallback, this, std::placeholders::_1));
@@ -226,6 +227,11 @@ void CameraControlNode::scanQRCode(const sensor_msgs::msg::Image::SharedPtr msg)
 		auto symbol = zbarImage.symbol_begin();
 		std::string decodedText = symbol->get_data();
 		RCLCPP_INFO(this->get_logger(), "QR code text: %s", decodedText.c_str());
+
+		// Send report
+		std_msgs::msg::String reportMsg;
+		reportMsg.data = decodedText;
+		reports_pub_->publish(reportMsg);
 
 		QRCodeData_.data = decodedText;
 		

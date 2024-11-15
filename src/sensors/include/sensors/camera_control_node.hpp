@@ -58,6 +58,7 @@ private:
 	rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr imageFeedSub_;
 
 	rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr camera_pub_;
+	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr reports_pub_; 
 
 	geometry_msgs::msg::Point boat_position_;
 	geometry_msgs::msg::Point camera_position_;
