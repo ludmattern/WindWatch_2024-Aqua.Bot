@@ -5,7 +5,7 @@ TargetManagerNode::TargetManagerNode() : Node("target_manager_node")
     RCLCPP_INFO(this->get_logger(), "Target Manager Node has started");
     callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
 
-    
+    //current_segment_index_ = 0;
     
     TargetPath_Client_ = this->create_client<navigation::srv::Path>("/navigation/path");
     timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&TargetManagerNode::launch, this));
@@ -43,9 +43,10 @@ void TargetManagerNode::service_response_callback(
     else
     {
         RCLCPP_INFO(this->get_logger(), "Processing received path");
-        this->PathPlan(response->path);
         if (wind_data_.nb_wind == 0)
             this->TmaPosRegister(response->pose_array);
+        this->PathPlan(response->path);
+        
     }
 }
 
@@ -94,6 +95,7 @@ void TargetManagerNode::PathPlan(nav_msgs::msg::Path path)
             i, path_data_.temp_.poses[i].pose.position.x, path_data_.temp_.poses[i].pose.position.y, path_data_.temp_.poses[i].pose.position.z);
 
     }
+    SplitPathByWindTurbines(path);
     TargetManagerService_ = this->create_service<mission_manager::srv::TargetManagerServ>(
         "/mission/mission_goal",
         std::bind(&TargetManagerNode::ServerCallback, this, std::placeholders::_1, std::placeholders::_2),
@@ -116,7 +118,7 @@ void TargetManagerNode::ServerCallback(
             break;
         }
     }
-    path_sent = true; //a enlever
+    //path_sent = true; //a enlever
     //si c'est le dernier path
     if (path_sent == true)
     {   RCLCPP_INFO(this->get_logger(), "Test5");
@@ -159,16 +161,49 @@ void TargetManagerNode::ServerCallback(
         }
         //RCLCPP_INFO(this->get_logger(), "Test2");
         //envoi du bon path
+         if (path_segments_.empty()) {
+            RCLCPP_WARN(this->get_logger(), "Aucun segment disponible à envoyer.");
+            return;
+        }
+
+        if (current_segment_index_ < path_segments_.size())
+        {
+            response->path = path_segments_[current_segment_index_];
+            response->targetcount.data = static_cast<int32_t>(path_segments_[current_segment_index_].poses.size());
+            response->qr_orientation = 0.0;
+
+            RCLCPP_INFO(this->get_logger(), "Envoi du segment %zu avec %zu poses.",
+                        current_segment_index_ + 1, path_segments_[current_segment_index_].poses.size());
+
+            // Marquer le segment comme envoyé
+            current_segment_index_++;
+        }
+        else
+        {
+            RCLCPP_INFO(this->get_logger(), "Tous les segments ont été envoyés.");
+            response->targetcount.data = 0; // Indiquer qu'il n'y a plus de segments
+        }
+/*
+        nav_msgs::msg::Path tem;
         for (size_t i = 0; i < path_data_.temp_.poses.size(); ++i)
         {//RCLCPP_INFO(this->get_logger(), "Test3");
             if (path_data_.status[i] == false)
             {
+                geometry_msgs::msg::PoseStamped pose_stampe = path_data_.temp_.poses[i];
+                tem.poses.push_back(pose_stampe);
+            }
+            if (path_data_.temp_.poses[i].pose.position.x ==  wind_data_.wind.poses[i].position.x && path_data_.status[i] == false)//
+            {
+                
+                RCLCPP_INFO(this->get_logger(), "Path %zu - x: %f, x: %f temp:%f",
+                i, path_data_.temp_.poses[i].pose.position.x, wind_data_.wind.poses[i].position.x, tem.poses[0].pose.position.x);
                 path_data_.status[i] = true;
-                response->path = path_data_.temp_;
+                response->path = tem;
                 response->targetcount.data = static_cast<int32_t>(path_data_.temp_.poses.size());
                 response->qr_orientation = 0.0;
+                break;
             }
-        }
+        }*/
         RCLCPP_INFO(this->get_logger(), "New path sent.");
     }
     /*
@@ -270,6 +305,65 @@ void TargetManagerNode::WindInspection(const nav_msgs::msg::Odometry::SharedPtr 
     ship = *msg;
     shipAdd = true;
 }
+
+void TargetManagerNode::SplitPathByWindTurbines(const nav_msgs::msg::Path& path)
+{
+    if (path.poses.empty()) {
+        RCLCPP_WARN(this->get_logger(), "Received an empty path. Cannot split.");
+        return;
+    }
+
+    // Vecteur pour stocker les segments
+    std::vector<nav_msgs::msg::Path> segments;
+    nav_msgs::msg::Path current_segment;
+    current_segment.header.frame_id = path.header.frame_id;
+
+    for (size_t i = 0; i < path.poses.size(); ++i) {
+        const auto& pose = path.poses[i];
+        current_segment.poses.push_back(pose);
+
+        // Vérifier si la pose correspond à une éolienne avec une tolérance
+        bool is_turbine = false;
+        for (const auto& turbine_pose : wind_data_.wind.poses) {
+            double dx = pose.pose.position.x - turbine_pose.position.x;
+            double dy = pose.pose.position.y - turbine_pose.position.y;
+            double dz = pose.pose.position.z - turbine_pose.position.z;
+            double distance = std::sqrt(dx*dx + dy*dy + dz*dz);
+            const double TOLERANCE = 1.0; // Ajustez selon votre précision requise
+
+            if (distance < TOLERANCE) {
+                is_turbine = true;
+                break;
+            }
+        }
+        // Log pour vérifier la détection des éoliennes
+        RCLCPP_INFO(this->get_logger(), "Pose %zu is_turbine: %d", i, is_turbine);
+        // Si une éolienne est trouvée, finaliser le segment
+        if (is_turbine) {
+            RCLCPP_INFO(this->get_logger(), "Found wind turbine at pose %zu. Creating a new segment.", i);
+            segments.push_back(current_segment); // Stocker le segment
+            current_segment.poses.clear();      // Réinitialiser pour le prochain segment
+        }
+    }
+
+    // Ajouter le dernier segment si non vide
+    if (!current_segment.poses.empty()) {
+        segments.push_back(current_segment);
+    }
+
+    // Stocker les segments pour utilisation ultérieure
+    this->path_segments_ = segments;
+    this->current_segment_index_ = 0; // Réinitialiser l'index pour l'envoi
+
+    // Log des segments pour vérification
+    for (size_t i = 0; i < segments.size(); ++i) {
+        RCLCPP_INFO(this->get_logger(), "Segment %zu: contient %zu poses", i + 1, segments[i].poses.size());
+    }
+}
+
+
+
+
 
 int main(int argc, char * argv[])
 {

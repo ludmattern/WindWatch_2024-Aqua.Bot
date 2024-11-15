@@ -22,7 +22,7 @@ public:
     void launch();
     void launch_last();
     void WindInspection(const nav_msgs::msg::Odometry::SharedPtr msg);
-
+    void SplitPathByWindTurbines(const nav_msgs::msg::Path& path);
 private:
     rclcpp::Service<mission_manager::srv::TargetManagerServ>::SharedPtr TargetManagerService_;
     rclcpp::Client<navigation::srv::Path>::SharedPtr TargetPath_Client_;
@@ -70,8 +70,9 @@ private:
 	rclcpp::Client<navigation::srv::PathLast>::SharedPtr LastPath_Client_;
 	rclcpp::TimerBase::SharedPtr timer_inspec_;
 
+    std::vector<nav_msgs::msg::Path> path_segments_;
 
-
+    size_t current_segment_index_ = 0;
     int wind_def;
 };
 

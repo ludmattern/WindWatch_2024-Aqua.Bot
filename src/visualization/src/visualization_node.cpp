@@ -9,8 +9,6 @@ VisualizationNode::VisualizationNode() : Node("visualization_node"), _center(MIN
 	if (background->empty()) {
     	RCLCPP_ERROR(this->get_logger(), "Background image is empty.");
     	return;
-	} else {
-    	RCLCPP_INFO(this->get_logger(), "Background image initialized. Size: %d x %d", background->cols, background->rows);
 	}
 
 	// Request to server to get Turbines and Path
@@ -176,8 +174,6 @@ void VisualizationNode::createPolygon(cv::Mat &mat, size_t pointsNumber, ...)
 	{
 		int x = va_arg(args, int);
 		int y = va_arg(args, int);
-
-		RCLCPP_INFO(this->get_logger(), "Push x=%d, y=%d", x, y);
 		points.push_back(cv::Point(x + _center, (*background).rows - (y + _center)));
 	}
 	cv::polylines((*background), points, true, cv::Scalar(255, 255, 255));
@@ -213,9 +209,6 @@ void VisualizationNode::odometryCallback(const nav_msgs::msg::Odometry::SharedPt
 	if (minimap.empty()) {
     	RCLCPP_ERROR(this->get_logger(), "Minimap image is empty after cloning background.");
     	return;
-	}
-	else {
-		RCLCPP_INFO(this->get_logger(), "Minimap dimensions: cols=%d, rows=%d", minimap.cols, minimap.rows);
 	}
 	// Calcul de l'angle (yaw) du bateau
 	double siny_cosp = 2 * (msg->pose.pose.orientation.w * msg->pose.pose.orientation.z +
