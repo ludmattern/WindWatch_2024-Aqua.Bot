@@ -49,10 +49,7 @@ private:
 	void cameraCallback(const std_msgs::msg::Float64::SharedPtr msg);
 	void wayPointCallback();
 
-	void pointsPublisher();
-	void addPolygonPoint(geometry_msgs::msg::PolygonStamped& Polygon, double x, double y);
-	void addPathPoint(nav_msgs::msg::Path& path, double x, double y); // Test purpose function
-	void setCoordinates(geometry_msgs::msg::PointStamped *Point, double x, double z);
+	void addPathPoint(nav_msgs::msg::Path& path, double x, double y);
 
 	void createCircle(cv::Mat & mat, double x, double y, int radius);
 	void createLine(cv::Mat & mat, double x1, double y1, double x2, double y2);
@@ -61,25 +58,11 @@ private:
     // Subscribtions
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_subscription_;
 	rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr camera_subscription_;
+	rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr camera_subscription_;
 
-	// Obstacles
-	geometry_msgs::msg::PointStamped LightHouse;
-	geometry_msgs::msg::PointStamped Island1;
-	geometry_msgs::msg::PointStamped Island2;
-	geometry_msgs::msg::PointStamped RockIsland0;
-	geometry_msgs::msg::PointStamped RockIsland1;
-	geometry_msgs::msg::PointStamped Rock0;
-	geometry_msgs::msg::PointStamped Rock1;
-	geometry_msgs::msg::PointStamped Rock2;
-	geometry_msgs::msg::PointStamped Rock3;
-	geometry_msgs::msg::PolygonStamped Polygon1;
-	geometry_msgs::msg::PolygonStamped Polygon2;
-	geometry_msgs::msg::PolygonStamped Polygon3;
-	geometry_msgs::msg::PolygonStamped Polygon4;
-	geometry_msgs::msg::PolygonStamped Polygon5;
-	geometry_msgs::msg::PoseWithCovarianceStamped Camera;
+	// Paths
 	nav_msgs::msg::Path FullPath;
-	nav_msgs::msg::Path ActualPath;
+	std::vector<cv::Point> ActualPath;
 
 	// Timers
 	rclcpp::TimerBase::SharedPtr point_timer_;
