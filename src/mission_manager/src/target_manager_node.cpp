@@ -169,11 +169,11 @@ void TargetManagerNode::ServerCallback(
         if (current_segment_index_ < path_segments_.size())
         {
             response->path = path_segments_[current_segment_index_];
-            response->targetcount.data = static_cast<int32_t>(path_segments_[current_segment_index_].poses.size());
+            response->targetcount.data = path_segments_.size();
             response->qr_orientation = 0.0;
 
-            RCLCPP_INFO(this->get_logger(), "Envoi du segment %zu avec %zu poses.",
-                        current_segment_index_ + 1, path_segments_[current_segment_index_].poses.size());
+            RCLCPP_INFO(this->get_logger(), "Envoi du segment %zu avec %zu poses | x: %f - y: %f",
+                        current_segment_index_, path_segments_[current_segment_index_].poses.size(), path_segments_[current_segment_index_].poses[0].pose.position.x, path_segments_[current_segment_index_].poses[0].pose.position.y);
 
             // Marquer le segment comme envoyé
             current_segment_index_++;

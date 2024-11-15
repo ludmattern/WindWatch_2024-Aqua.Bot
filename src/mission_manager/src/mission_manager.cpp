@@ -88,6 +88,7 @@ void MissionManager::send_navigation_goal(const nav_msgs::msg::Path & path)
 
 void MissionManager::send_inspection_goal(const nav_msgs::msg::Path & path)
 {
+	RCLCPP_INFO(this->get_logger(), "Path inspection x: %f y: %f", path.poses[0].pose.position.x, path.poses[0].pose.position.y);
 	auto goal_msg = Inspection::Goal();
 	goal_msg.path = path;
 
