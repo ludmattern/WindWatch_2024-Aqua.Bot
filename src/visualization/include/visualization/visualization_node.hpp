@@ -58,7 +58,6 @@ private:
     // Subscribtions
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_subscription_;
 	rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr camera_subscription_;
-	rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr camera_subscription_;
 
 	// Paths
 	nav_msgs::msg::Path FullPath;
