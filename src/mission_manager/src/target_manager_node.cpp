@@ -6,8 +6,18 @@ TargetManagerNode::TargetManagerNode() : Node("target_manager_node")
     callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
 
     //current_segment_index_ = 0;
-    
+
+	odometry_Subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
+		    "/mission/odometry", 10,
+		    std::bind(&TargetManagerNode::WindInspection, this, std::placeholders::_1));
+
+    critical_subscription_ = this->create_subscription<ros_gz_interfaces::msg::ParamVec>(
+			"/aquabot/sensors/acoustics/receiver/range_bearing", 10,
+			std::bind(&TargetManagerNode::criticalCallback, this, std::placeholders::_1));
+
     TargetPath_Client_ = this->create_client<navigation::srv::Path>("/navigation/path");
+    LastPath_Client_ = this->create_client<navigation::srv::PathLast>("/navigation/last_path");
+
     timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&TargetManagerNode::launch, this));
 }
 
@@ -106,45 +116,62 @@ void TargetManagerNode::ServerCallback(
     const std::shared_ptr<mission_manager::srv::TargetManagerServ::Request> request,
     const std::shared_ptr<mission_manager::srv::TargetManagerServ::Response> response)
 {
-   
-    //verification du nombres d'eolienne checker
-    path_sent = true;
-    for (size_t i = 0; i < wind_data_.status.size(); ++i)
-    {
-       RCLCPP_INFO(this->get_logger(), "wind_data %d", static_cast<int>(wind_data_.status[i]));
-        if (wind_data_.status[i] == false)
-        {
-            path_sent = false;
-            break;
-        }
-    }
-    //path_sent = true; //a enlever
     //si c'est le dernier path
-    if (path_sent == true)
-    {   RCLCPP_INFO(this->get_logger(), "Test5");
-        odometry_Subscription_ = this->create_subscription<nav_msgs::msg::Odometry>(
-		    "/mission/odometry", 10,
-		    std::bind(&TargetManagerNode::WindInspection, this, std::placeholders::_1));
-        LastPath_Client_ = this->create_client<navigation::srv::PathLast>("/navigation/last_path");
-        timer_inspec_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&TargetManagerNode::launch_last, this));
-        sleep(4);//de meme
-            response->path = path_data_.temp_;
-            response->targetcount.data = 1;
-        //response->qr_orientation = this->wind_data_.pos_wind[static_cast<size_t>(wind_def)];
-            response->qr_orientation = 1;
-         RCLCPP_INFO(this->get_logger(), "Test6");
+    if (paths_sent >= wind_data_.nb_wind)
+    {
+        RCLCPP_INFO(this->get_logger(), "Test5");
 
+		odometry_Subscription_.reset();
+		critical_subscription_.reset();
+
+		nav_msgs::msg::Path criticalPath;
+		geometry_msgs::msg::PoseStamped pose;
+
+		pose.pose.position.x = boatOdometry.pose.pose.position.x;
+		pose.pose.position.y = boatOdometry.pose.pose.position.y;
+		criticalPath.poses.push_back(pose);
+
+		pose.pose.position.x = criticalX;
+		pose.pose.position.y = criticalY;
+		criticalPath.poses.push_back(pose);
+
+		RCLCPP_INFO(this->get_logger(), "Coords approx x: %f, y: %f", criticalPath.poses[1].pose.position.x, criticalPath.poses[1].pose.position.y);
+
+		// Distance minimale initial
+		double min_distance = std::sqrt(std::pow(criticalX - wind_data_.wind.poses[0].position.x, 2) +
+			std::pow(criticalY - wind_data_.wind.poses[0].position.y, 2));
+
+		for (int i = 1; i < wind_data_.nb_wind; i++) {
+    	    double distance = std::sqrt(std::pow(criticalX - wind_data_.wind.poses[i].position.x, 2) + std::pow(criticalY - wind_data_.wind.poses[i].position.y, 2));
+    	    if (distance < min_distance) {
+    	        min_distance = distance;
+    	        criticalId = i;
+    	    }
+    	}
+
+		RCLCPP_INFO(this->get_logger(), "Critical wind turbine index in the Path: %d", criticalId);
+
+        auto requestPath = std::make_shared<navigation::srv::PathLast::Request>();
+        requestPath->target_id = criticalId;
+        requestPath->ship_pos = boatOdometry;
+        auto future = this->LastPath_Client_->async_send_request(
+            requestPath,
+            std::bind(&TargetManagerNode::service_response_callback_last, this, std::placeholders::_1)
+        );
+
+        response->path = this->last_path;
+        response->targetcount.data = 1;
     }
-    //RCLCPP_INFO(this->get_logger(), "Test0");
+
     //envoi du path simplement
-    if (path_sent == false)
+    if (paths_sent < wind_data_.nb_wind)
     {   
         if (path_data_.temp_.poses.empty())
         {
             RCLCPP_WARN(this->get_logger(), "Path is empty");
             return;
         }
-        //RCLCPP_INFO(this->get_logger(), "Test1");
+
         //ajout de la position du QR
         if (!request->cam.data.empty())
         {
@@ -159,7 +186,7 @@ void TargetManagerNode::ServerCallback(
                 }
             }
         }
-        //RCLCPP_INFO(this->get_logger(), "Test2");
+
         //envoi du bon path
          if (path_segments_.empty()) {
             RCLCPP_WARN(this->get_logger(), "Aucun segment disponible à envoyer.");
@@ -174,8 +201,9 @@ void TargetManagerNode::ServerCallback(
 
             RCLCPP_INFO(this->get_logger(), "Envoi du segment %zu avec %zu poses | x: %f - y: %f",
                         current_segment_index_, path_segments_[current_segment_index_].poses.size(), path_segments_[current_segment_index_].poses[0].pose.position.x, path_segments_[current_segment_index_].poses[0].pose.position.y);
-
+                        
             // Marquer le segment comme envoyé
+            paths_sent++;
             current_segment_index_++;
         }
         else
@@ -183,95 +211,7 @@ void TargetManagerNode::ServerCallback(
             RCLCPP_INFO(this->get_logger(), "Tous les segments ont été envoyés.");
             response->targetcount.data = 0; // Indiquer qu'il n'y a plus de segments
         }
-/*
-        nav_msgs::msg::Path tem;
-        for (size_t i = 0; i < path_data_.temp_.poses.size(); ++i)
-        {//RCLCPP_INFO(this->get_logger(), "Test3");
-            if (path_data_.status[i] == false)
-            {
-                geometry_msgs::msg::PoseStamped pose_stampe = path_data_.temp_.poses[i];
-                tem.poses.push_back(pose_stampe);
-            }
-            if (path_data_.temp_.poses[i].pose.position.x ==  wind_data_.wind.poses[i].position.x && path_data_.status[i] == false)//
-            {
-                
-                RCLCPP_INFO(this->get_logger(), "Path %zu - x: %f, x: %f temp:%f",
-                i, path_data_.temp_.poses[i].pose.position.x, wind_data_.wind.poses[i].position.x, tem.poses[0].pose.position.x);
-                path_data_.status[i] = true;
-                response->path = tem;
-                response->targetcount.data = static_cast<int32_t>(path_data_.temp_.poses.size());
-                response->qr_orientation = 0.0;
-                break;
-            }
-        }*/
         RCLCPP_INFO(this->get_logger(), "New path sent.");
-    }
-    /*
-    for (size_t i = 0; i < wind_data_.status.size(); ++i)
-    {
-        if (!wind_data_.status[i])
-        {
-            wind_data_.status[i] = true;
-        }
-    }*/
-/*
-    auto nav_request = std::make_shared<navigation::srv::Path::Request>();
-    auto future = this->TargetPath_Client_->async_send_request(
-        nav_request,
-        std::bind(&TargetManagerNode::service_response_callback, this, std::placeholders::_1)
-    );*/
-}
-
-void TargetManagerNode::launch_last()
-{
-
-    RCLCPP_INFO(this->get_logger(), "Test4");
-    if (!this->LastPath_Client_->wait_for_service(std::chrono::seconds(1)))
-    {
-        RCLCPP_ERROR(this->get_logger(), "Service '/navigation/pathlast' not available");
-        return;
-    }
-    timer_inspec_->cancel();
-    if (wind_data_.wind.poses.empty())
-    {
-        RCLCPP_WARN(this->get_logger(), "No wind data available.");
-        return;
-    }
-     RCLCPP_INFO(this->get_logger(), "Test3");
-    bool found_critical = false;
-    for (size_t i = 0; i < wind_data_.wind.poses.size(); ++i)
-    {
-        if (i >= wind_data_.qr.size())
-        {
-            RCLCPP_ERROR(this->get_logger(), "Index out of bounds for wind_data_.qr");
-            return;
-        }
-
-        if (wind_data_.qr[i].data == "critical")
-        {
-            this->wind_def = static_cast<int32_t>(i);
-            found_critical = true;
-            break;
-        }
-    }
-     RCLCPP_INFO(this->get_logger(), "Test2");
-    /*if (!found_critical)
-    {
-        RCLCPP_WARN(this->get_logger(), "No critical wind found.");
-        return;
-    }*/
-
-    RCLCPP_INFO(this->get_logger(), "Service is available. Sending request...");
-     RCLCPP_INFO(this->get_logger(), "Test1");
-    if (shipAdd)
-    {
-        auto request = std::make_shared<navigation::srv::PathLast::Request>();
-        request->target_id = wind_def;
-        request->ship_pos = ship;
-        auto future = this->LastPath_Client_->async_send_request(
-            request,
-            std::bind(&TargetManagerNode::service_response_callback_last, this, std::placeholders::_1)
-        );
     }
 }
 
@@ -285,25 +225,64 @@ void TargetManagerNode::service_response_callback_last(
     if (response->path.poses.empty())
     {
         RCLCPP_WARN(this->get_logger(), "Received empty poses from service. Retrying...");
-        timer_inspec_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&TargetManagerNode::launch_last, this));
-    }
+        auto request = std::make_shared<navigation::srv::PathLast::Request>();
+        request->target_id = criticalId;
+        request->ship_pos = boatOdometry;
+        auto future = this->LastPath_Client_->async_send_request(
+            request,
+            std::bind(&TargetManagerNode::service_response_callback_last, this, std::placeholders::_1)
+        );
+    }   
     else
     {
+        this->lastPathReady = true;
+
         RCLCPP_INFO(this->get_logger(), "Processing received path");
+
+        for (int i = 0; i < response->path.poses.size(); i++)
+            RCLCPP_INFO(this->get_logger(), "%d | x: %f y: %f", i, response->path.poses[i].pose.position.x, response->path.poses[i].pose.position.y);
+
         this->last_path = response->path;
     }
 }
 
 void TargetManagerNode::WindInspection(const nav_msgs::msg::Odometry::SharedPtr msg)
 {
-    // Log the received odometry data for debugging
-    RCLCPP_INFO(this->get_logger(), "Received odometry data - Position x: %f, y: %f, z: %f",
-                msg->pose.pose.position.x, msg->pose.pose.position.y, msg->pose.pose.position.z);
+    boatOdometry = *msg;
+}
 
-    // Traitement des données d'odométrie, si nécessaire
-    // Ici, on met à jour l'état de la variable `ship` avec les données reçues
-    ship = *msg;
-    shipAdd = true;
+void TargetManagerNode::criticalCallback(const ros_gz_interfaces::msg::ParamVec::SharedPtr msg)
+{
+	double bearing;
+	double range;
+
+	//RCLCPP_INFO(this->get_logger(), "------------------------------------");
+	for (const auto &param : msg->params) {
+       // RCLCPP_INFO(this->get_logger(), "Key: %s, Value: %f", param.name.c_str(), param.value.double_value);
+
+		if (param.name == "bearing")
+			bearing = param.value.double_value;
+		else if (param.name == "range")
+			range = param.value.double_value;
+    }
+
+    double boatX = boatOdometry.pose.pose.position.x;
+    double boatY = boatOdometry.pose.pose.position.y;
+
+    // Boat angle
+    double siny_cosp = 2 * (boatOdometry.pose.pose.orientation.w * boatOdometry.pose.pose.orientation.z +
+							boatOdometry.pose.pose.orientation.x * boatOdometry.pose.pose.orientation.y);
+	double cosy_cosp = 1 - 2 * (boatOdometry.pose.pose.orientation.y * boatOdometry.pose.pose.orientation.y +
+								boatOdometry.pose.pose.orientation.z * boatOdometry.pose.pose.orientation.z);
+
+	double boatAngle = std::atan2(siny_cosp, cosy_cosp); // Yaw en radians
+
+	double globalAngle = boatAngle + bearing;
+
+	criticalX = boatX + range * cos(globalAngle);
+	criticalY = boatY + range * sin(globalAngle);
+
+	//RCLCPP_INFO(this->get_logger(), "criticalX: %f, criticalY: %f", criticalX, criticalY);
 }
 
 void TargetManagerNode::SplitPathByWindTurbines(const nav_msgs::msg::Path& path)
@@ -360,10 +339,6 @@ void TargetManagerNode::SplitPathByWindTurbines(const nav_msgs::msg::Path& path)
         RCLCPP_INFO(this->get_logger(), "Segment %zu: contient %zu poses", i + 1, segments[i].poses.size());
     }
 }
-
-
-
-
 
 int main(int argc, char * argv[])
 {

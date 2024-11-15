@@ -7,6 +7,7 @@
 #include "geometry_msgs/msg/pose_array.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "nav_msgs/msg/path.hpp"
+#include "ros_gz_interfaces/msg/param_vec.hpp"
 #include "mission_manager/srv/target_manager_serv.hpp" // Inclusion du service
 #include "navigation/srv/path.hpp" // Si nécessaire
 #include "navigation/srv/path_last.hpp"
@@ -22,6 +23,7 @@ public:
     void launch();
     void launch_last();
     void WindInspection(const nav_msgs::msg::Odometry::SharedPtr msg);
+    void criticalCallback(const ros_gz_interfaces::msg::ParamVec::SharedPtr msg);
     void SplitPathByWindTurbines(const nav_msgs::msg::Path& path);
 private:
     rclcpp::Service<mission_manager::srv::TargetManagerServ>::SharedPtr TargetManagerService_;
@@ -65,8 +67,10 @@ private:
     nav_msgs::msg::Odometry ship;
     nav_msgs::msg::Path last_path;
     bool shipAdd = false;
-    bool path_sent = false;
+    size_t paths_sent = 0;
 	rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odometry_Subscription_;
+    rclcpp::Subscription<ros_gz_interfaces::msg::ParamVec>::SharedPtr critical_subscription_;
+
 	rclcpp::Client<navigation::srv::PathLast>::SharedPtr LastPath_Client_;
 	rclcpp::TimerBase::SharedPtr timer_inspec_;
 
@@ -74,6 +78,14 @@ private:
 
     size_t current_segment_index_ = 0;
     int wind_def;
+
+	nav_msgs::msg::Odometry boatOdometry;
+
+	double criticalX = 0;
+	double criticalY = 0;
+	int	   criticalId = 0;
+
+	bool lastPathReady = false;
 };
 
 #endif // TARGET_MANAGER_NODE_HPP

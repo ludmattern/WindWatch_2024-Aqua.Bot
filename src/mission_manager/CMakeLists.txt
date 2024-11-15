@@ -19,6 +19,7 @@ find_package(rosidl_default_generators REQUIRED)
 find_package(rosidl_default_runtime REQUIRED)
 find_package(sensors REQUIRED)
 find_package(navigation REQUIRED)
+find_package(ros_gz_interfaces REQUIRED)
 
 # Generate action interfaces
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -31,7 +32,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 
 # Export dependencies before ament_package()
-ament_export_dependencies(rosidl_default_runtime rclcpp geometry_msgs nav_msgs tf2 tf2_ros tf2_geometry_msgs)
+ament_export_dependencies(rosidl_default_runtime rclcpp geometry_msgs nav_msgs tf2 tf2_ros tf2_geometry_msgs ros_gz_interfaces)
 
 # Include header files
 include_directories(
@@ -120,6 +121,7 @@ ament_target_dependencies(target_manager_node
   nav_msgs
   geometry_msgs
   rosidl_default_runtime
+  ros_gz_interfaces
 )
 
 # Get the typesupport target to link generated libraries
