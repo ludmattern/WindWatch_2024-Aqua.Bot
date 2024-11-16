@@ -81,8 +81,10 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 {
 	RCLCPP_INFO(this->get_logger(), "Executing Inspection goal...");
 
+
 	auto goal = goal_handle->get_goal();
 	path_ = goal->path.poses;
+	
 	goalCancelled_ = false;
 
 	auto feedback = std::make_shared<Inspection::Feedback>();
@@ -118,6 +120,7 @@ void InspectionServer::execute(const std::shared_ptr<GoalHandleInspection> goal_
 			goal_handle->succeed(result);
 			RCLCPP_INFO(this->get_logger(), "Inspection goal succeeded.");
 			dataReceived_ = false;
+			entryPointInitialized_ = false;
 			state_ = InspectionState::APPROACH;
 			return;
 		}
@@ -172,6 +175,7 @@ void InspectionServer::controlLoop(const std::shared_ptr<GoalHandleInspection> g
 void InspectionServer::initializeEntryPoint(const controlUtils::OdometryData &odometryData, const geometry_msgs::msg::PoseStamped &target, double orbitRadius)
 {
 	geometry_msgs::msg::Pose entryPoint = controlUtils::ClosestPointOnOrbit(odometryData, target, orbitRadius);
+
 	entryPoint_.pose = entryPoint;
 	entryPointInitialized_ = true;
 }

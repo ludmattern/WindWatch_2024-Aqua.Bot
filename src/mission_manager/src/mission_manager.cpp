@@ -57,12 +57,7 @@ void MissionManager::service_response_callback(rclcpp::Client<mission_manager::s
 	{
 		RCLCPP_WARN(this->get_logger(), "Received empty path from TargetManagerService. Retrying...");
 
-		auto retry_timer = this->create_wall_timer(
-			std::chrono::seconds(5),
-			[this]() {
-				this->launch();
-			}
-		);
+		timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&MissionManager::launch, this));
 		return ;
 	}
 
@@ -88,6 +83,7 @@ void MissionManager::send_navigation_goal(const nav_msgs::msg::Path & path)
 
 void MissionManager::send_inspection_goal(const nav_msgs::msg::Path & path)
 {
+	RCLCPP_INFO(this->get_logger(), "Path inspection x: %f y: %f", path.poses[0].pose.position.x, path.poses[0].pose.position.y);
 	auto goal_msg = Inspection::Goal();
 	goal_msg.path = path;
 
