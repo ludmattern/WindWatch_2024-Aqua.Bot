@@ -119,8 +119,6 @@ void TargetManagerNode::ServerCallback(
     //si c'est le dernier path
     if (paths_sent >= wind_data_.nb_wind)
     {
-        RCLCPP_INFO(this->get_logger(), "Test5");
-
 		odometry_Subscription_.reset();
 		critical_subscription_.reset();
 
@@ -235,8 +233,6 @@ void TargetManagerNode::service_response_callback_last(
     }   
     else
     {
-        this->lastPathReady = true;
-
         RCLCPP_INFO(this->get_logger(), "Processing received path");
 
         for (int i = 0; i < response->path.poses.size(); i++)

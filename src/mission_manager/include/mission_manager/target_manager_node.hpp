@@ -84,8 +84,6 @@ private:
 	double criticalX = 0;
 	double criticalY = 0;
 	int	   criticalId = 0;
-
-	bool lastPathReady = false;
 };
 
 #endif // TARGET_MANAGER_NODE_HPP
