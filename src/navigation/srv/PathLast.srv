@@ -1,4 +1,4 @@
-int32 target_id # pose de leolienne
+geometry_msgs/PoseStamped target_pos # pose de leolienne
 nav_msgs/Odometry ship_pos # Pos of the ship
 ---
 nav_msgs/Path path # Path to get to go to the target

@@ -149,8 +149,11 @@ void TargetManagerNode::ServerCallback(
 
 		RCLCPP_INFO(this->get_logger(), "Critical wind turbine index in the Path: %d", criticalId);
 
+        geometry_msgs::msg::PoseStamped TgtPos;
+        TgtPos.pose.position.x = criticalX;
+        TgtPos.pose.position.y = criticalY;
         auto requestPath = std::make_shared<navigation::srv::PathLast::Request>();
-        requestPath->target_id = criticalId;
+        requestPath->target_pos = TgtPos;
         requestPath->ship_pos = boatOdometry;
         auto future = this->LastPath_Client_->async_send_request(
             requestPath,
@@ -222,9 +225,12 @@ void TargetManagerNode::service_response_callback_last(
 
     if (response->path.poses.empty())
     {
+        geometry_msgs::msg::PoseStamped TgtPos;
+        TgtPos.pose.position.x = criticalX;
+        TgtPos.pose.position.y = criticalY;
         RCLCPP_WARN(this->get_logger(), "Received empty poses from service. Retrying...");
         auto request = std::make_shared<navigation::srv::PathLast::Request>();
-        request->target_id = criticalId;
+        request->target_pos = TgtPos;
         request->ship_pos = boatOdometry;
         auto future = this->LastPath_Client_->async_send_request(
             request,

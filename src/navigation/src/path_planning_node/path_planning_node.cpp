@@ -72,11 +72,16 @@ void PathPlanningNode::ServerPathLastCallback(const std::shared_ptr<navigation::
 	ShipPos.y = request->ship_pos.pose.pose.position.y;
 	tmpPointList.push_back(ShipPos);
 
+	sPoint TgtPos;
+	TgtPos.x = request->target_pos.pose.position.x;
+	TgtPos.y = request->target_pos.pose.position.y;
+	tmpPointList.push_back(TgtPos);
+
 	//Create a new graph with the new position of the ship
 	CreateGraph(tmpGraph, tmpPointList);
 	
 	//Find the path to go to the target
-	const std::pair<double, std::vector<int>> Path = Dijkstra(tmpPointList.size() - 1, request->target_id, tmpGraph);
+	const std::pair<double, std::vector<int>> Path = Dijkstra(tmpPointList.size() - 2, tmpPointList.size() - 1, tmpGraph);
 
 	//Create the response with the points coordinates
 	nav_msgs::msg::Path PathPoints;
@@ -90,12 +95,11 @@ void PathPlanningNode::ServerPathLastCallback(const std::shared_ptr<navigation::
 	while (i < size)
 	{
 		geometry_msgs::msg::PoseStamped NextPoint;
-		NextPoint.pose.position.x = PointList[Path.second[i]].x;
-		NextPoint.pose.position.y = PointList[Path.second[i]].y;
+		NextPoint.pose.position.x = tmpPointList[Path.second[i]].x;
+		NextPoint.pose.position.y = tmpPointList[Path.second[i]].y;
 		PathPoints.poses.push_back(NextPoint);
 		++i;
 	}
-
 	response->path = PathPoints;
 }
 
