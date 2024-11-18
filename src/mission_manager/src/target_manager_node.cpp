@@ -122,20 +122,14 @@ void TargetManagerNode::ServerCallback(
 		odometry_Subscription_.reset();
 		critical_subscription_.reset();
 
-		nav_msgs::msg::Path criticalPath;
-		geometry_msgs::msg::PoseStamped pose;
+		RCLCPP_INFO(this->get_logger(), "Coords approx x: %f, y: %f", criticalX, criticalY);
 
-		pose.pose.position.x = boatOdometry.pose.pose.position.x;
-		pose.pose.position.y = boatOdometry.pose.pose.position.y;
-		criticalPath.poses.push_back(pose);
+        geometry_msgs::msg::PoseStamped CriticalPos;
 
-		pose.pose.position.x = criticalX;
-		pose.pose.position.y = criticalY;
-		criticalPath.poses.push_back(pose);
+        CriticalPos.pose.position.x = wind_data_.wind.poses[0].position.x;
+        CriticalPos.pose.position.y = wind_data_.wind.poses[0].position.y;
 
-		RCLCPP_INFO(this->get_logger(), "Coords approx x: %f, y: %f", criticalPath.poses[1].pose.position.x, criticalPath.poses[1].pose.position.y);
-
-		// Distance minimale initial
+        // Distance minimale initial
 		double min_distance = std::sqrt(std::pow(criticalX - wind_data_.wind.poses[0].position.x, 2) +
 			std::pow(criticalY - wind_data_.wind.poses[0].position.y, 2));
 
@@ -143,17 +137,18 @@ void TargetManagerNode::ServerCallback(
     	    double distance = std::sqrt(std::pow(criticalX - wind_data_.wind.poses[i].position.x, 2) + std::pow(criticalY - wind_data_.wind.poses[i].position.y, 2));
     	    if (distance < min_distance) {
     	        min_distance = distance;
-    	        criticalId = i;
+                CriticalPos.pose.position.x = wind_data_.wind.poses[i].position.x;
+                CriticalPos.pose.position.y = wind_data_.wind.poses[i].position.y;
     	    }
     	}
 
-		RCLCPP_INFO(this->get_logger(), "Critical wind turbine index in the Path: %d", criticalId);
+        criticalX = CriticalPos.pose.position.x;
+        criticalY = CriticalPos.pose.position.y;
 
-        geometry_msgs::msg::PoseStamped TgtPos;
-        TgtPos.pose.position.x = criticalX;
-        TgtPos.pose.position.y = criticalY;
+		RCLCPP_INFO(this->get_logger(), "Critical wind turbine coordinates x: %f y: %f", criticalX, criticalY);
+
         auto requestPath = std::make_shared<navigation::srv::PathLast::Request>();
-        requestPath->target_pos = TgtPos;
+        requestPath->target_pos = CriticalPos;
         requestPath->ship_pos = boatOdometry;
         auto future = this->LastPath_Client_->async_send_request(
             requestPath,
